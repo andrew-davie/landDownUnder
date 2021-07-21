@@ -1,0 +1,1532 @@
+------- FILE CDFJBoulderDash.asm LEVEL 1 PASS 2
+      1 U0f28 ????						; Boulder Dash CDFJ
+      2 U0f28 ????						; (c) 2020 Andrew Davie
+      3 U0f28 ????
+      4 U0f28 ????						; REMEMBER cannot use lda # as this is overloaded for datastream access!!
+      5 U0f28 ????						; use ldx # or ldy # instead
+      6 U0f28 ????
+      7 U0f28 ????				      PROCESSOR	6502
+------- FILE vcs.h LEVEL 2 PASS 2
+      0 U0f28 ????				      include	"vcs.h"
+      1 U0f28 ????						; VCS.H
+      2 U0f28 ????						; Version 1.05, 13/November/2003
+      3 U0f28 ????
+      4 U0f28 ????	       00 69	   VERSION_VCS =	105
+      5 U0f28 ????
+      6 U0f28 ????						; THIS IS A PRELIMINARY RELEASE OF *THE* "STANDARD" VCS.H
+      7 U0f28 ????						; THIS FILE IS EXPLICITLY SUPPORTED AS A DASM-PREFERRED COMPANION FILE
+      8 U0f28 ????						; PLEASE DO *NOT* REDISTRIBUTE THIS FILE!
+      9 U0f28 ????						;
+     10 U0f28 ????						; This file defines hardware registers and memory mapping for the
+     11 U0f28 ????						; Atari 2600. It is distributed as a companion machine-specific support package
+     12 U0f28 ????						; for the DASM compiler. Updates to this file, DASM, and associated tools are
+     13 U0f28 ????						; available at at http://www.atari2600.org/dasm
+     14 U0f28 ????						;
+     15 U0f28 ????						; Many thanks to the original author(s) of this file, and to everyone who has
+     16 U0f28 ????						; contributed to understanding the Atari 2600.  If you take issue with the
+     17 U0f28 ????						; contents, or naming of registers, please write to me (atari2600@taswegian.com)
+     18 U0f28 ????						; with your views.  Please contribute, if you think you can improve this
+     19 U0f28 ????						; file!
+     20 U0f28 ????						;
+     21 U0f28 ????						; Latest Revisions...
+     22 U0f28 ????						; 1.05  13/NOV/2003	  - Correction to 1.04 - now functions as requested by MR.
+     23 U0f28 ????						;			  - Added VERSION_VCS equate (which will reflect 100x version #)
+     24 U0f28 ????						;			    This will allow conditional code to verify VCS.H being
+     25 U0f28 ????						;			    used for code assembly.
+     26 U0f28 ????						; 1.04  12/NOV/2003	 Added TIA_BASE_WRITE_ADDRESS and TIA_BASE_READ_ADDRESS for
+     27 U0f28 ????						;			 convenient disassembly/reassembly compatibility for hardware
+     28 U0f28 ????						;			 mirrored reading/writing differences.	This is more a 
+     29 U0f28 ????						;			 readability issue, and binary compatibility with disassembled
+     30 U0f28 ????						;			 and reassembled sources.  Per Manuel Rotschkar's suggestion.
+     31 U0f28 ????						; 1.03  12/MAY/2003	 Added SEG segment at end of file to fix old-code compatibility
+     32 U0f28 ????						;			 which was broken by the use of segments in this file, as
+     33 U0f28 ????						;			 reported by Manuel Polik on [stella] 11/MAY/2003
+     34 U0f28 ????						; 1.02  22/MAR/2003	 Added TIMINT($285)
+     35 U0f28 ????						; 1.01				Constant offset added to allow use for 3F-style bankswitching
+     36 U0f28 ????						;						 - define TIA_BASE_ADDRESS as $40 for Tigervision carts, otherwise
+     37 U0f28 ????						;						   it is safe to leave it undefined, and the base address will
+     38 U0f28 ????						;						   be set to 0.  Thanks to Eckhard Stolberg for the suggestion.
+     39 U0f28 ????						;			    Note, may use -DLABEL=EXPRESSION to define TIA_BASE_ADDRESS
+     40 U0f28 ????						;			  - register definitions are now generated through assignment
+     41 U0f28 ????						;			    in uninitialised segments.	This allows a changeable base
+     42 U0f28 ????						;			    address architecture.
+     43 U0f28 ????						; 1.0	22/MAR/2003		Initial release
+     44 U0f28 ????
+     45 U0f28 ????
+     46 U0f28 ????						;-------------------------------------------------------------------------------
+     47 U0f28 ????
+     48 U0f28 ????						; TIA_BASE_ADDRESS
+     49 U0f28 ????						; The TIA_BASE_ADDRESS defines the base address of access to TIA registers.
+     50 U0f28 ????						; Normally 0, the base address should (externally, before including this file)
+     51 U0f28 ????						; be set to $40 when creating 3F-bankswitched (and other?) cartridges.
+     52 U0f28 ????						; The reason is that this bankswitching scheme treats any access to locations
+     53 U0f28 ????						; < $40 as a bankswitch.
+     54 U0f28 ????
+     55 U0f28 ????			  -	      IFNCONST	TIA_BASE_ADDRESS
+     56 U0f28 ????			  -TIA_BASE_ADDRESS =	0
+     57 U0f28 ????				      ENDIF
+     58 U0f28 ????
+     59 U0f28 ????						; Note: The address may be defined on the command-line using the -D switch, eg:
+     60 U0f28 ????						; dasm.exe code.asm -DTIA_BASE_ADDRESS=$40 -f3 -v5 -ocode.bin
+     61 U0f28 ????						; *OR* by declaring the label before including this file, eg:
+     62 U0f28 ????						; TIA_BASE_ADDRESS = $40
+     63 U0f28 ????						;   include "vcs.h"
+     64 U0f28 ????
+     65 U0f28 ????						; Alternate read/write address capability - allows for some disassembly compatibility
+     66 U0f28 ????						; usage ; to allow reassembly to binary perfect copies).  This is essentially catering
+     67 U0f28 ????						; for the mirrored ROM hardware registers.
+     68 U0f28 ????
+     69 U0f28 ????						; Usage: As per above, define the TIA_BASE_READ_ADDRESS and/or TIA_BASE_WRITE_ADDRESS
+     70 U0f28 ????						; using the -D command-line switch, as required.  If the addresses are not defined, 
+     71 U0f28 ????						; they defaut to the TIA_BASE_ADDRESS.
+     72 U0f28 ????
+     73 U0f28 ????			  -	      IFNCONST	TIA_BASE_READ_ADDRESS
+     74 U0f28 ????			  -TIA_BASE_READ_ADDRESS =	TIA_BASE_ADDRESS
+     75 U0f28 ????				      ENDIF
+     76 U0f28 ????
+     77 U0f28 ????			  -	      IFNCONST	TIA_BASE_WRITE_ADDRESS
+     78 U0f28 ????			  -TIA_BASE_WRITE_ADDRESS =	TIA_BASE_ADDRESS
+     79 U0f28 ????				      ENDIF
+     80 U0f28 ????
+     81 U0f28 ????						;-------------------------------------------------------------------------------
+     82 U0f28 ????
+     83 U002d ????				      SEG.U	TIA_REGISTERS_WRITE
+     84 U0000					      ORG	TIA_BASE_WRITE_ADDRESS
+     85 U0000
+     86 U0000							; DO NOT CHANGE THE RELATIVE ORDERING OF REGISTERS!
+     87 U0000
+     88 U0000		       00	   VSYNC      ds	1	; $00	 0000 00x0   Vertical Sync Set-Clear
+     89 U0001		       00	   VBLANK     ds	1	; $01	 xx00 00x0   Vertical Blank Set-Clear
+     90 U0002		       00	   WSYNC      ds	1	; $02	 ---- ----   Wait for Horizontal Blank
+     91 U0003		       00	   RSYNC      ds	1	; $03	 ---- ----   Reset Horizontal Sync Counter
+     92 U0004		       00	   NUSIZ0     ds	1	; $04	 00xx 0xxx   Number-Size player/missle 0
+     93 U0005		       00	   NUSIZ1     ds	1	; $05	 00xx 0xxx   Number-Size player/missle 1
+     94 U0006		       00	   COLUP0     ds	1	; $06	 xxxx xxx0   Color-Luminance Player 0
+     95 U0007		       00	   COLUP1     ds	1	; $07	 xxxx xxx0   Color-Luminance Player 1
+     96 U0008		       00	   COLUPF     ds	1	; $08	 xxxx xxx0   Color-Luminance Playfield
+     97 U0009		       00	   COLUBK     ds	1	; $09	 xxxx xxx0   Color-Luminance Background
+     98 U000a		       00	   CTRLPF     ds	1	; $0A	 00xx 0xxx   Control Playfield, Ball, Collisions
+     99 U000b		       00	   REFP0      ds	1	; $0B	 0000 x000   Reflection Player 0
+    100 U000c		       00	   REFP1      ds	1	; $0C	 0000 x000   Reflection Player 1
+    101 U000d		       00	   PF0	      ds	1	; $0D	 xxxx 0000   Playfield Register Byte 0
+    102 U000e		       00	   PF1	      ds	1	; $0E	 xxxx xxxx   Playfield Register Byte 1
+    103 U000f		       00	   PF2	      ds	1	; $0F	 xxxx xxxx   Playfield Register Byte 2
+    104 U0010		       00	   RESP0      ds	1	; $10	 ---- ----   Reset Player 0
+    105 U0011		       00	   RESP1      ds	1	; $11	 ---- ----   Reset Player 1
+    106 U0012		       00	   RESM0      ds	1	; $12	 ---- ----   Reset Missle 0
+    107 U0013		       00	   RESM1      ds	1	; $13	 ---- ----   Reset Missle 1
+    108 U0014		       00	   RESBL      ds	1	; $14	 ---- ----   Reset Ball
+    109 U0015		       00	   AUDC0      ds	1	; $15	 0000 xxxx   Audio Control 0
+    110 U0016		       00	   AUDC1      ds	1	; $16	 0000 xxxx   Audio Control 1
+    111 U0017		       00	   AUDF0      ds	1	; $17	 000x xxxx   Audio Frequency 0
+    112 U0018		       00	   AUDF1      ds	1	; $18	 000x xxxx   Audio Frequency 1
+    113 U0019		       00	   AUDV0      ds	1	; $19	 0000 xxxx   Audio Volume 0
+    114 U001a		       00	   AUDV1      ds	1	; $1A	 0000 xxxx   Audio Volume 1
+    115 U001b		       00	   GRP0       ds	1	; $1B	 xxxx xxxx   Graphics Register Player 0
+    116 U001c		       00	   GRP1       ds	1	; $1C	 xxxx xxxx   Graphics Register Player 1
+    117 U001d		       00	   ENAM0      ds	1	; $1D	 0000 00x0   Graphics Enable Missle 0
+    118 U001e		       00	   ENAM1      ds	1	; $1E	 0000 00x0   Graphics Enable Missle 1
+    119 U001f		       00	   ENABL      ds	1	; $1F	 0000 00x0   Graphics Enable Ball
+    120 U0020		       00	   HMP0       ds	1	; $20	 xxxx 0000   Horizontal Motion Player 0
+    121 U0021		       00	   HMP1       ds	1	; $21	 xxxx 0000   Horizontal Motion Player 1
+    122 U0022		       00	   HMM0       ds	1	; $22	 xxxx 0000   Horizontal Motion Missle 0
+    123 U0023		       00	   HMM1       ds	1	; $23	 xxxx 0000   Horizontal Motion Missle 1
+    124 U0024		       00	   HMBL       ds	1	; $24	 xxxx 0000   Horizontal Motion Ball
+    125 U0025		       00	   VDELP0     ds	1	; $25	 0000 000x   Vertical Delay Player 0
+    126 U0026		       00	   VDELP1     ds	1	; $26	 0000 000x   Vertical Delay Player 1
+    127 U0027		       00	   VDELBL     ds	1	; $27	 0000 000x   Vertical Delay Ball
+    128 U0028		       00	   RESMP0     ds	1	; $28	 0000 00x0   Reset Missle 0 to Player 0
+    129 U0029		       00	   RESMP1     ds	1	; $29	 0000 00x0   Reset Missle 1 to Player 1
+    130 U002a		       00	   HMOVE      ds	1	; $2A	 ---- ----   Apply Horizontal Motion
+    131 U002b		       00	   HMCLR      ds	1	; $2B	 ---- ----   Clear Horizontal Move Registers
+    132 U002c		       00	   CXCLR      ds	1	; $2C	 ---- ----   Clear Collision Latches
+    133 U002d
+    134 U002d							;-------------------------------------------------------------------------------
+    135 U002d
+    136 U000e ????				      SEG.U	TIA_REGISTERS_READ
+    137 U0000					      ORG	TIA_BASE_READ_ADDRESS
+    138 U0000
+    139 U0000							;											bit 7	 bit 6
+    140 U0000		       00	   CXM0P      ds	1	; $00	     xx00 0000	     Read Collision  M0-P1   M0-P0
+    141 U0001		       00	   CXM1P      ds	1	; $01	     xx00 0000			     M1-P0   M1-P1
+    142 U0002		       00	   CXP0FB     ds	1	; $02	     xx00 0000			     P0-PF   P0-BL
+    143 U0003		       00	   CXP1FB     ds	1	; $03	     xx00 0000			     P1-PF   P1-BL
+    144 U0004		       00	   CXM0FB     ds	1	; $04	     xx00 0000			     M0-PF   M0-BL
+    145 U0005		       00	   CXM1FB     ds	1	; $05	     xx00 0000			     M1-PF   M1-BL
+    146 U0006		       00	   CXBLPF     ds	1	; $06	     x000 0000			     BL-PF   -----
+    147 U0007		       00	   CXPPMM     ds	1	; $07	     xx00 0000			     P0-P1   M0-M1
+    148 U0008		       00	   INPT0      ds	1	; $08	     x000 0000	     Read Pot Port 0
+    149 U0009		       00	   INPT1      ds	1	; $09	     x000 0000	     Read Pot Port 1
+    150 U000a		       00	   INPT2      ds	1	; $0A	     x000 0000	     Read Pot Port 2
+    151 U000b		       00	   INPT3      ds	1	; $0B	     x000 0000	     Read Pot Port 3
+    152 U000c		       00	   INPT4      ds	1	; $0C		x000 0000	 Read Input (Trigger) 0
+    153 U000d		       00	   INPT5      ds	1	; $0D		x000 0000	 Read Input (Trigger) 1
+    154 U000e
+    155 U000e							;-------------------------------------------------------------------------------
+    156 U000e
+    157 U0298 ????				      SEG.U	RIOT
+    158 U0280					      ORG	$280
+    159 U0280
+    160 U0280							; RIOT MEMORY MAP
+    161 U0280
+    162 U0280		       00	   SWCHA      ds	1	; $280      Port A data register for joysticks:
+    163 U0281							;			Bits 4-7 for player 1.  Bits 0-3 for player 2.
+    164 U0281
+    165 U0281		       00	   SWACNT     ds	1	; $281      Port A data direction register (DDR)
+    166 U0282		       00	   SWCHB      ds	1	; $282		Port B data (console switches)
+    167 U0283		       00	   SWBCNT     ds	1	; $283      Port B DDR
+    168 U0284		       00	   INTIM      ds	1	; $284		Timer output
+    169 U0285
+    170 U0285		       00	   TIMINT     ds	1	; $285
+    171 U0286
+    172 U0286							; Unused/undefined registers ($285-$294)
+    173 U0286
+    174 U0286		       00		      ds	1	; $286
+    175 U0287		       00		      ds	1	; $287
+    176 U0288		       00		      ds	1	; $288
+    177 U0289		       00		      ds	1	; $289
+    178 U028a		       00		      ds	1	; $28A
+    179 U028b		       00		      ds	1	; $28B
+    180 U028c		       00		      ds	1	; $28C
+    181 U028d		       00		      ds	1	; $28D
+    182 U028e		       00		      ds	1	; $28E
+    183 U028f		       00		      ds	1	; $28F
+    184 U0290		       00		      ds	1	; $290
+    185 U0291		       00		      ds	1	; $291
+    186 U0292		       00		      ds	1	; $292
+    187 U0293		       00		      ds	1	; $293
+    188 U0294
+    189 U0294		       00	   TIM1T      ds	1	; $294		set 1 clock interval
+    190 U0295		       00	   TIM8T      ds	1	; $295      set 8 clock interval
+    191 U0296		       00	   TIM64T     ds	1	; $296      set 64 clock interval
+    192 U0297		       00	   T1024T     ds	1	; $297      set 1024 clock interval
+    193 U0298
+    194 U0298							;-------------------------------------------------------------------------------
+    195 U0298							; The following required for back-compatibility with code which does not use
+    196 U0298							; segments.
+    197 U0298
+    198  0000 ????				      SEG
+    199  0000 ????
+    200  0000 ????						; EOF
+------- FILE CDFJBoulderDash.asm
+------- FILE macro.h LEVEL 2 PASS 2
+      0  0000 ????				      include	"macro.h"
+      1  0000 ????						; MACRO.H
+      2  0000 ????						; Version 1.07, 2/SEPTEMBER/2013
+      3  0000 ????
+      4  0000 ????	       00 6b	   VERSION_MACRO =	107	; unoffical version
+      5  0000 ????
+      6  0000 ????						;
+      7  0000 ????						; THIS FILE IS EXPLICITLY SUPPORTED AS A DASM-PREFERRED COMPANION FILE
+      8  0000 ????						; PLEASE DO *NOT* REDISTRIBUTE MODIFIED VERSIONS OF THIS FILE!
+      9  0000 ????						;
+     10  0000 ????						; This file defines DASM macros useful for development for the Atari 2600.
+     11  0000 ????						; It is distributed as a companion machine-specific support package
+     12  0000 ????						; for the DASM compiler. Updates to this file, DASM, and associated tools are
+     13  0000 ????						; available at at http://www.atari2600.org/dasm
+     14  0000 ????						;
+     15  0000 ????						; Many thanks to the people who have contributed.  If you take issue with the
+     16  0000 ????						; contents, or would like to add something, please write to me
+     17  0000 ????						; (atari2600@taswegian.com) with your contribution.
+     18  0000 ????						;
+     19  0000 ????						; Latest Revisions...
+     20  0000 ????						;
+     21  0000 ????						; 1.06  03/SEP/2004	 - nice revision of VERTICAL_BLANK (Edwin Blink)
+     22  0000 ????						; 1.05  14/NOV/2003	 - Added VERSION_MACRO equate (which will reflect 100x version #)
+     23  0000 ????						;			   This will allow conditional code to verify MACRO.H being
+     24  0000 ????						;			   used for code assembly.
+     25  0000 ????						; 1.04  13/NOV/2003	 - SET_POINTER macro added (16-bit address load)
+     26  0000 ????						;
+     27  0000 ????						; 1.03  23/JUN/2003	 - CLEAN_START macro added - clears TIA, RAM, registers
+     28  0000 ????						;
+     29  0000 ????						; 1.02  14/JUN/2003	 - VERTICAL_SYNC macro added
+     30  0000 ????						;			   (standardised macro for vertical synch code)
+     31  0000 ????						; 1.01  22/MAR/2003	 - SLEEP macro added.
+     32  0000 ????						;			 - NO_ILLEGAL_OPCODES switch implemented
+     33  0000 ????						; 1.0	 22/MAR/2003	 Initial release
+     34  0000 ????
+     35  0000 ????						; Note: These macros use illegal opcodes.  To disable illegal opcode usage,
+     36  0000 ????						;   define the symbol NO_ILLEGAL_OPCODES (-DNO_ILLEGAL_OPCODES=1 on command-line).
+     37  0000 ????						;   If you do not allow illegal opcode usage, you must include this file
+     38  0000 ????						;   *after* including VCS.H (as the non-illegal opcodes access hardware
+     39  0000 ????						;   registers and require them to be defined first).
+     40  0000 ????
+     41  0000 ????						; Available macros...
+     42  0000 ????						;   SLEEP n		 - sleep for n cycles
+     43  0000 ????						;   VERTICAL_SYNC	 - correct 3 scanline vertical synch code
+     44  0000 ????						;   CLEAN_START	 - set machine to known state on startup
+     45  0000 ????						;   SET_POINTER	 - load a 16-bit absolute to a 16-bit variable
+     46  0000 ????
+     47  0000 ????						;-------------------------------------------------------------------------------
+     48  0000 ????						; SLEEP duration
+     49  0000 ????						; Original author: Thomas Jentzsch
+     50  0000 ????						; Inserts code which takes the specified number of cycles to execute.	This is
+     51  0000 ????						; useful for code where precise timing is required.
+     52  0000 ????						; ILLEGAL-OPCODE VERSION DOES NOT AFFECT FLAGS OR REGISTERS.
+     53  0000 ????						; LEGAL OPCODE VERSION MAY AFFECT FLAGS
+     54  0000 ????						; Uses illegal opcode (DASM 2.20.01 onwards).
+     55  0000 ????
+     56  0000 ????				      MAC	sleep
+     57  0000 ????			   .CYCLES    SET	{1}
+     58  0000 ????
+     59  0000 ????				      IF	.CYCLES < 2
+     60  0000 ????				      ECHO	"MACRO ERROR: 'SLEEP': Duration must be > 1"
+     61  0000 ????				      ERR
+     62  0000 ????				      ENDIF
+     63  0000 ????
+     64  0000 ????				      IF	.CYCLES & 1
+     65  0000 ????				      IFNCONST	NO_ILLEGAL_OPCODES
+     66  0000 ????				      nop	0
+     67  0000 ????				      ELSE
+     68  0000 ????				      bit	VSYNC
+     69  0000 ????				      ENDIF
+     70  0000 ????			   .CYCLES    SET	.CYCLES - 3
+     71  0000 ????				      ENDIF
+     72  0000 ????
+     73  0000 ????				      REPEAT	.CYCLES / 2
+     74  0000 ????				      nop
+     75  0000 ????				      REPEND
+     76  0000 ????				      ENDM		;usage: SLEEP n (n>1)
+     77  0000 ????
+     78  0000 ????						;-------------------------------------------------------------------------------
+     79  0000 ????						; VERTICAL_SYNC
+     80  0000 ????						; revised version by Edwin Blink -- saves bytes!
+     81  0000 ????						; Inserts the code required for a proper 3 scanline vertical sync sequence
+     82  0000 ????						; Note: Alters the accumulator
+     83  0000 ????
+     84  0000 ????						; OUT: A = 0
+     85  0000 ????
+     86  0000 ????				      MAC	vertical_sync
+     87  0000 ????				      lda	#%1110	; each '1' bits generate a VSYNC ON line (bits 1..3)
+     88  0000 ????			   .VSLP1     sta	WSYNC	; 1st '0' bit resets Vsync, 2nd '0' bit exit loop
+     89  0000 ????				      sta	VSYNC
+     90  0000 ????				      lsr
+     91  0000 ????				      bne	.VSLP1	; branch until VYSNC has been reset
+     92  0000 ????				      ENDM
+     93  0000 ????
+     94  0000 ????						;-------------------------------------------------------------------------------
+     95  0000 ????						; CLEAN_START
+     96  0000 ????						; Original author: Omegamatrix
+     97  0000 ????						; - Minimal bytes used to set stack pointer, Clear RIOT ram and TIA registers
+     98  0000 ????						; - Uses no illegal opcodes.
+     99  0000 ????						; - Finishes with SP=$FF, X=0, A=0, Y=0
+    100  0000 ????						; - Jumps between operator and operand to perform ASL until A=0, TIA registers
+    101  0000 ????						;   finally get cleared at their mirrored locations ($40 and up).
+    102  0000 ????						; - SEI is unnecessary and can be cut because the 2600 has no interrupt line.
+    103  0000 ????						; - TAY at the end is not really necessary, and can also be cut.
+    104  0000 ????
+    105  0000 ????				      MAC	clean_start
+    106  0000 ????				      sei
+    107  0000 ????				      cld
+    108  0000 ????			   .CLEAR_STACK
+    109  0000 ????				      ldx	#$0A	; ASL opcode = $0A
+    110  0000 ????				      inx
+    111  0000 ????				      txs
+    112  0000 ????				      pha
+    113  0000 ????				      bne	.CLEAR_STACK+1	; jump between operator and operand to do ASL
+    114  0000 ????				      tay		; SP=$FF, X = A = Y = 0
+    115  0000 ????				      ENDM
+    116  0000 ????
+    117  0000 ????						;-------------------------------------------------------
+    118  0000 ????						; SET_POINTER
+    119  0000 ????						; Original author: Manuel Rotschkar
+    120  0000 ????						;
+    121  0000 ????						; Sets a 2 byte RAM pointer to an absolute address.
+    122  0000 ????						;
+    123  0000 ????						; Usage: SET_POINTER pointer, address
+    124  0000 ????						; Example: SET_POINTER SpritePTR, SpriteData
+    125  0000 ????						;
+    126  0000 ????						; Note: Alters the accumulator, NZ flags
+    127  0000 ????						; IN 1: 2 byte RAM location reserved for pointer
+    128  0000 ????						; IN 2: absolute address
+    129  0000 ????
+    130  0000 ????				      MAC	set_pointer
+    131  0000 ????			   .POINTER   SET	{1}
+    132  0000 ????			   .ADDRESS   SET	{2}
+    133  0000 ????
+    134  0000 ????				      LDA	#<.ADDRESS	; Get Lowbyte of Address
+    135  0000 ????				      STA	.POINTER	; Store in pointer
+    136  0000 ????				      LDA	#>.ADDRESS	; Get Hibyte of Address
+    137  0000 ????				      STA	.POINTER+1	; Store in pointer+1
+    138  0000 ????
+    139  0000 ????				      ENDM
+    140  0000 ????
+    141  0000 ????						;-------------------------------------------------------
+    142  0000 ????						; BOUNDARY byte#
+    143  0000 ????						; Original author: Denis Debro (borrowed from Bob Smith / Thomas)
+    144  0000 ????						;
+    145  0000 ????						; Push data to a certain position inside a page and keep count of how
+    146  0000 ????						; many free bytes the programmer will have.
+    147  0000 ????						;
+    148  0000 ????						; eg: BOUNDARY 5    ; position at byte #5 in page
+    149  0000 ????
+    150  0000 ????			   .FREE_BYTES SET	0
+    151  0000 ????				      MAC	boundary
+    152  0000 ????				      REPEAT	256
+    153  0000 ????				      IF	<. % {1} = 0
+    154  0000 ????				      MEXIT
+    155  0000 ????				      ELSE
+    156  0000 ????			   .FREE_BYTES SET	.FREE_BYTES + 1
+    157  0000 ????				      .byte	$00
+    158  0000 ????				      ENDIF
+    159  0000 ????				      REPEND
+    160  0000 ????				      ENDM
+    161  0000 ????
+    162  0000 ????						;-------------------------------------------------------
+    163  0000 ????						; SAME PAGE BRANCH CHECK
+    164  0000 ????						; Original auther: John Payson
+    165  0000 ????						;
+    166  0000 ????						; Usage: sbeq, sbne, etc just like a normal beq, bne, etc.
+    167  0000 ????						;	  A message will be output if the target of the branch
+    168  0000 ????						;	  is not on the same page.
+    169  0000 ????						;
+    170  0000 ????				      mac	sbcc
+    171  0000 ????				      bcc	{1}
+    172  0000 ????				      if	(* ^ {1}) & $FF00
+    173  0000 ????				      echo	"PAGE CROSSING","WARNING ",{1}," at ",*
+    174  0000 ????				      err
+    175  0000 ????				      endif
+    176  0000 ????				      endm
+    177  0000 ????
+    178  0000 ????				      mac	sbcs
+    179  0000 ????				      bcs	{1}
+    180  0000 ????				      if	(* ^ {1}) & $FF00
+    181  0000 ????				      echo	"PAGE CROSSING","WARNING ",{1}," at ",*
+    182  0000 ????				      err
+    183  0000 ????				      endif
+    184  0000 ????				      endm
+    185  0000 ????
+    186  0000 ????				      mac	sbeq
+    187  0000 ????				      beq	{1}
+    188  0000 ????				      if	(* ^ {1}) & $FF00
+    189  0000 ????				      echo	"PAGE CROSSING","WARNING ",{1}," at ",*
+    190  0000 ????				      err
+    191  0000 ????				      endif
+    192  0000 ????				      endm
+    193  0000 ????
+    194  0000 ????				      mac	sbmi
+    195  0000 ????				      bmi	{1}
+    196  0000 ????				      if	(* ^ {1}) & $FF00
+    197  0000 ????				      echo	"PAGE CROSSING","WARNING ",{1}," at ",*
+    198  0000 ????				      err
+    199  0000 ????				      endif
+    200  0000 ????				      endm
+    201  0000 ????
+    202  0000 ????				      mac	sbne
+    203  0000 ????				      bne	{1}
+    204  0000 ????				      if	(* ^ {1}) & $FF00
+    205  0000 ????				      echo	"PAGE CROSSING","WARNING ",{1}," at ",*
+    206  0000 ????				      err
+    207  0000 ????				      endif
+    208  0000 ????				      endm
+    209  0000 ????
+    210  0000 ????				      mac	sbpl
+    211  0000 ????				      bpl	{1}
+    212  0000 ????				      if	(* ^ {1}) & $FF00
+    213  0000 ????				      echo	"PAGE CROSSING","WARNING ",{1}," at ",*
+    214  0000 ????				      err
+    215  0000 ????				      endif
+    216  0000 ????				      endm
+    217  0000 ????
+    218  0000 ????				      mac	sbvc
+    219  0000 ????				      bvc	{1}
+    220  0000 ????				      if	(* ^ {1}) & $FF00
+    221  0000 ????				      echo	"PAGE CROSSING","WARNING ",{1}," at ",*
+    222  0000 ????				      err
+    223  0000 ????				      endif
+    224  0000 ????				      endm
+    225  0000 ????
+    226  0000 ????				      mac	sbvs
+    227  0000 ????				      bvs	{1}
+    228  0000 ????				      if	(* ^ {1}) & $FF00
+    229  0000 ????				      echo	"PAGE CROSSING","WARNING ",{1}," at ",*
+    230  0000 ????				      err
+    231  0000 ????				      endif
+    232  0000 ????				      endm
+    233  0000 ????
+    234  0000 ????						;-------------------------------------------------------
+    235  0000 ????						; DIFFERENT PAGE BRANCH CHECK
+    236  0000 ????						; Original auther: Darrell Spice, Jr.
+    237  0000 ????						;
+    238  0000 ????						; Usage: dbeq, dbne, etc just like a normal beq, bne, etc.
+    239  0000 ????						;	  A message will be output if the target of the branch
+    240  0000 ????						;	  is not on a different page.
+    241  0000 ????						;
+    242  0000 ????				      mac	dbcc
+    243  0000 ????				      bcc	{1}
+    244  0000 ????				      if	((* ^ {1}) & $FF00) = 0
+    245  0000 ????				      echo	"SAME PAGE","WARNING ",{1}," at ",*
+    246  0000 ????				      err
+    247  0000 ????				      endif
+    248  0000 ????				      endm
+    249  0000 ????
+    250  0000 ????				      mac	dbcs
+    251  0000 ????				      bcs	{1}
+    252  0000 ????				      if	((* ^ {1}) & $FF00) = 0
+    253  0000 ????				      echo	"SAME PAGE","WARNING ",{1}," at ",*
+    254  0000 ????				      err
+    255  0000 ????				      endif
+    256  0000 ????				      endm
+    257  0000 ????
+    258  0000 ????				      mac	dbeq
+    259  0000 ????				      beq	{1}
+    260  0000 ????				      if	((* ^ {1}) & $FF00) = 0
+    261  0000 ????				      echo	"SAME PAGE","WARNING ",{1}," at ",*
+    262  0000 ????				      err
+    263  0000 ????				      endif
+    264  0000 ????				      endm
+    265  0000 ????
+    266  0000 ????				      mac	dbmi
+    267  0000 ????				      bmi	{1}
+    268  0000 ????				      if	((* ^ {1}) & $FF00) = 0
+    269  0000 ????				      echo	"SAME PAGE","WARNING ",{1}," at ",*
+    270  0000 ????				      err
+    271  0000 ????				      endif
+    272  0000 ????				      endm
+    273  0000 ????
+    274  0000 ????				      mac	dbne
+    275  0000 ????				      bne	{1}
+    276  0000 ????				      if	((* ^ {1}) & $FF00) = 0
+    277  0000 ????				      echo	"SAME PAGE","WARNING ",{1}," at ",*
+    278  0000 ????				      err
+    279  0000 ????				      endif
+    280  0000 ????				      endm
+    281  0000 ????
+    282  0000 ????				      mac	dbpl
+    283  0000 ????				      bpl	{1}
+    284  0000 ????				      if	((* ^ {1}) & $FF00) = 0
+    285  0000 ????				      echo	"SAME PAGE","WARNING ",{1}," at ",*
+    286  0000 ????				      err
+    287  0000 ????				      endif
+    288  0000 ????				      endm
+    289  0000 ????
+    290  0000 ????				      mac	dbvc
+    291  0000 ????				      bvc	{1}
+    292  0000 ????				      if	((* ^ {1}) & $FF00) = 0
+    293  0000 ????				      echo	"SAME PAGE","WARNING ",{1}," at ",*
+    294  0000 ????				      err
+    295  0000 ????				      endif
+    296  0000 ????				      endm
+    297  0000 ????
+    298  0000 ????				      mac	dbvs
+    299  0000 ????				      bvs	{1}
+    300  0000 ????				      if	((* ^ {1}) & $FF00) = 0
+    301  0000 ????				      echo	"SAME PAGE","WARNING ",{1}," at ",*
+    302  0000 ????				      err
+    303  0000 ????				      endif
+    304  0000 ????				      endm
+    305  0000 ????
+    306  0000 ????
+    307  0000 ????						; EOF
+------- FILE CDFJBoulderDash.asm
+------- FILE cdfj.h LEVEL 2 PASS 2
+      0  0000 ????				      include	"cdfj.h"
+      1  0000 ????						;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+      2  0000 ????						; CDF Bankswitching Include
+      3  0000 ????						; (C) Copyright 2017 - Chris Walton, Fred Quimby, Darrell Spice Jr
+      4  0000 ????						;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+      5  0000 ????
+      6  0000 ????						; Fetcher Constants
+      7  0000 ????	       00 00	   DS0DATA    =	$00
+      8  0000 ????	       00 01	   DS1DATA    =	$01
+      9  0000 ????	       00 02	   DS2DATA    =	$02
+     10  0000 ????	       00 03	   DS3DATA    =	$03
+     11  0000 ????	       00 04	   DS4DATA    =	$04
+     12  0000 ????	       00 05	   DS5DATA    =	$05
+     13  0000 ????	       00 06	   DS6DATA    =	$06
+     14  0000 ????	       00 07	   DS7DATA    =	$07
+     15  0000 ????	       00 08	   DS8DATA    =	$08
+     16  0000 ????	       00 09	   DS9DATA    =	$09
+     17  0000 ????	       00 0a	   DS10DATA   =	$0A
+     18  0000 ????	       00 0b	   DS11DATA   =	$0B
+     19  0000 ????	       00 0c	   DS12DATA   =	$0C
+     20  0000 ????	       00 0d	   DS13DATA   =	$0D
+     21  0000 ????	       00 0e	   DS14DATA   =	$0E
+     22  0000 ????	       00 0f	   DS15DATA   =	$0F
+     23  0000 ????	       00 10	   DS16DATA   =	$10
+     24  0000 ????	       00 11	   DS17DATA   =	$11
+     25  0000 ????	       00 12	   DS18DATA   =	$12
+     26  0000 ????	       00 13	   DS19DATA   =	$13
+     27  0000 ????	       00 14	   DS20DATA   =	$14
+     28  0000 ????	       00 15	   DS21DATA   =	$15
+     29  0000 ????	       00 16	   DS22DATA   =	$16
+     30  0000 ????	       00 17	   DS23DATA   =	$17
+     31  0000 ????	       00 18	   DS24DATA   =	$18
+     32  0000 ????	       00 19	   DS25DATA   =	$19
+     33  0000 ????	       00 1a	   DS26DATA   =	$1A
+     34  0000 ????	       00 1b	   DS27DATA   =	$1B
+     35  0000 ????	       00 1c	   DS28DATA   =	$1C
+     36  0000 ????	       00 1d	   DS29DATA   =	$1D
+     37  0000 ????	       00 1e	   DS30DATA   =	$1E
+     38  0000 ????	       00 1f	   DS31DATA   =	$1F
+     39  0000 ????	       00 20	   DSCOMM     =	$20	; datastream used for DSPTR and DSWRITE
+     40  0000 ????	       00 21	   DSJMP1     =	$21	; datastream used for JMP FASTJMP1
+     41  0000 ????	       00 22	   DSJMP2     =	$22	; datastream used for JMP FASTJMP2
+     42  0000 ????	       00 23	   AMPLITUDE  =	$23
+     43  0000 ????
+     44  0000 ????	       00 21	   DSJMP      =	DSJMP1	; for backwards compaitibility
+     45  0000 ????
+     46  0000 ????						; Mode Constants
+     47  0000 ????	       00 00	   FASTON     =	$00
+     48  0000 ????	       00 0f	   FASTOFF    =	$0F
+     49  0000 ????	       00 00	   AUDIOSAMPLE =	$00
+     50  0000 ????	       00 f0	   AUDIOMUSIC =	$F0
+     51  0000 ????
+     52  0000 ????						; FastJmp Address
+     53  0000 ????	       00 00	   FASTJMP1   =	$0000
+     54  0000 ????	       00 01	   FASTJMP2   =	$0001
+     55  0000 ????
+     56  0000 ????	       00 00	   FASTJMP    =	FASTJMP1	; for backwards compatibility
+     57  0000 ????
+     58  0000 ????						; CDF Base Address
+     59  0000 ????			  -	      IFNCONST	CDF_BASE_ADDRESS
+     60  0000 ????			  -CDF_BASE_ADDRESS =	$1FF0
+     61  0000 ????				      ENDIF
+     62  0000 ????
+     63  0000 ????						; CDF Registers
+     64 U1ffc ????				      SEG.U	CDF_REGISTERS
+     65 U1ff0					      ORG	CDF_BASE_ADDRESS
+     66 U1ff0
+     67 U1ff0							; Write Registers
+     68 U1ff0		       00	   DSWRITE    DS	1	; $1FF0
+     69 U1ff1		       00	   DSPTR      DS	1	; $1FF1
+     70 U1ff2		       00	   SETMODE    DS	1	; $1FF2
+     71 U1ff3		       00	   CALLFN     DS	1	; $1FF3
+     72 U1ff4		       00		      DS	1	; $1FF4
+     73 U1ff5		       00	   SELECTBANK0 DS	1	; $1FF5
+     74 U1ff6		       00	   SELECTBANK1 DS	1	; $1FF6
+     75 U1ff7		       00	   SELECTBANK2 DS	1	; $1FF7
+     76 U1ff8		       00	   SELECTBANK3 DS	1	; $1FF8
+     77 U1ff9		       00	   SELECTBANK4 DS	1	; $1FF9
+     78 U1ffa		       00	   SELECTBANK5 DS	1	; $1FFA
+     79 U1ffb		       00	   SELECTBANK6 DS	1	; $1FFB
+     80  0000 ????				      SEG
+     81  0000 ????
+     82  0000 ????
+------- FILE CDFJBoulderDash.asm
+     11  0000 ????
+     12  0000 ????				      MAC	fetch
+     13  0000 ????				      lda	#{1}
+     14  0000 ????				      sta	{2}
+     15  0000 ????				      ENDM		; stream, destination
+     16  0000 ????
+     17  0000 ????				      MAC	ldx
+     18  0000 ????				      ENDM
+     19  0000 ????
+     20  0000 ????						; Symbols prefixed with _ are exported to 'main/defines_from_dasm_for_c.h'
+     21  0000 ????						; This is done via 'awk' in the makefile.
+     22  0000 ????
+     23  0000 ????
+     24  0000 ????						; which ARM function to run
+     25  0000 ????	       00 00	   _FN_INIT   =	0	; Initialize()
+     26  0000 ????	       00 01	   _FN_GAME_OS =	1	; GameOverscan()
+     27  0000 ????	       00 02	   _FN_GAME_VB =	2	; GameVerticalBlank()
+     28  0000 ????	       00 03	   _FN_MENU_OS =	3	; MenuOverScan()
+     29  0000 ????	       00 04	   _FN_MENU_VB =	4	; MenuVerticalBlank()
+     30  0000 ????	       00 05	   _FN_SPLASH_OS =	5	; SplashOverScan()
+     31  0000 ????	       00 06	   _FN_SPLASH_VB =	6	; SplashVerticalBlank()
+     32  0000 ????	       00 07	   _FN_GAME_IDLE =	7	; idle loop
+     33  0000 ????
+     34  0000 ????						; datastream usage for Splash Screen
+     35  0000 ????	       00 00	   _DS_SPLASH_P0L =	DS0DATA
+     36  0000 ????	       00 01	   _DS_SPLASH_P1L =	DS1DATA
+     37  0000 ????	       00 02	   _DS_SPLASH_P0R =	DS2DATA
+     38  0000 ????	       00 03	   _DS_SPLASH_P1R =	DS3DATA
+     39  0000 ????
+     40  0000 ????						; datastream usage for Menu
+     41  0000 ????						;_DS_MENU_GRAPHICS    = DS0DATA
+     42  0000 ????						;_DS_MENU_CONTROL     = DS1DATA
+     43  0000 ????						;_DS_MENU_COLORS      = DS2DATA
+     44  0000 ????
+     45  0000 ????						; datastream usage for Game Kernel
+     46  0000 ????	       00 04	   _DS_PF0_LEFT =	DS4DATA
+     47  0000 ????	       00 05	   _DS_PF1_LEFT =	DS5DATA
+     48  0000 ????	       00 06	   _DS_PF2_LEFT =	DS6DATA
+     49  0000 ????	       00 07	   _DS_PF0_RIGHT =	DS7DATA
+     50  0000 ????	       00 08	   _DS_PF1_RIGHT =	DS8DATA
+     51  0000 ????	       00 09	   _DS_PF2_RIGHT =	DS9DATA
+     52  0000 ????
+     53  0000 ????	       00 0a	   _DS_COLUPF =	DS10DATA
+     54  0000 ????	       00 0d	   _DS_COLUBK =	DS13DATA
+     55  0000 ????	       00 00	   _DS_COLUP0 =	DS0DATA
+     56  0000 ????	       00 01	   _DS_COLUP1 =	DS1DATA
+     57  0000 ????
+     58  0000 ????	       00 0e	   _DS_AUDV0  =	DS14DATA
+     59  0000 ????	       00 0f	   _DS_AUDC0  =	DS15DATA
+     60  0000 ????	       00 10	   _DS_AUDF0  =	DS16DATA
+     61  0000 ????
+     62  0000 ????
+     63  0000 ????	       00 0b	   _DS_GRP0a  =	DS11DATA
+     64  0000 ????	       00 0c	   _DS_GRP1a  =	DS12DATA
+     65  0000 ????						;_DS_GRP0b = DS13DATA
+     66  0000 ????						;_DS_GRP1b = DS14DATA
+     67  0000 ????						;_DS_GRP0c = DS15DATA
+     68  0000 ????						;_DS_GRP1c = DS16DATA
+     69  0000 ????
+     70  0000 ????						; timer values
+     71  0000 ????	       00 32	   VB_TIM64T  =	50	;46; //7; //7
+     72  0000 ????	       00 14	   OS_TIM64T  =	20	; 41; //33 ;-3
+     73  0000 ????
+     74  0000 ????						; color values
+     75  0000 ????	       00 00	   _BLACK     =	$00
+     76  0000 ????	       00 0e	   _WHITE     =	$0E
+     77  0000 ????	       00 00	   _GREY      =	$00
+     78  0000 ????	       00 10	   _YELLOW    =	$10
+     79  0000 ????	       00 20	   _ORANGE    =	$20
+     80  0000 ????	       00 30	   _BROWN     =	$30
+     81  0000 ????	       00 40	   _RED       =	$40
+     82  0000 ????	       00 50	   _PURPLE    =	$50
+     83  0000 ????	       00 60	   _VIOLET    =	$60
+     84  0000 ????	       00 70	   _INDIGO    =	$70
+     85  0000 ????	       00 80	   _BLUE      =	$80
+     86  0000 ????	       00 90	   _BLUE2     =	$90
+     87  0000 ????	       00 a0	   _TURQUOISE =	$A0
+     88  0000 ????	       00 b0	   _CYAN      =	$B0
+     89  0000 ????	       00 c0	   _GREEN     =	$C0
+     90  0000 ????	       00 d0	   _YELLOW_GREEN =	$D0
+     91  0000 ????	       00 e0	   _OCHRE_GREEN =	$E0
+     92  0000 ????	       00 f0	   _OCHRE     =	$F0
+     93  0000 ????
+     94  0000 ????						;_HAIR 	   = $F4
+     95  0000 ????						;_FACE 	   = $4C
+     96  0000 ????
+     97  0000 ????						; controls spacing in main menu
+     98  0000 ????
+     99  0000 ????	       00 c6	   _ARENA_SCANLINES =	198	; number of scanlines for the arena
+    100  0000 ????	       00 c6	   ARENA_BUFFER_SIZE =	198	; PF buffer size for largest arena
+    101  0000 ????
+    102  0000 ????						;===============================================================================
+    103  0000 ????						; Define custom Macros
+    104  0000 ????						;----------------------------------------
+    105  0000 ????						; POSITION_OBJECT is defined as a macro because it appears at the same position
+    106  0000 ????						; in both banks of 6507 code.
+    107  0000 ????						;
+    108  0000 ????						; CHECK_ARENA_BUFFER_SIZE is used to make sure the playfield buffers are large
+    109  0000 ????						; enough for the graphics.
+    110  0000 ????						;===============================================================================
+    111  0000 ????				      MAC	position_object
+    112  0000 ????						; sets X position of any object.  X holds which object, A holds position
+    113  0000 ????			   PosObject		; A holds X value
+    114  0000 ????				      sec		; 2
+    115  0000 ????				      sta	WSYNC	; X holds object, 0=P0, 1=P1, 2=M0, 3=M1, 4=Ball
+    116  0000 ????			   DivideLoop
+    117  0000 ????				      sbc	#15	; 2
+    118  0000 ????				      bcs	DivideLoop	; 2  4
+    119  0000 ????				      eor	#7	; 2  6
+    120  0000 ????				      asl		; 2  8
+    121  0000 ????				      asl		; 2 10
+    122  0000 ????				      asl		; 2 12
+    123  0000 ????				      asl		; 2 14
+    124  0000 ????				      sta.wx	HMP0,X	; 5 19
+    125  0000 ????				      sta	RESP0,X	; 4 23 <- set object position
+    126  0000 ????			   SLEEP12    rts		; 6 29
+    127  0000 ????				      ENDM
+    128  0000 ????
+    129  0000 ????
+    130  0000 ????				      MAC	check_arena_buffer_size
+    131  0000 ????						; trigger a compile time error if the arena buffer need to be increased
+    132  0000 ????				      IF	{1} > ARENA_BUFFER_SIZE
+    133  0000 ????				      echo	"Increase ARENA_BUFFER_SIZE to",[{1}]d
+    134  0000 ????				      err
+    135  0000 ????				      ENDIF
+    136  0000 ????				      ENDM
+    137  0000 ????
+    138  0000 ????
+    139  0000 ????						;===============================================================================
+    140  0000 ????						; Define Zero Page RAM Usage
+    141  0000 ????						;----------------------------------------
+    142  0000 ????						;   ZP RAM variables can only be seen by the 6507 CPU
+    143  0000 ????						;   Likewise C variables can only be seen by the ARM CPU
+    144  0000 ????						;===============================================================================
+    145  0000 ????
+    146 U0085 ????				      SEG.U	VARS
+    147 U0080					      ORG	$80
+    148 U0080
+    149 U0080		       00	   Mode       ds	1	; $00 = splash, $01 = menu, $80 = game
+    150 U0081							; these values allow for easy testing of Mode:
+    151 U0081							;   LDA Mode
+    152 U0081							;   BMI GAME_ROUTINE
+    153 U0081							;   BNE MENU_ROUTINE
+    154 U0081							;   BEQ SPLASH_routine
+    155 U0081		       00	   LoopCounter ds	1
+    156 U0082		       00	   TimeLeftOS ds	1
+    157 U0083		       00	   TimeLeftVB ds	1
+    158 U0084		       00	   Temp       ds	1
+    159 U0085
+ ---- $79 bytes of RAM left (space reserved for 2 byte stack)
+    160 U0085					      echo	"----",($00FE - *) , "bytes of RAM left (space reserved for 2 byte stack)"
+    161 U0085
+    162 U0085
+    163 U0085
+    164 U0085							;===============================================================================
+    165 U0085							; Define Start of Cartridge
+    166 U0085							;----------------------------------------
+    167 U0085							;   CDFJ cartridges must start with the Harmony/Melody driver.  The driver is
+    168 U0085							;   the ARM code that emulates the CDFJ coprocessor.
+    169 U0085							;===============================================================================
+    170 U0085
+    171  8000 ????				      SEG	CODE
+    172  0000					      ORG	0
+    173  0000
+    174  0000					      incbin	"cdfdriver20190317.bin"
+    175  0800
+    176  0800
+    177  0800
+    178  0800							;===============================================================================
+    179  0800							; ARM user code
+    180  0800							; Banks 0 thru 4
+    181  0800							;----------------------------------------
+    182  0800							;   The ARM code starts at $0800 and grows into bank 0+
+    183  0800							;===============================================================================
+    184  0800
+    185  0800					      ORG	$0800
+    186  0800
+    187  0800							; include the custom ARM code.
+    188  0800
+    189  0800					      incbin	"main/bin/armcode.bin"
+    190  6bac
+    191  6bac
+    192  6bac
+    193  6bac
+    194  6bac							;===============================================================================
+    195  6bac							; ARM Indirect Data
+    196  6bac							;----------------------------------------
+    197  6bac							;   Data that the C code indirectly accesses can be stored immediately after the
+    198  6bac							;   custom ARM code.
+    199  6bac							;===============================================================================
+    200  6bac
+ ---- $454 bytes of ARM and Moveable Data space left
+    201  6bac					      echo	"----",($7000 - *) , "bytes of ARM and Moveable Data space left"
+    202  6bac
+    203  6bac
+    204  6bac
+    205  6bac							;===============================================================================
+    206  6bac							; ARM Direct Data
+    207  6bac							;----------------------------------------
+    208  6bac							;   I find it easier, and more space efficient, to store some of the data the
+    209  6bac							;   C code needs to access in the 6507 code instead of the C code.  Because the
+    210  6bac							;   build process is:
+    211  6bac							;
+    212  6bac							;	 1) assemble 6507 code to create defines_from_dasm_for_c.h
+    213  6bac							;	 2) compile C code to create ARM routines
+    214  6bac							;	 3) assemble 6507 to create final ROM
+    215  6bac							;
+    216  6bac							;   the ARM code could change size between steps 1 and 3, which would shift data
+    217  6bac							;   that immediately comes after it. So the data that C directly accesses needs
+    218  6bac							;   to be after an ORG to prevent it from moving.
+    219  6bac							;
+    220  6bac							;   The _IMAGE_GRAPHICS, _IMAGE_COLORS, etc data tables are directly access by
+    221  6bac							;   the C code so must be in the Direct Data area. The data they point to is
+    222  6bac							;   indirectly accessed by the C code, so they can go in the Indirect Data area.
+    223  6bac							;   Note the labels for the tables are prefixed by _ so they'll end up in the
+    224  6bac							;   defines_from_dasm_for_c.h file, while the labels for the data the tables
+    225  6bac							;   point to are not prefixed by _
+    226  6bac							;===============================================================================
+    227  6bac							;	  ORG $5F80
+    228  6bac							;	  ORG $5FFF
+    229  6bac							;_ARENA_INCREMENTS:
+    230  6bac							;	  .byte 255 ; * Arena1_Height / _ARENA_SCANLINES
+    231  6bac							;	  .byte 255 ;* Arena2_Height / _ARENA_SCANLINES
+    232  6bac							;	  .byte 255 ;* Arena3_Height / _ARENA_SCANLINES
+    233  6bac							;	  .byte 255 ;* Arena4_Height / _ARENA_SCANLINES
+    234  6bac
+    235  6bac
+    236  6bac
+    237  6bac							; value used in this echo depends upon how many banks are used for 6507 code
+    238  6bac							;   $5000 if using banks 4, 5 & 6
+    239  6bac							;   $6000 if using banks 5 & 6
+    240  6bac							;   $7000 if using just bank 6
+    241  6bac							;    echo "----",[$6000 - *] , "bytes of ARM Direct Data left"
+    242  6bac
+    243  6bac							;===============================================================================
+    244  6bac							; Bank 5 - 6507 code
+    245  6bac							;----------------------------------------
+    246  6bac							;   I normally allocate banks 0-5 for ARM code, and just use bank 6 for 6507
+    247  6bac							;   code, but in order to show an example of CDFJ bankswitching I am using bank
+    248  6bac							;   5 for the splash screen and menu routines.
+    249  6bac							;===============================================================================
+    250  6bac
+    251  6bac							;	  ORG $6000
+    252  6bac							;	  RORG $F000
+    253  6bac
+    254  6bac							; this and SplashMenuVB in bank 6 are used to switch between the banks
+    255  6bac							;SplashMenuOS:
+    256  6bac							;	  sta SELECTBANK6	  ; switch to bank 6, then jmp SplashMenuOS_Code
+    257  6bac							;	  jmp SplashMenuVB_Code
+    258  6bac
+    259  6bac							;	  POSITION_OBJECT	  ; this must occupy same address in both banks
+    260  6bac
+    261  6bac
+    262  6bac
+    263  6bac							;===============================================================================
+    264  6bac							; Two Color Graphic routine
+    265  6bac							;-------------------------------------------------------------------------------
+    266  6bac							; this works by using a "negative" image when drawing the sprites.
+    267  6bac							; The sprites are colored black while the background is the color
+    268  6bac							; that shows up as though it were the sprites.  The 2nd color is
+    269  6bac							; achieved by using the playfield and/or ball.
+    270  6bac							;
+    271  6bac							; The missiles (also black) and setting the screen & playfield to BLACK
+    272  6bac							; are used to hide the screen and playfield beyond the 48 pixel image.
+    273  6bac							;===============================================================================
+    274  6bac							;ShowTwoColorGraphic:
+    275  6bac
+    276  6bac
+    277  6bac							;SplashMenuVB_Code:	  ; entry point from Bank 6
+    278  6bac							;	  lda Mode	  ; check which screen to show
+    279  6bac							;	  bne MenuVB	  ; Mode 1 = Menu
+    280  6bac							;	  jmp SplashVB	  ; Mode 0 = Splash
+    281  6bac
+    282  6bac							;MenuVB:
+    283  6bac							; players are already in position, just need to set size/copies & color
+    284  6bac							;	  ldy #%11111111
+    285  6bac							;	  sty GRP0
+    286  6bac							;	  sty GRP1
+    287  6bac							;	  ldy #%00100000  ; Ball Size = 4
+    288  6bac							;	  sty CTRLPF	  ; repeat playfield, ball width = 4
+    289  6bac							;	  ldy #_BLACK
+    290  6bac							;	  sty COLUP0
+    291  6bac							;	  sty COLUP1
+    292  6bac							;	  ldy #%00010000;11
+    293  6bac							;	  sty ENAM0	      ; missile on
+    294  6bac							;	  sty ENAM1	      ; missile on
+    295  6bac							;	  sty ENABL	      ; ball on
+    296  6bac							;	  sty NUSIZ0	      ; three copies close, missile x8
+    297  6bac							;	  sty NUSIZ1	      ; three copies close, missile x8
+    298  6bac							;	  sty VDELP0	      ; vertical delay on
+    299  6bac							;	  sty VDELP1	      ; vertical delay on
+    300  6bac
+    301  6bac
+    302  6bac							;	  ldx #0
+    303  6bac							;	  stx COLUPF
+    304  6bac							;MenuVBwait:
+    305  6bac							;	  sta WSYNC
+    306  6bac							;	  bit TIMINT
+    307  6bac							;	  bpl MenuVBwait
+    308  6bac							;	  stx VBLANK		  ; video output on
+    309  6bac
+    310  6bac							;MenuKernel:
+    311  6bac
+    312  6bac							;MenuDone:
+    313  6bac							;	  sta WSYNC
+    314  6bac							;	  stx ENAM0    ; X=0 after ShowTwoColorGraphic
+    315  6bac							;	  stx ENAM1
+    316  6bac							;	  stx ENABL
+    317  6bac
+    318  6bac
+    319  6bac							;ShowSpiceWareLogo:
+    320  6bac							;SSWL1:
+    321  6bac							;SSWLskip1:			  ;   15 from branch just before SSWL1
+    322  6bac							;EndShowSpiceWareLogo:
+    323  6bac
+    324  6bac							;MenuOS:
+    325  6bac							;	  ldy #_FN_MENU_OS    ; going to run function MenuOverScan()
+    326  6bac							;	  jmp SplashMenuOS
+    327  6bac
+    328  6bac
+    329  6bac							;SplashVB:
+    330  6bac							;SplashVBwait:
+    331  6bac							;SplashKernel:
+    332  6bac							;SplashOS:
+    333  6bac							;	  ldy #_FN_SPLASH_OS	  ; going to run function SplashOverScan()
+    334  6bac							;	  jmp SplashMenuOS
+    335  6bac
+    336  6bac
+    337  6bac							;    echo ($FFE9-*), "(6507) bytes left in bank 6"
+    338  6bac
+    339  6bac							;include "48x128.asm"
+    340  6bac
+    341  6bac
+    342  6bac							;    echo ($FFE9-*), "AFTER 48x128 include, (6507) bytes left in bank 6"
+    343  6bac
+    344  6bac							;	  ORG $6FEA
+    345  6bac							;	  RORG $FFEA
+    346  6bac							;B5init:
+    347  6bac							;	  sta SELECTBANK6
+    348  6bac							;	  jmp B5init	  ; should never get here, but just in case
+    349  6bac							;	  ds 12, 0	  ; reserve space for CDFJ registers
+    350  6bac							;	  .WORD B5init	  ; while CDFJ will only power up in bank 5, an accidental
+    351  6bac							;	  .WORD B5init	  ; BRK instruction could occur, so gracefully handle it
+    352  6bac
+    353  6bac
+    354  6bac
+    355  6bac							;===============================================================================
+    356  6bac							; Bank 6 - 6507 code
+    357  6bac							;----------------------------------------
+    358  6bac							;   CDFJ will always start in bank 6 because banks 0-5 could contain ARM code
+    359  6bac							;===============================================================================
+    360  6bac
+    361  7000					      ORG	$7000
+    362  7000					      RORG	$F000
+    363  7000
+    364  7000							; this and SplashMenuOS in bank 5 are used to switch between the banks
+    365  7000				   SplashMenuVB
+    366  7000		       8d fa 1f 	      sta	SELECTBANK5	; switch to bank 5, then jmp SplashMenuVB_Code
+    367  7003		       4c b1 f0 	      jmp	SplashMenuOS_Code
+    368  7006
+      0  7006					      POSITION_OBJECT		; this must occupy same address in both banks
+      1  7006
+      2  7006				   PosObject
+      3  7006		       38		      sec
+      4  7007		       85 02		      sta	WSYNC
+      5  7009				   DivideLoop
+      6  7009		       e9 0f		      sbc	#15
+      7  700b		       b0 fc		      bcs	DivideLoop
+      8  700d		       49 07		      eor	#7
+      9  700f		       0a		      asl
+     10  7010		       0a		      asl
+     11  7011		       0a		      asl
+     12  7012		       0a		      asl
+     13  7013		       9d 20 00 	      sta.wx	HMP0,X
+     14  7016		       95 10		      sta	RESP0,X
+     15  7018		       60	   SLEEP12    rts
+    370  7019
+    371  7019							; CallArmCode is only called from bank 6. If we needed to also call it
+    372  7019							; from bank 5 then we would set up a macro like POSITION_OBJECT
+    373  7019
+    374  7019				   CallArmCode
+    375  7019
+    376  7019							; Y = function to run
+    377  7019							;   _FN_GAME_OS     game overscan
+    378  7019
+    379  7019
+    380  7019		       a2 00		      ldx	#<_DS_TO_ARM
+    381  701b		       8e f1 1f 	      stx	DSPTR
+    382  701e		       a2 00		      ldx	#>_DS_TO_ARM	; NOTE: if _DS_TO_ARM = 0 we can leave out this LDX
+    383  7020		       8e f1 1f 	      stx	DSPTR
+    384  7023		       8c f0 1f 	      sty	DSWRITE	; save in _RUN_FUNC, Y holds which function to call
+    385  7026		       ae 80 02 	      ldx	SWCHA	; read state of both joysticks
+    386  7029		       8e f0 1f 	      stx	DSWRITE	; save in _SWCHA
+    387  702c		       ae 82 02 	      ldx	SWCHB	; read state of console switches
+    388  702f		       8e f0 1f 	      stx	DSWRITE	; save in _SWCHB
+    389  7032		       a6 0c		      ldx	INPT4	; read state of left joystick firebutton
+    390  7034		       8e f0 1f 	      stx	DSWRITE	; save in _INPT4
+    391  7037		       a6 0d		      ldx	INPT5	; read state of right joystick firebutton
+    392  7039		       8e f0 1f 	      stx	DSWRITE	; save in _INPT5
+    393  703c		       a6 83		      ldx	TimeLeftVB	; Time remaining in VB (only tracked for game screen)
+    394  703e		       8e f0 1f 	      stx	DSWRITE	; save in _VB_TIME
+    395  7041		       a6 82		      ldx	TimeLeftOS	; Time remaining in OS (only tracked for game screen)
+    396  7043		       8e f0 1f 	      stx	DSWRITE	; save in _OS_TIME
+    397  7046
+    398  7046		       a2 ff		      ldx	#$FF	; FF = Run ARM code w/out digital audio interrupts
+    399  7048		       8e f3 1f 	      stx	CALLFN	; runs main() in the C code (6507 is $EA-locked)
+    400  704b
+      0  704b					      FETCH	DSCOMM, Mode	; get the current game mode
+      1  704b		       a9 20		      lda	#DSCOMM
+      2  704d		       85 80		      sta	Mode
+    402  704f		       60		      rts
+    403  7050
+    404  7050
+    405  7050				   safeTimerWait
+    406  7050
+    407  7050							; Now we wait for expiry of the timer.
+    408  7050							; The code records the available time for display. This is the INTIM value at the start
+    409  7050							; of the wait. This INTIM read clears the TIMINT flag, so we go through some convolutions
+    410  7050							; to make it all work.
+    411  7050
+    412  7050
+    413  7050		       a2 00		      ldx	#0
+    414  7052		       2c 85 02 	      bit	TIMINT
+    415  7055		       30 0f		      bmi	.zeroTime	; already overtime!
+    416  7057		       ad 84 02 	      lda	INTIM
+    417  705a		       f0 0a		      beq	.zeroTime	; also time expired
+    418  705c		       30 08		      bmi	.zeroTime	; must have been just overtime and now counting down
+    419  705e		       aa		      tax
+    420  705f		       85 02	   .xOSwait   sta	WSYNC
+    421  7061		       2c 85 02 	      bit	TIMINT	; wait for the timer
+    422  7064		       10 f9		      bpl	.xOSwait
+    423  7066
+    424  7066		       86 82	   .zeroTime  stx	TimeLeftOS	; x holds the "how much time left"
+    425  7068		       60		      rts
+    426  7069
+    427  7069
+    428  7069
+    429  7069				   InitSystem
+    430  7069							; Console Detection Routine
+    431  7069							;
+    432  7069							; normally we'd use CLEAN_START, but to detect if console is 2600 or 7800
+    433  7069							; we need to take a look at the ZP RAM values in $80, $D0, and $D1 before
+    434  7069							; zeroing out RAM
+    435  7069							;
+    436  7069							;   if $D0 contains $2C and $D1 contains $A9 then
+    437  7069							;	 system = 7800		 // game was loaded from Harmony menu on a 7800
+    438  7069							;   else if both contain $00 then
+    439  7069							;	 system = ZP RAM $80	 // game was flashed to Harmony/Melody so CDFJ
+    440  7069							;				 // driver checked $D0 and $D1 for us and saved
+    441  7069							;				 // results in $80
+    442  7069							;   else
+    443  7069							;	 system = 2600		 // game was loaded from Harmony menu on a 2600
+    444  7069
+    445  7069		       78		      sei
+    446  706a		       d8		      cld
+    447  706b
+    448  706b		       a0 00		      ldy	#0	; assume system = 2600
+    449  706d		       a6 d0		      ldx	$d0
+    450  706f		       f0 0d		      beq	.confirmFlashed	; if $00 then game might be flashed on Harmony/Melody
+    451  7071		       e0 2e		      cpx	#$2c+2
+    452  7073		       d0 0f		      bne	.is2600	; if not $2C then loaded via Harmony Menu on 2600
+    453  7075		       a6 d1		      ldx	$d1
+    454  7077		       e0 a9		      cpx	#$a9
+    455  7079		       d0 09		      bne	.is2600
+    456  707b		       88		      dey		; 7800: y=$FF
+    457  707c		       d0 06		      bne	.done	; this will always branch
+    458  707e
+    459  707e				   .confirmFlashed
+    460  707e		       a6 d1		      ldx	$d1
+    461  7080		       d0 02		      bne	.is2600	; if not $00 then loaded via Harmony Menu on 2600
+    462  7082		       a4 80		      ldy	$80	; else get the value saved by the CDFJ driver
+    463  7084
+    464  7084				   .is2600		; 2600: y == 0
+    465  7084				   .done		; 7800: y != 0
+    466  7084							; end of console detection routine, y contains results
+    467  7084
+    468  7084		       a2 00		      ldx	#0
+    469  7086		       8a		      txa
+    470  7087		       ca	   CLEAR_ZP   dex
+    471  7088		       9a		      txs
+    472  7089		       48		      pha
+    473  708a		       d0 fb		      bne	CLEAR_ZP	; SP=$FF, X = A = 0
+    474  708c
+    475  708c							; Fast Fetch mode must be turned on so we can read the datastreams
+    476  708c							; Note: Fast Fetch mode overrides LDA #, so need to use LDX # or
+    477  708c							;	 LDY # if not reading a CDFJ register
+    478  708c		       a2 00		      ldx	#FASTON
+    479  708e		       8e f2 1f 	      stx	SETMODE
+    480  7091
+    481  7091		       a2 00		      ldx	#<_DS_TO_ARM
+    482  7093		       8e f1 1f 	      stx	DSPTR
+    483  7096		       a2 00		      ldx	#>_DS_TO_ARM	; NOTE: if _DS_TO_ARM = 0 we can leave out this LDX
+    484  7098		       8e f1 1f 	      stx	DSPTR
+    485  709b		       a2 00		      ldx	#_FN_INIT	; going to run function Initialize()
+    486  709d		       8e f0 1f 	      stx	DSWRITE	; save in _RUN_FUNC
+    487  70a0		       8c f0 1f 	      sty	DSWRITE	; save 2600/7800 value in _SWCHA
+    488  70a3		       8c f0 1f 	      sty	DSWRITE	; save 2600/7800 value in _SWCHB
+    489  70a6		       8c f0 1f 	      sty	DSWRITE	; save 2600/7800 value in _INPT4
+    490  70a9		       8c f0 1f 	      sty	DSWRITE	; save 2600/7800 value in _INPT5
+    491  70ac		       a2 ff		      ldx	#$FF	; FF = Run ARM code w/out digital audio interrupts
+    492  70ae		       8e f3 1f 	      stx	CALLFN	; runs main() in the C code
+    493  70b1
+    494  70b1							;	  ldy #_FN_SPLASH_OS	  ; going to run function SplashOverScan()
+    495  70b1							;	  bne SplashMenuOS_Code
+    496  70b1
+    497  70b1
+    498  70b1
+    499  70b1				   OverScan
+    500  70b1
+    501  70b1							;    ldx #$C4
+    502  70b1							;    stx COLUBK
+    503  70b1
+    504  70b1
+    505  70b1							;	  ldy #_FN_GAME_OS	  ; going to run function GameOverscan()
+    506  70b1				   SplashMenuOS_Code		; entry point from bank 5 & InitSystem with Y already set
+    507  70b1		       85 02		      sta	WSYNC
+    508  70b3		       a2 02		      ldx	#2
+    509  70b5		       86 01		      stx	VBLANK	; video output off
+    510  70b7		       a2 14		      ldx	#OS_TIM64T
+    511  70b9		       8e 96 02 	      stx	TIM64T	; set timer for OS
+    512  70bc
+    513  70bc
+    514  70bc		       a0 01		      ldy	#_FN_GAME_OS
+    515  70be
+    516  70be		       20 19 f0    Again2     jsr	CallArmCode	; draws the chessboard!
+    517  70c1
+    518  70c1		       ae 85 02 	      ldx	TIMINT
+    519  70c4		       30 0c		      bmi	.ag2
+    520  70c6		       a0 07		      ldy	#_FN_GAME_IDLE
+    521  70c8		       ae 84 02 	      ldx	INTIM
+    522  70cb		       e0 0a		      cpx	#10
+    523  70cd		       b0 ef		      bcs	Again2
+    524  70cf
+    525  70cf
+    526  70cf							;		  ldx #$C2
+    527  70cf							;		  stx COLUBK
+    528  70cf
+    529  70cf		       20 50 f0 	      jsr	safeTimerWait
+    530  70d2
+    531  70d2				   .ag2
+    532  70d2
+    533  70d2
+    534  70d2
+    535  70d2				   VerticalSync
+    536  70d2		       a0 02		      ldy	#2
+    537  70d4							;    ldx #$46
+    538  70d4							;    stx COLUBK ;boo
+    539  70d4		       a2 32		      ldx	#VB_TIM64T
+    540  70d6		       84 02		      sty	WSYNC
+    541  70d8
+    542  70d8
+    543  70d8							; --- start scanline 1 of Vertical Sync ---
+    544  70d8		       84 00		      sty	VSYNC	; 3  3  turn on Vertical Sync signal
+    545  70da		       8e 96 02 	      stx	TIM64T	; 4  7
+    546  70dd		       84 02		      sty	WSYNC	; 3 10/0
+    547  70df							; --- start scanline 2 of Vertical Sync ---
+    548  70df							; use otherwise wasted time to zero out some TIA registers
+    549  70df		       a2 00		      ldx	#0	; 2  2
+    550  70e1		       86 1b		      stx	GRP0	; 3  5
+    551  70e3		       86 1c		      stx	GRP1	; 3  8
+    552  70e5							;stx VDELP0	      ; 3 11
+    553  70e5							;stx VDELP1	      ; 3 14
+    554  70e5		       86 0d		      stx	PF0	; 3 17
+    555  70e7		       86 0e		      stx	PF1	; 3 20
+    556  70e9		       86 0f		      stx	PF2	; 3 23
+    557  70eb		       86 0a		      stx	CTRLPF	; 3 26
+    558  70ed		       86 02		      stx	WSYNC	; 3 29/0
+    559  70ef							; --- start scanline 3 of Vertical Sync ---
+    560  70ef							; use otherwise wasted time to figure out
+    561  70ef							; which ARM Vertical Blank routine to run
+    562  70ef							;	  lda Mode	      ; 3  3 $00 = splash, $01 = menu, $80 = game
+    563  70ef							;	  bmi vbgame	      ; 2  5  3  6 if taken
+    564  70ef							;	  beq vbsplash	      ; 2  7	 |  3  8 if taken
+    565  70ef							;	  ldy #_FN_MENU_VB    ; 2  9	 |     |  run function MenuVerticalBlank()
+    566  70ef							;	  .byte $0c	      ; 4 13	 |     |  NOP ABSOLUTE, skips over ldy #_FN_SPLASH_VB
+    567  70ef							;vbsplash:		      ;    |	 |     |
+    568  70ef							;	  ldy #_FN_SPLASH_VB  ;    |	 |  2 10  run function SplashVerticalBlank()
+    569  70ef							;	  .byte $0c	      ; 4 17	 |  4 14  NOP ABSOLUTE, skips over ldy #_FN_GAME_VB
+    570  70ef							;vbgame:		      ;    |	 |     |
+    571  70ef							;	  ldy #_FN_GAME_VB    ;    |  2  8     |  run function GameVerticalBlank()
+    572  70ef							;   17     8	 14  17 cycles worse case scenerio
+    573  70ef		       86 02		      stx	WSYNC	; end of VerticalSync scanline 3
+    574  70f1		       86 00		      stx	VSYNC	; turn off Vertical Sync signal
+    575  70f3							;	  jsr CallArmCode
+    576  70f3
+    577  70f3					      IF	1
+    578  70f3							; ARM VB routines send back the initial positions of the 5 objects
+    579  70f3							;vbSetInitialX:
+    580  70f3							;	  lda #DSCOMM	      ; will get _BALL_X, _M1_X, _M0_X, _P1_X, and _P0_X
+    581  70f3
+    582  70f3		       a9 20		      lda	#DSCOMM	; discard _BALL_X
+    583  70f5		       a9 20		      lda	#DSCOMM	; and _M1_X
+    584  70f7		       a9 20		      lda	#DSCOMM	; and _M0_X
+    585  70f9
+    586  70f9		       a2 01		      ldx	#1
+    587  70fb		       a9 20		      lda	#DSCOMM	; = _P1_X
+    588  70fd		       20 06 f0 	      jsr	PosObject
+    589  7100
+    590  7100		       ca		      dex
+    591  7101		       a9 20		      lda	#DSCOMM	; = _P0_X
+    592  7103		       20 06 f0 	      jsr	PosObject
+    593  7106
+    594  7106							;	  jsr PosObject
+    595  7106							;	  inx
+    596  7106							;	  lda #DSCOMM	      ; will get _BALL_X, _M1_X, _M0_X, _P1_X, and _P0_X
+    597  7106							;	  jsr PosObject
+    598  7106							;	  dex
+    599  7106							;	  bpl vbSetInitialX
+    600  7106		       85 02		      sta	WSYNC
+    601  7108		       85 2a		      sta	HMOVE
+    602  710a
+    603  710a
+    604  710a		       a9 20		      lda	#DSCOMM	; ARENA COLOR
+    605  710c		       85 09		      sta	COLUBK
+    606  710e
+    607  710e		       a9 0e		      lda	#_DS_AUDV0
+    608  7110		       85 19		      sta	AUDV0
+    609  7112		       a9 0f		      lda	#_DS_AUDC0
+    610  7114		       85 15		      sta	AUDC0
+    611  7116		       a9 10		      lda	#_DS_AUDF0
+    612  7118		       85 17		      sta	AUDF0
+    613  711a
+    614  711a		       a9 0e		      lda	#_DS_AUDV0
+    615  711c		       85 1a		      sta	AUDV1
+    616  711e		       a9 0f		      lda	#_DS_AUDC0
+    617  7120		       85 16		      sta	AUDC1
+    618  7122		       a9 10		      lda	#_DS_AUDF0
+    619  7124		       85 18		      sta	AUDF1
+    620  7126
+    621  7126							; figure out which 6507 Vertical Blank routine to run
+    622  7126							;	 lda Mode	     ; $00 = splash, $01 = menu, $80 = game
+    623  7126							;	 bmi GameVB
+    624  7126							;	 jmp SplashMenuVB
+    625  7126
+    626  7126				   GameVB
+    627  7126					      ENDIF
+    628  7126
+    629  7126
+    630  7126		       a0 02		      ldy	#_FN_GAME_VB
+    631  7128
+    632  7128		       20 19 f0    Again1     jsr	CallArmCode	; draws the chessboard!
+    633  712b
+    634  712b		       a0 07		      ldy	#_FN_GAME_IDLE
+    635  712d
+    636  712d		       ae 85 02 	      ldx	TIMINT
+    637  7130		       30 0a		      bmi	skipss
+    638  7132		       ae 84 02 	      ldx	INTIM
+    639  7135		       e0 0a		      cpx	#10
+    640  7137		       b0 ef		      bcs	Again1
+    641  7139
+    642  7139		       20 50 f0 	      jsr	safeTimerWait
+    643  713c
+    644  713c
+    645  713c				   skipss
+    646  713c		       a2 00		      ldx	#0
+    647  713e		       86 01		      stx	VBLANK	; video output on
+    648  7140							;		     stx PF0
+    649  7140
+    650  7140
+    651  7140							;		      sta WSYNC
+    652  7140							;		      sta WSYNC
+    653  7140		       a2 00		      ldx	#%00000000
+    654  7142		       86 0a		      stx	CTRLPF
+    655  7144
+    656  7144
+    657  7144							;		      sta WSYNC
+    658  7144
+    659  7144							;		       jmp FASTJMP1
+    660  7144
+    661  7144
+    662  7144
+    663  7144				   _NORMAL_KERNEL
+    664  7144
+    665  7144
+    666  7144							; This is the entire display
+    667  7144
+    668  7144							;@3
+    669  7144
+    670  7144
+    671  7144		       a9 0d		      lda	#_DS_COLUBK
+    672  7146		       85 02		      sta	WSYNC
+    673  7148		       85 09		      sta	COLUBK
+    674  714a
+    675  714a		       a9 0a		      lda	#_DS_COLUPF
+    676  714c		       85 08		      sta	COLUPF
+    677  714e
+    678  714e		       a9 04		      lda	#_DS_PF0_LEFT
+    679  7150		       85 0d		      sta	PF0	; 5
+    680  7152
+    681  7152		       a9 0b		      lda	#_DS_GRP0a
+    682  7154		       85 1b		      sta	GRP0	; 5
+    683  7156
+    684  7156		       a9 05		      lda	#_DS_PF1_LEFT
+    685  7158		       85 0e		      sta	PF1	; 5
+    686  715a
+    687  715a		       a9 0c		      lda	#_DS_GRP1a
+    688  715c		       85 1c		      sta	GRP1	; 5
+    689  715e
+    690  715e
+    691  715e
+    692  715e		       a9 06		      lda	#_DS_PF2_LEFT
+    693  7160		       85 0f		      sta	PF2	; 5
+    694  7162
+    695  7162
+      0  7162					      SLEEP	5
+      1  7162				   .CYCLES    SET	5
+      2  7162
+      3  7162				  -	      IF	.CYCLES < 2
+      4  7162				  -	      ECHO	"MACRO ERROR: 'SLEEP': Duration must be > 1"
+      5  7162				  -	      ERR
+      6  7162					      ENDIF
+      7  7162
+      8  7162					      IF	.CYCLES & 1
+      9  7162					      IFNCONST	NO_ILLEGAL_OPCODES
+     10  7162		       04 00		      nop	0
+     11  7164				  -	      ELSE
+     12  7164				  -	      bit	VSYNC
+     13  7164					      ENDIF
+     14  7164				   .CYCLES    SET	.CYCLES - 3
+     15  7164					      ENDIF
+     16  7164
+     17  7164					      REPEAT	.CYCLES / 2
+     18  7164		       ea		      nop
+     19  7165					      REPEND
+    697  7165
+    698  7165		       a9 07		      lda	#_DS_PF0_RIGHT
+    699  7167		       85 0d		      sta	PF0
+    700  7169		       a9 08		      lda	#_DS_PF1_RIGHT
+    701  716b		       85 0e		      sta	PF1	; 5
+    702  716d		       a9 09		      lda	#_DS_PF2_RIGHT	; 2
+    703  716f		       85 0f		      sta	PF2	; 3
+    704  7171
+    705  7171
+      0  7171					      SLEEP	5
+      1  7171				   .CYCLES    SET	5
+      2  7171
+      3  7171				  -	      IF	.CYCLES < 2
+      4  7171				  -	      ECHO	"MACRO ERROR: 'SLEEP': Duration must be > 1"
+      5  7171				  -	      ERR
+      6  7171					      ENDIF
+      7  7171
+      8  7171					      IF	.CYCLES & 1
+      9  7171					      IFNCONST	NO_ILLEGAL_OPCODES
+     10  7171		       04 00		      nop	0
+     11  7173				  -	      ELSE
+     12  7173				  -	      bit	VSYNC
+     13  7173					      ENDIF
+     14  7173				   .CYCLES    SET	.CYCLES - 3
+     15  7173					      ENDIF
+     16  7173
+     17  7173					      REPEAT	.CYCLES / 2
+     18  7173		       ea		      nop
+     19  7174					      REPEND
+    707  7174		       a9 00		      lda	#_DS_COLUP0
+    708  7176		       85 06		      sta	COLUP0	; 3 @8
+    709  7178		       a9 01		      lda	#_DS_COLUP1
+    710  717a		       85 07		      sta	COLUP1
+    711  717c
+    712  717c
+    713  717c		       4c 00 00 	      jmp	FASTJMP1	; 3
+    714  717f
+    715  717f							;@3--> start of line again :)
+    716  717f
+    717  717f
+    718  717f		       a2 00	   _EXIT_KERNEL ldx	#0
+    719  7181		       86 1b		      stx	GRP0
+    720  7183		       86 1c		      stx	GRP1
+    721  7185		       86 0d		      stx	PF0
+    722  7187		       86 0e		      stx	PF1
+    723  7189		       86 0f		      stx	PF2
+    724  718b		       4c b1 f0 	      jmp	OverScan
+    725  718e
+    726  718e
+ $f18e
+    727  718e					      echo	*
+ $e5e (6507) bytes left in bank 7
+    728  718e					      echo	($FFEC-*), "(6507) bytes left in bank 7"
+    729  718e
+    730  7fed					      ORG	$7FED
+    731  7fed					      RORG	$FFED
+    732  7fed		       4c 69 f0 	      jmp	InitSystem
+    733  7ff0		       00 00 00 00*	      ds	12, 0	; reserve space for CDFJ registers
+    734  7ffc		       69 f0		      .WORD.w	InitSystem
+    735  7ffe		       69 f0		      .WORD.w	InitSystem
+    736  8000
+    737  8000							;===============================================================================
+    738  8000							; Display Data
+    739  8000							;----------------------------------------
+    740  8000							;   4K of RAM shared between the 6507 and ARM.
+    741  8000							;
+    742  8000							;   NOTE: anything prefixed with _ ends up in main/defines_from_dasm_for_c.h
+    743  8000							;	   so that the C code will have the same values as the 6507 code
+    744  8000							;===============================================================================
+    745  8000
+    746 U0f28 ????				      SEG.U	DISPLAYDATA
+    747 U0000					      ORG	$0000
+    748 U0000
+    749 U0000				   _DS_TO_ARM
+    750 U0000		       00	   _RUN_FUNC  ds	1	; function to run
+    751 U0001		       00	   _SWCHA     ds	1	; joystick directions to ARM code
+    752 U0002		       00	   _SWCHB     ds	1	; console switches to ARM code
+    753 U0003		       00	   _INPT4     ds	1	; left firebutton state to ARM code
+    754 U0004		       00	   _INPT5     ds	1	; right firebutton state to ARM code
+    755 U0005		       00	   _VB_TIME   ds	1	; VB Time Remaining
+    756 U0006		       00	   _OS_TIME   ds	1	; OS Time Remaining
+    757 U0007
+    758 U0007				   _DS_FROM_ARM
+    759 U0007		       00	   _MODE      ds	1	; $00 = splash, $01 = menu, $80 = game
+    760 U0008		       00	   _BALL_X    ds	1	; position of ball
+    761 U0009		       00	   _M1_X      ds	1	; position of missile 1
+    762 U000a		       00	   _M0_X      ds	1	; position of missile 0
+    763 U000b		       00	   _P1_X      ds	1	; position of player 1
+    764 U000c		       00	   _P0_X      ds	1	; position of player 0
+    765 U000d		       00	   _ARENA_COLOR ds	1
+    766 U000e
+    767 U000e							;----------------------------------------
+    768 U000e							; To save space in RAM we can share the space used by the datastream buffers
+    769 U000e							; for the Splash, Menu, and Game screens.
+    770 U000e							;----------------------------------------
+    771 U0010		       00 00		      align	4	; using myMemsetInt to zero out RAM is faster than
+    772 U0010							; myMemset, but it requires the starting address to be
+    773 U0010							; 4 byte aligned
+    774 U0010
+    775 U0010
+    776 U0010		       00 00 00 00*_BOARD     ds	24*40
+    777 U03d0		       00 00 00 00*//_UNCOVER ds	24*40/8+2	; +2 for word-align speed in clearing (C)
+    778 U044a
+    779 U044c		       00 00		      align	4
+    780 U044c
+    781 U044c		       00 00 00 00*_BUF_JUMP1 ds	_ARENA_SCANLINES * 2	; long-word align!!
+    782 U05d8		       00 00	   _BUF_JUMP1_EXIT ds	2
+    783 U05da
+    784 U05da							; DO NOT CHANGE ORDER
+    785 U05da							;{ clear in main.c assumes one block to clear
+    786 U05da
+    787 U05da							;------------------------------------------------------------------------------
+    788 U05da
+    789 U05da		       05 da	   _BUFFERS   =	*
+    790 U05da
+    791 U05da				   BUFN       SET	0
+    792 U05da					      MAC	defbuf
+    793 U05da				   _BUF_{1}   ds	ARENA_BUFFER_SIZE
+    794 U05da				   BUFN       SET	BUFN + 1
+    795 U05da					      ENDM		;name
+    796 U05da
+      0 U05da					      DEFBUF	COLUP0
+      1 U05da		       00 00 00 00*_BUF_COLUP0 ds	ARENA_BUFFER_SIZE
+      2 U05da				   BUFN       SET	BUFN + 1
+      0 U06a0					      DEFBUF	COLUP1
+      1 U06a0		       00 00 00 00*_BUF_COLUP1 ds	ARENA_BUFFER_SIZE
+      2 U06a0				   BUFN       SET	BUFN + 1
+      0 U0766					      DEFBUF	COLUPF
+      1 U0766		       00 00 00 00*_BUF_COLUPF ds	ARENA_BUFFER_SIZE
+      2 U0766				   BUFN       SET	BUFN + 1
+      0 U082c					      DEFBUF	COLUBK
+      1 U082c		       00 00 00 00*_BUF_COLUBK ds	ARENA_BUFFER_SIZE
+      2 U082c				   BUFN       SET	BUFN + 1
+      0 U08f2					      DEFBUF	PF0_LEFT
+      1 U08f2		       00 00 00 00*_BUF_PF0_LEFT ds	ARENA_BUFFER_SIZE
+      2 U08f2				   BUFN       SET	BUFN + 1
+      0 U09b8					      DEFBUF	PF1_LEFT
+      1 U09b8		       00 00 00 00*_BUF_PF1_LEFT ds	ARENA_BUFFER_SIZE
+      2 U09b8				   BUFN       SET	BUFN + 1
+      0 U0a7e					      DEFBUF	PF2_LEFT
+      1 U0a7e		       00 00 00 00*_BUF_PF2_LEFT ds	ARENA_BUFFER_SIZE
+      2 U0a7e				   BUFN       SET	BUFN + 1
+      0 U0b44					      DEFBUF	PF0_RIGHT
+      1 U0b44		       00 00 00 00*_BUF_PF0_RIGHT ds	ARENA_BUFFER_SIZE
+      2 U0b44				   BUFN       SET	BUFN + 1
+      0 U0c0a					      DEFBUF	PF1_RIGHT
+      1 U0c0a		       00 00 00 00*_BUF_PF1_RIGHT ds	ARENA_BUFFER_SIZE
+      2 U0c0a				   BUFN       SET	BUFN + 1
+      0 U0cd0					      DEFBUF	PF2_RIGHT
+      1 U0cd0		       00 00 00 00*_BUF_PF2_RIGHT ds	ARENA_BUFFER_SIZE
+      2 U0cd0				   BUFN       SET	BUFN + 1
+      0 U0d96					      DEFBUF	GRP0A
+      1 U0d96		       00 00 00 00*_BUF_GRP0A ds	ARENA_BUFFER_SIZE
+      2 U0d96				   BUFN       SET	BUFN + 1
+      0 U0e5c					      DEFBUF	GRP1A
+      1 U0e5c		       00 00 00 00*_BUF_GRP1A ds	ARENA_BUFFER_SIZE
+      2 U0e5c				   BUFN       SET	BUFN + 1
+    809 U0f22
+    810 U0f22		       09 48	   _BUFFER_BLOCK_SIZE =	* - _BUFFERS
+    811 U0f22
+    812 U0f22							;------------------------------------------------------------------------------
+    813 U0f22
+    814 U0f22
+    815 U0f22
+    816 U0f22		       00 00	   _BUF_AUDV  ds	2
+    817 U0f24		       00 00	   _BUF_AUDC  ds	2
+    818 U0f26		       00 00	   _BUF_AUDF  ds	2
+    819 U0f28
+    820 U0f28
+    821 U0f28				   OverlapDisplayDataRam		; mark the beginning of overlapped RAM
+    822 U0f28							; Splash screen datastream buffers
+    823 U0f28							;_BUF_SPLASH0:   ds 192
+    824 U0f28							;_BUF_SPLASH1:   ds 192
+    825 U0f28							;_BUF_SPLASH2:   ds 192
+    826 U0f28							;_BUF_SPLASH3:   ds 192
+    827 U0f28
+ ---- $d8 Splash bytes of Display Data RAM left
+    828 U0f28					      echo	"----",($1000 - *) , "Splash bytes of Display Data RAM left"
+    829 U0f28							;----------------------------------------
+    830 U0f28							; this ORG overlaps the Menu datastreams on top of the Splash datastreams
+    831 U0f28							;----------------------------------------
+    832 U0f28
+    833 U0f28							; Generic overlap variable usage
+    834 U0f28					      ORG	OverlapDisplayDataRam
+ ---- $d8 Menu bytes of Example Overlap RAM left
+    835 U0f28					      echo	"----",($1000 - *) , "Menu bytes of Example Overlap RAM left"
+    836 U0f28
+    837 U0f28							;----------------------------------------
+    838 U0f28							; this ORG overlaps the Game datastreams on top of the Splash and Menu datastreams
+    839 U0f28							;----------------------------------------
+    840 U0f28					      ORG	OverlapDisplayDataRam
+    841 U0f28							; Game datastream buffers
+    842 U0f28				   _EVERY_FRAME_ZERO_START
+    843 U0f28
+    844 U0f28					      align	4	; need to be 4 byte aligned to use myMemsetInt
+    845 U0f28		       00 00	   _EVERY_FRAME_ZERO_COUNT =	*-_EVERY_FRAME_ZERO_START	; end of zeroed out data
+    846 U0f28
+    847 U0f28
+    848 U0f28
+    849 U0f28
+ ---- $d8 Game bytes of Display Data RAM left
+    850 U0f28					      echo	"----",($1000 - *) , "Game bytes of Display Data RAM left"

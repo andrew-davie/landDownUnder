@@ -1,0 +1,12 @@
+
+XXXXplayer on initial scroll appears in incorrect positions as scroll happening
+post-death scrolling without lag
+XXXcircle zoom out on reset/select/level progression (and make it centered on player?)
+XXXXfix spin sound on overlay
+XXXXplayer y-position JUMP on cave I -- is this a time overflow issue?
+
+
+
+
+slime
+circle zoom OUT on death/level change - center on player
