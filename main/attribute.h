@@ -218,6 +218,24 @@ enum ChName {
     CH_DRIP3,                   // 123
     CH_DRIPX,                   // 124
 
+    CH_DIRT,                    // 125
+    CH_DIRT1,                   // 126
+    CH_DIRT2,                   // 127
+    CH_DIRT3,                   // 128
+    CH_DIRT4,                   // 129
+    CH_DIRT5,                   // 130
+    CH_DIRT6,                   // 131
+    CH_DIRT7,                   // 132
+    CH_DIRT8,                   // 133
+    CH_DIRT9,                   // 134
+    CH_DIRTA,                   // 135
+    CH_DIRTB,                   // 136
+    CH_DIRTC,                   // 137
+    CH_DIRTD,                   // 138
+    CH_DIRTE,                   // 139
+    CH_DIRTF,                   // 140
+
+
 };
 
 
@@ -241,4 +259,4 @@ enum ChName {
 #define ATT_PUSH (1<<16)
 #define ATT_ROCKFORDYBLANK (1<<17)
 #define ATT_DRIP (1<<18)
-
+#define ATT_ROUNDDIRT (1 << 19)

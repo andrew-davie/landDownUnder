@@ -35,7 +35,7 @@
 #include "drawscreen.h"
 #include "cavedata.h"
 #include "sound.h"
-
+#include "movePlayer.h"
 
 
 
@@ -50,6 +50,8 @@
 #define DIGIT_LIVES     (14 * DIGIT_SIZE_ROLLER)
 #define DIGIT_CAVE      (15 * DIGIT_SIZE_ROLLER)
 #define DIGIT_LEVEL     (16 * DIGIT_SIZE_ROLLER)
+#define DIGIT_DOGE_L    (17 * DIGIT_SIZE_ROLLER)
+
 #define FLASH_DEAD 0x4F
 
 
@@ -123,6 +125,10 @@ unsigned char charDiamond5[CHAR_SIZE];
 //unsigned char charDust2[CHAR_SIZE];
 unsigned char charDust3[CHAR_SIZE];
 
+
+
+
+
 #endif
 
 //test
@@ -181,9 +187,9 @@ struct Animation AnimIdx[TYPE_MAX];
 //==============================================================================
 
 
-enum FLAG {
-    FLAG_THISFRAME = 0x80,
-};
+// enum FLAG {
+//     FLAG_THISFRAME = 0x80,
+// };
 
 
 
@@ -302,7 +308,11 @@ const unsigned char BitRev[] = {
 };
 
 
-int shiftFrac, shiftYFrac;
+int scrollX;                // 16.16 PF pixels
+int scrollY;                // 16.16 TRI pixel lines
+
+
+
 int scrollSpeed = 0, scrollYSpeed = 0;
 int targetScrollSpeed = 0, targetYScrollSpeed = 0;
 
@@ -506,8 +516,8 @@ void resetTracking() {
 
     // Set scroll track
 
-    shiftFrac =(rockfordX - (HALFWAYX>>2)) << 16;
-    shiftYFrac = ((rockfordY - 4) * TRILINES) << 16;
+    scrollX =(rockfordX - (HALFWAYX>>2)) << 16;
+    scrollY = ((rockfordY - 4) * TRILINES) << 16;
 
     scrollSpeed = 0;
     targetScrollSpeed = 0;
@@ -611,7 +621,14 @@ extern int rinc;
     radius = 0;
     rinc = 100;
 
-    rockfordX = rockfordY = 2;
+    rockfordX = 2;
+    rockfordY = 2;
+    // rockfordY = 12;
+    playerX = (rockfordX * 4) << 16;
+    playerY = (rockfordY * PIECE_DEPTH/3) << 16;
+
+    playerSpeedX = 20000;
+    playerSpeedY = 30000;
 
 
     magicWallActive = false;
@@ -655,8 +672,8 @@ extern int rinc;
 
 
 
-    shiftFrac = 38 << 14; //((((getRandom32() & 0xFF) * 38) >> 8) + 1) << 16;
-    shiftYFrac = 20 << 16; //((((getRandom32() & 0xFF) * 20) >> 8) + 1) << 16;
+    scrollX = 38 << 14; //((((getRandom32() & 0xFF) * 38) >> 8) + 1) << 16;
+    scrollY = 20 << 16; //((((getRandom32() & 0xFF) * 20) >> 8) + 1) << 16;
 
 
     InitAudio();
@@ -1280,23 +1297,23 @@ static unsigned char digitShape[] = {
 
     // repeat 0
 
-        X___X___,
-        X___X___,
+        XX__XX__,
+        XX__XX__,
         ________,
-        XX__XX__,
-        XX__XX__,
+        _XX___X_,
+        _XX___X_,
+        ________,
+        __X___X_,
+        X_X___X_,
+        ________,
+        X_X___X_,
+        __X___X_,
         ________,
         XXX_XXX_,
         XXX_XXX_,
         ________,
         XXX_XXX_,
-        XXX_XXX_,
-        ________,
         XX__XX__,
-        XX__XX__,
-        ________,
-        X___X___,
-        X___X___,
         ________,
 
         DIGIT_GAP
@@ -1406,6 +1423,27 @@ static unsigned char digitShape[] = {
 
         DIGIT_GAP
 
+        ___X___X,
+        ___X___X,
+        ________,
+        ___X___X,
+        ___X___X,
+        ________,
+        ___X___X,
+        __XX__XX,
+        ________,
+        __XX__XX,
+        ___X___X,
+        ________,
+        ___X___X,
+        ___X___X,
+        ________,
+        ___X___X,
+        ___X___X,
+        ________,
+
+        DIGIT_GAP
+
 };
 
 
@@ -1471,7 +1509,9 @@ void drawDecimal(int cvt, int pos) {
 
 static inline void drawDiamondAndTime(){
 
+    scoreLineNew[9] = DIGIT_DOGE_L;
     scoreLineNew[8] = DIGIT_DIAMOND;
+
     drawDecimal(diamonds, 7);
 
     static int pulseCount = 0;
@@ -1621,7 +1661,7 @@ void setPalette(int start, int size, int step, int tweak) {
 
     setColours();
 
-    int bgCharLine = (shiftYFrac >> 16) * 3;
+    int bgCharLine = (scrollY >> 16) * 3;
     int absLine = 0;
     int pfCharLine = 0;
     
@@ -1721,8 +1761,8 @@ void setOverviewPalette() {
 /*
     setColours();
 
-    int bgCharLine = (shiftYFrac >> 16) * 3;
-    int absLine = 0; //(shiftYFrac >> 16) * 7;
+    int bgCharLine = (scrollY >> 16) * 3;
+    int absLine = 0; //(scrollY >> 16) * 7;
     int pfCharLine = 0;
 
     int i = 0;
@@ -1786,7 +1826,7 @@ void setDisplayPalette() {
 /*
     setColours();
 
-    int bgCharLine = (shiftYFrac >> 16) * 3;
+    int bgCharLine = (scrollY >> 16) * 3;
     int absLine = bgCharLine;
 
     bgCharLine--;
@@ -1906,6 +1946,10 @@ void GameScheduleDrawSprites() {
         setDisplayPalette();
         drawScore();
         drawScreen();
+
+        doPlayer();
+
+
         drawPlayerSprite();
     }
 
@@ -1922,7 +1966,7 @@ void GameScheduleDrawOverlay() {
     // Handle "GAME OVER" display 
     // ... if the square doesn't contain rockford
 
-//    int what = RAM[_BOARD + rockfordY * 40 + rockfordX] & 0x7F;
+//    int what = RAM[_BOARD + rockfordY * 40 + rockfordX] & (0x7F|0x80);
 //    char type = CharToType[what];
 
     if (rockfordDead && !flashTime) {
@@ -2082,13 +2126,13 @@ void InitGameBuffers() {
 void Explode(unsigned char *where, unsigned char explosionShape) {
 
 #if ENABLE_SHAKE
-    shakeTime += 10;
+    // shakeTime += 10;
 #endif
 
 //    KillAudio(SFX_SHAKE);
     AddAudio(SFX_EXPLODE);
 
-    explosionShape |= FLAG_THISFRAME;
+    // explosionShape |= FLAG_THISFRAME;
 
     for (int x = -1; x < 2; x++)
         for (int y = -40; y < 80; y += 40) {
@@ -2140,9 +2184,9 @@ void handleFly(unsigned char *this, int base, int turn, unsigned char explode) {
         }
     }
 
-    unsigned char replace = CH_BLANK | FLAG_THISFRAME;
-//    if (CharToType[(*this) & 0x7F] == TYPE_BUTTERFLY && (getRandom32() & 0x7F) < 5)
-//        replace = CH_EGG | FLAG_THISFRAME;
+    unsigned char replace = CH_BLANK; ; // | FLAG_THISFRAME;
+//    if (CharToType[(*this) & (0x7F|0x80)] == TYPE_BUTTERFLY && (getRandom32() & (0x7F|0x80)) < 5)
+//        replace = CH_EGG ; // | FLAG_THISFRAME;
 
 
     // turn preferred direciton
@@ -2152,8 +2196,8 @@ void handleFly(unsigned char *this, int base, int turn, unsigned char explode) {
     unsigned char newdir = (dir + turn) & 3;
     unsigned char *newpos = this + move[newdir];
 
-    if (Attribute[CharToType[(*newpos)&0x7f]] & ATT_BLANK) {
-        *newpos = (base + newdir) | FLAG_THISFRAME;
+    if (Attribute[CharToType[(*newpos)&(0x7F|0x80)]] & ATT_BLANK) {
+        *newpos = (base + newdir) ; // | FLAG_THISFRAME;
         *this = replace;
         return;
     }
@@ -2162,8 +2206,8 @@ void handleFly(unsigned char *this, int base, int turn, unsigned char explode) {
 
     newpos = this + move[dir];
 
-    if (Attribute[CharToType[(*newpos)&0x7F]] & ATT_BLANK) {
-        *newpos = (base + dir) | FLAG_THISFRAME;
+    if (Attribute[CharToType[(*newpos)&(0x7F|0x80)]] & ATT_BLANK) {
+        *newpos = (base + dir) ; // | FLAG_THISFRAME;
         *this = replace;
         return;        
     }
@@ -2185,14 +2229,14 @@ unsigned char handleFly(unsigned char *this, int base, int turn, unsigned char e
     // any killables?
 
     for (int dir = 0; dir < 4; dir++)
-        if (Attribute[CharToType[*(this+move[dir])&0x7F]] & ATT_KILLS_FLY) {
+        if (Attribute[CharToType[*(this+move[dir])&(0x7F|0x80)]] & ATT_KILLS_FLY) {
             Explode(this, explode);
             return *this;
         }
 
-    unsigned char replace = CH_BLANK | FLAG_THISFRAME;
-    //if (CharToType[(*this) & 0x7F] == TYPE_BUTTERFLY && (getRandom32() & 0x7F) < 3)
-    //    replace = CH_EGG | FLAG_THISFRAME;
+    unsigned char replace = CH_BLANK ; // | FLAG_THISFRAME;
+    //if (CharToType[(*this) & (0x7F|0x80)] == TYPE_BUTTERFLY && (getRandom32() & (0x7F|0x80)) < 3)
+    //    replace = CH_EGG ; // | FLAG_THISFRAME;
 
 
 
@@ -2202,10 +2246,10 @@ unsigned char handleFly(unsigned char *this, int base, int turn, unsigned char e
 
     unsigned char newdir = (dir + turn) & 3;
     unsigned char *newpos = this + move[newdir];
-    unsigned char whatsThere = (*newpos) & 0x7F;
+    unsigned char whatsThere = (*newpos) & (0x7F|0x80);
 
     if (Attribute[CharToType[whatsThere]] & ATT_BLANK) {
-        *newpos = (base + newdir) | FLAG_THISFRAME;
+        *newpos = (base + newdir) ; // | FLAG_THISFRAME;
         *this = replace;
         return whatsThere;
     }
@@ -2217,11 +2261,11 @@ unsigned char handleFly(unsigned char *this, int base, int turn, unsigned char e
     // straight ahead
 
     newpos = this + move[dir];
-    whatsThere = (*newpos) & 0x7F;
+    whatsThere = (*newpos) & (0x7F|0x80);
 
     if (Attribute[CharToType[whatsThere]] & ATT_BLANK) {
-        *newpos = (base + newdir) | FLAG_THISFRAME;
-        *this = replace; //CH_BLANK | FLAG_THISFRAME;
+        *newpos = (base + newdir) ; // | FLAG_THISFRAME;
+        *this = replace; //CH_BLANK ; // | FLAG_THISFRAME;
         return whatsThere;
     }
 
@@ -2239,6 +2283,8 @@ unsigned char handleFly(unsigned char *this, int base, int turn, unsigned char e
 
 
 void moveRockford(unsigned char *this, unsigned char blanker) {
+
+#if 0
 
     static const unsigned char direct[] = {
         DIR_UP,
@@ -2295,7 +2341,7 @@ void moveRockford(unsigned char *this, unsigned char blanker) {
 
 //                    setFlash(0x46,1);
 
-            unsigned char destType = CharToType[*(this+offset) & 0x7F];  // dubious masking of FLAG
+            unsigned char destType = CharToType[*(this+offset) & (0x7F|0x80)];  // dubious masking of FLAG
 
             bufferedSWCHA = 0xFF; //|= (direct[dir] << 4);
 
@@ -2354,7 +2400,7 @@ void moveRockford(unsigned char *this, unsigned char blanker) {
                                (destType == TYPE_DIRT)
                             || (destType == TYPE_DIRT2)
                             || (destType == TYPE_DIRT3)
-                            ? CH_DUST : CH_DIAMOND_GRAB) | FLAG_THISFRAME;
+                            ? CH_DUST : CH_DIAMOND_GRAB) ; // | FLAG_THISFRAME;
                         diamondGrabTime = 1;
                         setAnimation(newSnatch[dir]);
                     }
@@ -2372,8 +2418,8 @@ void moveRockford(unsigned char *this, unsigned char blanker) {
 
                     frameAdjustX = frameAdjustY = 0;
 
-                    *(this+offsetD[dir]) = CH_ROCKFORD | FLAG_THISFRAME;
-                    *this = (dirtFlag == DIRT_DIRT ? CH_DUST : blanker) | FLAG_THISFRAME;
+                    *(this+offsetD[dir]) = CH_ROCKFORD ; // | FLAG_THISFRAME;
+                    *this = (dirtFlag == DIRT_DIRT ? CH_DUST : blanker) ; // | FLAG_THISFRAME;
 
                     if (dirtFlag & DIRT_DIRT) {
                         AnimIdx[TYPE_ROCKFORD].index = -2;
@@ -2406,18 +2452,18 @@ void moveRockford(unsigned char *this, unsigned char blanker) {
 
 
                     if (pushCounter > 20 || (pushCounter > 5 && (getRandom32() & 7) < 2)) { 
-                        if (Attribute[CharToType[(*(this+ 2 * offset))&0x7F ]] & ATT_BLANK) {
+                        if (Attribute[CharToType[(*(this+ 2 * offset))&(0x7F|0x80) ]] & ATT_BLANK) {
 
                             halt = DELAY_AFTER_PUSH;
                             pushCounter = 0;
 
-                            *(this + 2 * offset) = CH_BOULDER | FLAG_THISFRAME;
+                            *(this + 2 * offset) = CH_BOULDER ; // | FLAG_THISFRAME;
                             if (JOY0_FIRE)
-                                *(this+offset) = blanker | FLAG_THISFRAME;
+                                *(this+offset) = blanker ; // | FLAG_THISFRAME;
                             else {
                                 rockfordX += offset;
-                                *(this+offset) = CH_ROCKFORD | FLAG_THISFRAME;
-                                *this = blanker | FLAG_THISFRAME;
+                                *(this+offset) = CH_ROCKFORD ; // | FLAG_THISFRAME;
+                                *this = blanker ; // | FLAG_THISFRAME;
                             }
 
                             AddAudio(SFX_PUSH);
@@ -2438,15 +2484,14 @@ void moveRockford(unsigned char *this, unsigned char blanker) {
 
     pushCounter = 0;
 
-    if (*(this-40) == (CH_DIAMOND_FALLING | FLAG_THISFRAME)
-        || *(this-40) == (CH_BOULDER_FALLING | FLAG_THISFRAME))
+    if (*(this-40) == (CH_DIAMOND_FALLING ; // | FLAG_THISFRAME)
+        || *(this-40) == (CH_BOULDER_FALLING ; // | FLAG_THISFRAME))
             setAnimation(ID_DIE);
 
     else {
 
         playerAnimationLoop = 0;                   // bypass any looping!
 
-#if 1
         static const unsigned char animID[] = {
             ID_BLINK,       200, 
             ID_WIPE_HAIR,   20,
@@ -2468,9 +2513,8 @@ void moveRockford(unsigned char *this, unsigned char blanker) {
                 setAnimation(animID[idle]);
                 
         }
-#endif        
     }
-
+#endif
 
 }
 
@@ -2480,7 +2524,7 @@ void doRoll(unsigned char *this, unsigned int creature) {
     if (boardRow > 20)
         return;
 
-    unsigned char _DOWN = CharToType[*(this + 40)&0x7F];
+    unsigned char _DOWN = CharToType[*(this + 40)&(0x7F|0x80)];
     unsigned char *LEFTWARDS = this - 1;
     unsigned char *RIGHTWARDS = this + 1;
 
@@ -2492,11 +2536,11 @@ void doRoll(unsigned char *this, unsigned int creature) {
 
 
 
-        if (boardCol > 0 && (Attribute[CharToType[(*LEFTWARDS)&0x7F]] & ATT_ROCKFORDYBLANK)) {
+        if (boardCol > 0 && (Attribute[CharToType[(*LEFTWARDS)&(0x7F|0x80)]] & ATT_ROCKFORDYBLANK)) {
 
-            unsigned char lowerLeft = (*(LEFTWARDS + 40) & 0x7F);
+            unsigned char lowerLeft = (*(LEFTWARDS + 40) & (0x7F|0x80));
             unsigned char typeLL = CharToType[lowerLeft];
-            unsigned char typeL = CharToType[*LEFTWARDS & 0x7F];
+            unsigned char typeL = CharToType[*LEFTWARDS & (0x7F|0x80)];
 
             if (creature == CH_BOULDER
                 && ((typeLL == TYPE_ROCKFORD && (Attribute[typeL] & ATT_BLANK))
@@ -2506,8 +2550,8 @@ void doRoll(unsigned char *this, unsigned int creature) {
             else if (Attribute[typeL] & Attribute[typeLL] & ATT_BLANK) {
 //                KillAudio(SFX_SHAKE);
                 AddAudio(SFX_PUSH);    
-                *LEFTWARDS = (c + 2) | FLAG_THISFRAME;
-                *this = CH_BLANK | FLAG_THISFRAME;
+                *LEFTWARDS = (c + 2) ; // | FLAG_THISFRAME;
+                *this = CH_BLANK ; // | FLAG_THISFRAME;
                 return;
             }
         }
@@ -2515,9 +2559,9 @@ void doRoll(unsigned char *this, unsigned int creature) {
         if (boardCol < 39
             && (Attribute[CharToType[*RIGHTWARDS]] & ATT_ROCKFORDYBLANK)) {
 
-            unsigned char lowerRight = (*(RIGHTWARDS + 40)) & 0x7F;
+            unsigned char lowerRight = (*(RIGHTWARDS + 40)) & (0x7F|0x80);
             unsigned char typeLR = CharToType[lowerRight];
-            unsigned char typeR = CharToType[*RIGHTWARDS & 0x7F];
+            unsigned char typeR = CharToType[*RIGHTWARDS & (0x7F|0x80)];
 
             if (creature == CH_BOULDER &&
                 ((typeLR == TYPE_ROCKFORD && (Attribute[typeR] & ATT_BLANK))
@@ -2530,8 +2574,8 @@ void doRoll(unsigned char *this, unsigned int creature) {
 //                KillAudio(SFX_SHAKE);
                 AddAudio(SFX_PUSH);    
 
-                *RIGHTWARDS = (c + 2) | FLAG_THISFRAME;
-                *this = CH_BLANK | FLAG_THISFRAME;
+                *RIGHTWARDS = (c + 2) ; // | FLAG_THISFRAME;
+                *this = CH_BLANK ; // | FLAG_THISFRAME;
                 return;
             }
         }
@@ -2561,18 +2605,18 @@ void GameScheduleProcessBoardRow() {
             boardRow++;
             if (boardRow > 21) {
 
-                // clear the 'thisframe' flag on the very last row
-                for (int i=0; i < 40; i++)
-                    RAM[_BOARD + 21 * 40 + i] &= ~FLAG_THISFRAME;
+                // // clear the 'thisframe' flag on the very last row
+                // for (int i=0; i < 40; i++)
+                //     RAM[_BOARD + 21 * 40 + i] &= ~FLAG_THISFRAME;
 
 
                 gameSchedule = SCHEDULE_START;
 
                 bool oldDead = rockfordDead;
 
-                int what = RAM[_BOARD + rockfordY * 40 + rockfordX] & 0x7F;
+                int what = RAM[_BOARD + rockfordY * 40 + rockfordX] & (0x7F|0x80);
                 int type = CharToType[what];
-                rockfordDead = (type != TYPE_ROCKFORD && type != TYPE_ROCKFORD_PRE);
+//tmp                rockfordDead = (type != TYPE_ROCKFORD && type != TYPE_ROCKFORD_PRE);
 
                 if (oldDead != rockfordDead) {
                     setFlash(FLASH_DEAD, 2);
@@ -2616,6 +2660,10 @@ void GameScheduleProcessBoardRow() {
 
         unsigned char *this = &RAM[_BOARD + (boardRow * 40) + boardCol];
 
+        roundDirtCorner(this);
+
+
+
         unsigned char creature = *this;
         unsigned char *prev = this - 40;
 
@@ -2627,11 +2675,11 @@ void GameScheduleProcessBoardRow() {
             blanker = CH_LAVA;
 
 
-        if (water && boardRow * 21 + 6  > water && boardRow > 2 && boardRow < 21 && (Attribute[CharToType[creature& 0x7F]] & ATT_WATER)) {
-            *this = (CH_WATER + (getRandom32() & 3)) | FLAG_THISFRAME;
+        if (water && boardRow * 21 + 6  > water && boardRow > 2 && boardRow < 21 && (Attribute[CharToType[creature& (0x7F|0x80)]] & ATT_WATER)) {
+            *this = (CH_WATER + (getRandom32() & 3)) ; // | FLAG_THISFRAME;
         }
 
-        unsigned char cType = CharToType[creature & 0x7f];
+        unsigned char cType = CharToType[creature & (0x7F|0x80)];
 
 
 #if ENABLE_SHAKE
@@ -2644,19 +2692,19 @@ void GameScheduleProcessBoardRow() {
             if (cType
      //           && (Attribute[cType] & CH_LAVA)
                 && (boardRow > 4 && boardRow < 21 && boardCol > 0 && boardCol < 39)
-                && (getRandom32() & 0x7FF) < 3) {
+                && (getRandom32() & (0x7FF)) < 3) {
                 Explode(this, CH_EXPLODETOBLANK0);
                 setFlash(0x42, 4);
 //                shakeTime += 100;
             }
 
             else if (Attribute[cType] & ATT_LAVA)
-                *this = CH_LAVA | FLAG_THISFRAME;
+                *this = CH_LAVA ; // | FLAG_THISFRAME;
 
 /*            else if ((Attribute[cType] & ATT_LAVA)
                 || ((getRandom32() & 0x1FF) < 3
                 && boardRow > 4 && boardRow < 21 && boardCol > 0 && boardCol < 39))
-                *this = CH_LAVA | FLAG_THISFRAME;
+                *this = CH_LAVA ; // | FLAG_THISFRAME;
                 */
         }
 
@@ -2678,22 +2726,22 @@ void GameScheduleProcessBoardRow() {
 
         if (lastDripFree
 
-            // && boardRow * 21 > (shiftYFrac >> 16)
-            // && boardRow * 21 < (shiftYFrac >> 16) + _ARENA_SCANLINES - 20
-            // && boardCol * 4 > (shiftFrac >> 16) + 4
-            // && boardCol * 4 < (shiftFrac >> 16) + 36
+            // && boardRow * 21 > (scrollY >> 16)
+            // && boardRow * 21 < (scrollY >> 16) + _ARENA_SCANLINES - 20
+            // && boardCol * 4 > (scrollX >> 16) + 4
+            // && boardCol * 4 < (scrollX >> 16) + 36
 
            && (deltaX < 6 && deltaY < 5)
            && boardRow < 18  // or 19?
             
 
-            && (Attribute[CharToType[creature & 0x7F]] & ATT_DRIP) &&  *(this+40) == CH_BLANK
+            && (Attribute[CharToType[creature & (0x7F|0x80)]] & ATT_DRIP) &&  *(this+40) == CH_BLANK
             //&& *(this+80) != CH_BLANK
             && (getRandom32() & 0xFF) < doubler
             )
             {
 
-                *(this + 40) = CH_DRIP; // | FLAG_THISFRAME;
+                *(this + 40) = CH_DRIP; // ; // | FLAG_THISFRAME;
 
                 AnimIdx[TYPE_DRIP].index = -2;
                 AnimIdx[TYPE_DRIP].count = 0;
@@ -2701,11 +2749,10 @@ void GameScheduleProcessBoardRow() {
                 lastDripFree = false;
 
                 //setFlash(0x44,10);
-        }
+            }
+            
 
-
-
-        if (!(creature & FLAG_THISFRAME)) {
+        //if (!(creature & FLAG_THISFRAME)) {
 
 
             unsigned char type = CharToType[creature];        
@@ -2724,22 +2771,22 @@ void GameScheduleProcessBoardRow() {
                     if (Attribute[CharToType[*(this-1)]] & ATT_BLANK) {
                         for (int x=-2; x < 1; x++)
                             for (int y = -1; y < 2; y++)
-                                if (CharToType[*(this + (y*40) + x) & 0x7F] == TYPE_EGG)
+                                if (CharToType[*(this + (y*40) + x) & (0x7F|0x80)] == TYPE_EGG)
                                     neighbours++;
 
                         if (neighbours == 3)
-                            *(this-1) = CH_EGG | FLAG_THISFRAME;
+                            *(this-1) = CH_EGG ; // | FLAG_THISFRAME;
                     }
 
                     neighbours = 0;
                     if (Attribute[CharToType[*(this+1)]] & ATT_BLANK) {
                         for (int x=1; x < 3; x++)
                             for (int y = -1; y < 2; y++)
-                                if (CharToType[*(this + (y*40) + x) & 0x7F] == TYPE_EGG)
+                                if (CharToType[*(this + (y*40) + x) & (0x7F|0x80)] == TYPE_EGG)
                                     neighbours++;
 
                         if (neighbours == 3)
-                            *(this+1) = CH_EGG | FLAG_THISFRAME;
+                            *(this+1) = CH_EGG ; // | FLAG_THISFRAME;
                     }
 
                     if ((getRandom32() & 0xFF) < 35) {
@@ -2747,12 +2794,12 @@ void GameScheduleProcessBoardRow() {
                         for (int x=-1; x < 2; x++)
                             for (int y = -1; y < 2; y++) {
                                 if (x && y) {
-                                    if (CharToType[*(this + (y*40) + x) & 0x7F] == TYPE_EGG)
+                                    if (CharToType[*(this + (y*40) + x) & (0x7F|0x80)] == TYPE_EGG)
                                         neighbours++;
                                 }
 
                             if (neighbours > 3 || neighbours < 2)
-                                *this = CH_BLANK | FLAG_THISFRAME;
+                                *this = CH_BLANK ; // | FLAG_THISFRAME;
                         }
                     }
 */
@@ -2770,14 +2817,14 @@ void GameScheduleProcessBoardRow() {
                         unsigned char *where = this + dir[i];
 
 
-                        if (CharToType[(*where)&0x7F] == TYPE_FIREFLY) {
-                            *this = CH_BUTTERFLY0 | FLAG_THISFRAME;
+                        if (CharToType[(*where)&(0x7F|0x80)] == TYPE_FIREFLY) {
+                            *this = CH_BUTTERFLY0 ; // | FLAG_THISFRAME;
                             break;
                         }
 
-                        if (Attribute[CharToType[(*where)&0x7F]] & ATT_PERMEABLE) {
+                        if (Attribute[CharToType[(*where)&(0x7F|0x80)]] & ATT_PERMEABLE) {
                             if ((rnd & 0x1FF) < 25) {
-                                *where = CH_EGG | FLAG_THISFRAME;
+                                *where = CH_EGG ; // | FLAG_THISFRAME;
                                 break;
                             }
                         }
@@ -2818,14 +2865,14 @@ void GameScheduleProcessBoardRow() {
                             unsigned char *where = this + dir[i];
                             unsigned char newCh = (rnd & 3) + CH_AMOEBA0;
 
-                            if (Attribute[CharToType[(*where)&0x7F]] & ATT_PERMEABLE) {
+                            if (Attribute[CharToType[(*where)&(0x7F|0x80)]] & ATT_PERMEABLE) {
                                 amoebaGrew = 1;
 
                                 int expandSpeed = millingTime ? EXPAND_SPEED : EXPAND_SPEED * 4;
 
                                 if ((rnd & 0x1FF) < expandSpeed) {
                                     //setFlash(0xB2,10);
-                                    *where = newCh | FLAG_THISFRAME;
+                                    *where = newCh ; // | FLAG_THISFRAME;
                                 }
                             }
 
@@ -2871,7 +2918,7 @@ void GameScheduleProcessBoardRow() {
                         if (!(rnd & 0x300) || *this == *where)
                             *this = newCh;
 
-                        if (lastWater && CharToType[(*lastWater) & 0x7F] == TYPE_WATER)
+                        if (lastWater && CharToType[(*lastWater) & (0x7F|0x80)] == TYPE_WATER)
                             *lastWater = *this;
                         lastWater = this;
 
@@ -2942,7 +2989,7 @@ void GameScheduleProcessBoardRow() {
                 // case CH_DIRTY2:
                 // case CH_DIRTY3:
 
-                //     if (!(getRandom32() & 0x7FF))
+                //     if (!(getRandom32() & (0x7F|0x80)F))
                 //         *this = CH_DUST;
                 //     break;
 
@@ -2964,7 +3011,7 @@ void GameScheduleProcessBoardRow() {
                     if (AnimIdx[TYPE_DRIP].index == DRIP_END
                         || AnimIdx[TYPE_DRIP].index == DRIP_END2) {
 
-                        if (!(Attribute[CharToType[*(this+40) & 0x7f]] & ATT_BLANK)) {
+                        if (!(Attribute[CharToType[*(this+40) & (0x7F|0x80)]] & ATT_BLANK)) {
                             *this = CH_DRIPX;
                             AnimIdx[TYPE_DRIP_SPLASH].index = -2;
                             AnimIdx[TYPE_DRIP_SPLASH].count = 0;
@@ -3011,11 +3058,11 @@ void GameScheduleProcessBoardRow() {
                 case CH_EXPLODETOBLANK1:
                 case CH_EXPLODETOBLANK2:
                 case CH_EXPLODETOBLANK3:
-                    *this = (creature + 1); // | FLAG_THISFRAME;
+                    *this = (creature + 1); // ; // | FLAG_THISFRAME;
                     break;
 
                 case CH_EXPLODETOBLANK4:
-                    *this = CH_BLANK | FLAG_THISFRAME;
+                    *this = CH_BLANK ; // | FLAG_THISFRAME;
                     break;
 
                 case CH_EXPLODETODIAMOND4:
@@ -3035,15 +3082,26 @@ void GameScheduleProcessBoardRow() {
                 case CH_DIAMOND_PULSE_8:
                 case CH_DIAMOND_PULSE_9:{
                     
-                    if ((*Animate[type])[AnimIdx[type].index] == CH_DIAMOND) {
+                    if (creature == CH_DIAMOND) {
 
-                        unsigned int rnd = getRandom32();
-                        *this = CH_DIAMOND;         // STOP animation
-                        if ((rnd & 0xFF) < DIAMOND_PULSE_EDGE)
-                            *this = CH_DIAMOND_PULSE_0 + ((((rnd >> 8) & 0xFF) * 10) >> 8);
+
+                        if ((getRandom32() & 0xFF) < 20) //DIAMOND_PULSE_EDGE)
+                            *this = CH_DIAMOND_PULSE_0;
+
+                    } else {
+
+                        if ((*Animate[type])[AnimIdx[type].index] == CH_DIAMOND) {
+                            unsigned int rnd = getRandom32();
+                            if ((rnd & 0xFF) < 30) //DIAMOND_PULSE_EDGE)
+                                *this = CH_DIAMOND;
+                        }
+
+
+
                     }
 
-                    creature = CH_DIAMOND;
+                    creature = *this;
+
                 }
                 __attribute__ ((fallthrough));
 
@@ -3051,7 +3109,7 @@ void GameScheduleProcessBoardRow() {
                 case CH_BOULDER: {
 
                     block += 1;
-                    unsigned char _DOWN = CharToType[(*next)&0x7F];
+                    unsigned char _DOWN = CharToType[(*next)&(0x7F|0x80)];
 
 
                     if (_DOWN == TYPE_ROCKFORD && creature == CH_BOULDER)
@@ -3065,10 +3123,10 @@ void GameScheduleProcessBoardRow() {
                             AnimIdx[TYPE_BOULDER_SHAKE].count = -1; // turn off
                         }
 
-                        *this = CH_BLANK | FLAG_THISFRAME;
-                        *next = (creature + 2) | FLAG_THISFRAME;       // falling, scanned this frame
+                        *this = CH_BLANK ; // | FLAG_THISFRAME;
+                        *next = (creature + 2) ; // | FLAG_THISFRAME;       // falling, scanned this frame
 
-                        int typeDown = CharToType[(*(next+40))&0x7F];
+                        int typeDown = CharToType[(*(next+40))&(0x7F|0x80)];
                         int att = Attribute[typeDown];
                         if (!(att & ATT_NOROCKNOISE)) {
                             if (att & ATT_HARD)
@@ -3092,15 +3150,15 @@ void GameScheduleProcessBoardRow() {
 
                 case CH_BOULDER_FALLING: {
 
-                    unsigned char _DOWN = CharToType[(*next) & 0x7F];
+                    unsigned char _DOWN = CharToType[(*next) & (0x7F|0x80)];
 
                     if (Attribute[_DOWN] & ATT_BLANK) {
                         
-                        *this = blanker | FLAG_THISFRAME;
-                        *next = creature | FLAG_THISFRAME; // falling scanned this frame
+                        *this = blanker ; // | FLAG_THISFRAME;
+                        *next = creature ; // | FLAG_THISFRAME; // falling scanned this frame
 
 
-                        _DOWN = CharToType[(*(next+40))&0x7F];
+                        _DOWN = CharToType[(*(next+40))&(0x7F|0x80)];
                         int att = Attribute[_DOWN];
                         if (_DOWN != TYPE_BOULDER_FALLING && !(att & ATT_NOROCKNOISE)) {
                             if (creature == CH_BOULDER_FALLING) {
@@ -3115,10 +3173,10 @@ void GameScheduleProcessBoardRow() {
                                 unsigned char *dL = this + 40 - 1;
                                 unsigned char *dR = dL + 2;
 
-                                if (!CharToType[(*dR)&0x7F])
+                                if (!CharToType[(*dR)&(0x7F|0x80)])
                                     *dR = CH_DUST_RIGHT;
 
-                                if (!CharToType[(*dL)&0x7F])
+                                if (!CharToType[(*dL)&(0x7F|0x80)])
                                     *dL = CH_DUST_LEFT;
                             }
                         }
@@ -3159,12 +3217,12 @@ void GameScheduleProcessBoardRow() {
                         }
 
                         if (magicWallActive) {
-                            if (CharToType[((*(this+80)) & 0x7F)] == TYPE_SPACE)
-                                *(this + 80) = trnsf | FLAG_THISFRAME;
+                            if (CharToType[((*(this+80)) & (0x7F|0x80))] == TYPE_SPACE)
+                                *(this + 80) = trnsf ; // | FLAG_THISFRAME;
                             }
 
                         // active or not, anything falling into a magic wall blanks the square
-                        *this = blanker | FLAG_THISFRAME;
+                        *this = blanker ; // | FLAG_THISFRAME;
                         AddAudio(sfx);
                     }
 
@@ -3174,7 +3232,7 @@ void GameScheduleProcessBoardRow() {
                         // stop falling
                         *this = creature - 2;  
                         doRoll(this, *this);    
-                        shakeTime += 1; //tmp
+                        // shakeTime += 1; //tmp
 
 
                     }
@@ -3192,8 +3250,8 @@ void GameScheduleProcessBoardRow() {
 
 
 
-                    rockfordX = boardCol;
-                    rockfordY = boardRow;
+//tmp                    // rockfordX = boardCol * 4;
+                    // rockfordY = boardRow * PIECE_DEPTH;
 
                     //diamondValue = scrollYSpeed;
 
@@ -3224,7 +3282,7 @@ void GameScheduleProcessBoardRow() {
 #endif
                         AddAudio(SFX_BIRTH);
                         setAnimation(ID_STARTUP);
-                        *this = CH_ROCKFORD; // | FLAG_THISFRAME;
+                        *this = CH_ROCKFORD; // ; // | FLAG_THISFRAME;
 #if ENABLE_OVERLAY
                     }
 #endif
@@ -3259,12 +3317,12 @@ void GameScheduleProcessBoardRow() {
                     break;
                 }
             }
-        }
+        //}
 
         // Clear any "scanned this frame" objects on the previous line
         // note: we need to also do the last row
-        if (boardRow > 1)
-            *prev &= ~FLAG_THISFRAME;
+        // if (boardRow > 1)
+        //     *prev &= ~FLAG_THISFRAME;
     }
 
 
@@ -3290,7 +3348,12 @@ const char AnimSpace[] = {
 
 
 const char AnimDirt[] = {
-    CH_DIRTY,255,
+    CH_DIRTY,20,
+    CH_DIRT1,20,
+    CH_DIRT2,20,
+    CH_DIRT3,20,
+    CH_DIRT3,20,
+    255,
 };
 
 const char AnimDirt2[] = {
@@ -3363,11 +3426,27 @@ const char AnimBoulderFalling[] = {
 };
 
 
-const char AnimDiamond[] = {
-    CH_DIAMOND,255,
+const char AnimDiamondSpin[] = {
+    CH_DIAMOND_PULSE_0,4,
+    CH_DIAMOND_PULSE_1,3,
+    CH_DIAMOND_PULSE_2,3,
+    CH_DIAMOND_PULSE_3,2,
+    CH_DIAMOND_PULSE_4,2,
+    CH_DIAMOND_PULSE_5,2,
+    CH_DIAMOND_PULSE_6,1,
+    CH_DIAMOND_PULSE_5,2,
+    CH_DIAMOND_PULSE_4,2,
+    CH_DIAMOND_PULSE_3,2,
+    CH_DIAMOND_PULSE_2,3,
+    CH_DIAMOND_PULSE_1,3,
+    CH_DIAMOND_PULSE_0,4,
+    CH_DIAMOND,5,
     255
 };
 
+const char AnimDiamond[] = {
+    CH_DIAMOND,255,
+};
 
 #define FACET \
 \
@@ -3677,7 +3756,7 @@ const char (*Animate[])[] = {
 &AnimAmoeba,                // 24
 &AnimDrip,                  // 25
 &AnimDripSplash,            // 26
-&AnimPulseDiamond0,         // 27
+&AnimDiamondSpin,           // 27
 &AnimPulseDiamond1,         // 28
 &AnimPulseDiamond2,         // 29
 &AnimPulseDiamond3,         // 30
@@ -3713,6 +3792,7 @@ const char (*Animate[])[] = {
 &AnimDust3Right,            // 60
 &AnimLava,                  // 61
 &AnimWater,                 // 62
+
 #if ENABLE_EGG
 &AnimEgg,                   // 63
 #endif

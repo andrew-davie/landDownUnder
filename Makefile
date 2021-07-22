@@ -4,7 +4,7 @@
 # (C) Copyright 2017 - Chris Walton, Fred Quimby, Darrell Spice Jr
 #########∫######################################################################
 
-PROJECT=CDFJBoulderDash
+PROJECT=downUnder
 DASM_TO_C=defines_from_dasm_for_c.h
 
 # If desired, the following color values can be changed.   
@@ -46,7 +46,7 @@ VPATH += $(BASE):$(SRC)
 # Default ∫target
 default: armcode
 	#sleep 20
-	open -a /Applications/Stella.app ./CDFJBoulderDash.bin
+	open -a /Applications/Stella.app ./downUnder.bin
 
 armcode_defines:
 	osascript -e 'quit app "Stella"'
@@ -86,8 +86,10 @@ CUSTOMBIN = $(BIN)/$(CUSTOMNAME).bin
 CUSTOMMAP = $(BIN)/$(CUSTOMNAME).map
 CUSTOMLST = $(BIN)/$(CUSTOMNAME).lst
 CUSTOMLINK = $(SRC)/custom.boot.lds
-CUSTOMOBJS = sound.o custom.o main.o alphanumeric.o attribute.o decodecaves.o characterset.o cavedata.o drawplayer.o bitshapes.o overlay.o drawscreen.o
-CUSTOMDEPENDS = sound.h main.h attribute.h
+CUSTOMOBJS = sound.o custom.o main.o alphanumeric.o \
+	attribute.o decodecaves.o characterset.o cavedata.o drawplayer.o \
+	bitshapes.o overlay.o drawscreen.o movePlayer.o charRuntime.o
+CUSTOMDEPENDS = sound.h main.h attribute.h movePlayer.h charRuntime.h
 
 CUSTOMTARGETS = $(CUSTOMELF) $(CUSTOMBIN)
 

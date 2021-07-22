@@ -1,23 +1,7 @@
     #include "main.h"
     #include "characterset.h"
+    #include "charRuntime.h"
 
-
-#define ____ 0b00000
-#define ___X 0b00001
-#define __X_ 0b00010
-#define __XX 0b00011
-#define _X__ 0b00100
-#define _X_X 0b00101
-#define _XX_ 0b00110
-#define _XXX 0b00111
-#define X___ 0b01000
-#define X__X 0b01001
-#define X_X_ 0b01010
-#define X_XX 0b01011
-#define XX__ 0b01100
-#define XX_X 0b01101
-#define XXX_ 0b01110
-#define XXXX 0b01111
 
 
 static const unsigned char BLANK[] = {
@@ -971,27 +955,27 @@ const unsigned char BUTTERFLY3[] = {
 
 
 const unsigned char CHAR_STEELWALL[] = {
-    XXXX,    //  6
-    ____,    //  4
+    X__X,    //  4
     XXXX,    //  8
     XXXX,    //  0
-    X___,    //  1
+    __XX,    //  1
     XXXX,    //  2
     XXXX,    //  3
-    ____,    //  4
-    _XXX,    //  5
+    __XX,    //  4
+    XXXX,    //  5
     XXXX,    //  9
-    ____,    //  4
+    _XX_,    //  4
     XXXX,    // 11
     XXXX,    // 12
-    __X_,    //  4
+    _XX_,    //  4
     XXXX,    // 14
     XXXX,    // 15
-    ____,    //  4
-    XX_X,    // 17
+    XX__,    //  4
+    XXXX,    // 17
     XXXX,    // 18
-    ____,    //  4
+    XX__,    //  4
     XXXX,    // 20
+    XXXX,
 
         // small
     ___X,    //  0
@@ -1560,27 +1544,26 @@ const unsigned char EXPLODETODIAMOND4[] = {
 
 const unsigned char DIAMONDA[] = {
     ____,
-    ___X,
-    ___X,
+    _X__,
+    _X__,
     ____,
-    __XX,
-    __XX,
+    XXX_,
+    XXX_,
     ____,
-    _XXX,
-    _XXX,
+    XXX_,
+    XXX_,
     ____,
-    _XXX,
-    _XXX,
+    XXX_,
+    XXX_,
     ____,
-    __XX,
-    __XX,
+    XXX_,
+    XXX_,
     ____,
-    ___X,
-    ___X,
+    XXX_,
+    XXX_,
     ____,
-    ____,
-    ____,
-
+    _X__,
+    _X__,
         // small
     ____,    //  3
     ___X,    //  4
@@ -2043,23 +2026,23 @@ const unsigned char DIAMONDx1[] = {
     // FACET RHS
 
     ____,
-    ___X,
-    ___X,
     ____,
-    __XX,
-    __XX,
-    ___X,
-    _XXX,
-    _XXX,
-    ___X,
-    _XXX,
-    _XXX,
-    ___X,
-    __XX,
-    __XX,
     ____,
-    ___X,
-    ___X,
+    ____,
+    _X__,
+    _X__,
+    ____,
+    XXX_,
+    XXX_,
+    ____,
+    XXX_,
+    XXX_,
+    ____,
+    XXX_,
+    XXX_,
+    ____,
+    _X__,
+    _X__,
     ____,
     ____,
     ____,
@@ -2094,23 +2077,23 @@ const unsigned char DIAMONDx2[] = {
 
     // FACET MID
     ____,
-    ___X,
-    ___X,
     ____,
-    __XX,
-    __XX,
     ____,
-    _XXX,
-    _XXX,
-    __X_,
-    _XXX,
-    _XXX,
-    ___X,
-    __XX,
-    __XX,
-    ___X,
-    ___X,
-    ___X,
+    ____,
+    ____,
+    ____,
+    ____,
+    _X__,
+    _X__,
+    ____,
+    XXX_,
+    XXX_,
+    ____,
+    _X__,
+    _X__,
+    ____,
+    ____,
+    ____,
     ____,
     ____,
     ____,
@@ -2145,27 +2128,26 @@ const unsigned char DIAMONDx3[] = {
     // FACET 3
 
     ____,
-    ___X,
-    ___X,
-    ____,
-    __XX,
-    __XX,
-    ____,
-    _XXX,
-    _XXX,
-    _X__,
-    _XXX,
-    _XXX,
-    __X_,
-    __XX,
-    __XX,
-    ___X,
-    ___X,
-    ___X,
     ____,
     ____,
     ____,
-
+    ____,
+    ____,
+    ____,
+    ____,
+    ____,
+    ____,
+    XXX_,
+    XXX_,
+    ____,
+    ____,
+    ____,
+    ____,
+    ____,
+    ____,
+    ____,
+    ____,
+    ____,
 
         // small
     ___X,    //  3
@@ -2198,26 +2180,27 @@ const unsigned char DIAMONDx4[] = {
     // FACET 3
 
     ____,
-    ___X,
-    ___X,
-    ____,
-    __XX,
-    __XX,
-    ___X,
-    _XXX,
-    _XXX,
-    __XX,
-    _XXX,
-    _XXX,
-    __XX,
-    __XX,
-    __XX,
-    ___X,
-    ___X,
-    ___X,
     ____,
     ____,
     ____,
+    ____,
+    ____,
+    ____,
+    ____,
+    ____,
+    X_X_,
+    XXX_,
+    X_X_,
+    ____,
+    ____,
+    ____,
+    ____,
+    ____,
+    ____,
+    ____,
+    ____,
+    ____,
+
 
         // small
     ____,    //  2
@@ -2247,23 +2230,23 @@ const unsigned char DIAMONDx4[] = {
 const unsigned char DIAMONDx5[] = {
 
     ____,
-    ___X,
-    ___X,
-    ___X,
-    __XX,
-    __XX,
-    __X_,
-    _XXX,
-    _XXX,
+    ____,
+    ____,
+    ____,
+    ____,
+    ____,
     _X__,
-    _XXX,
-    _XXX,
+    _X__,
+    _X__,
+    X_X_,
+    XXX_,
+    X_X_,
+    _X__,
+    _X__,
+    _X__,
     ____,
-    __XX,
-    __XX,
     ____,
-    ___X,
-    ___X,
+    ____,
     ____,
     ____,
     ____,
@@ -2293,7 +2276,265 @@ const unsigned char DIAMONDx5[] = {
 };
 
 
-const unsigned char DIRTY[] = {
+const unsigned char DIAMONDx6[] = {
+    ____,
+    ____,
+    ____,
+    _X__,
+    _X__,
+    _X__,
+    XXX_,
+    XXX_,
+    XXX_,
+    X_X_,
+    XXX_,
+    X_X_,
+    XXX_,
+    XXX_,
+    XXX_,
+    _X__,
+    _X__,
+    _X__,
+    ____,
+    ____,
+    ____,
+
+        // small
+    ____,    //  3
+    ___X,    //  4
+    ___X,    //  5
+    ____,    //  6
+    ___X,    //  7
+    ___X,    //  8
+    ____,    //  0
+    ____,    //  1
+    ____,    //  2
+
+    ____,    //  3
+    ___X,    //  4
+    ___X,    //  5
+    ____,    //  6
+    ___X,    //  7
+    ___X,    //  8
+    ____,    //  0
+    ____,    //  1
+    ____,    //  2
+
+
+};
+
+const unsigned char DIAMONDx7[] = {
+
+    _X__,
+    _X__,
+    _X__,
+    XXX_,
+    XXX_,
+    XXX_,
+    XXX_,
+    XXX_,
+    XXX_,
+    X_X_,
+    XXX_,
+    X_X_,
+    XXX_,
+    XXX_,
+    XXX_,
+    XXX_,
+    XXX_,
+    XXX_,
+    _X__,
+    _X__,
+    _X__,
+
+        // small
+    ____,    //  3
+    ___X,    //  4
+    ___X,    //  5
+    ____,    //  6
+    ___X,    //  7
+    ___X,    //  8
+    ____,    //  0
+    ____,    //  1
+    ____,    //  2
+
+    ____,    //  3
+    ___X,    //  4
+    ___X,    //  5
+    ____,    //  6
+    ___X,    //  7
+    ___X,    //  8
+    ____,    //  0
+    ____,    //  1
+    ____,    //  2
+
+
+};
+
+
+
+// const unsigned char DIRTY[] = {
+//     X_XX,    //  1
+//     ____,    //  2
+//     ____,    //  3
+//     XXX_,    //  4
+//     ____,    //  5
+//     ____,    //  6
+//     X_XX,    //  7
+//     ____,    //  8
+//     ____,    //  9
+//     XXX_,    // 10
+//     ____,    // 11
+//     ____,    // 12
+//     XXXX,    // 13
+//     ____,    // 14
+//     ____,    // 15
+//     XX_X,    // 16
+//     ____,    // 17
+//     ____,    // 18
+//     _XXX,    // 19
+//     ____,    // 20
+//     ____,    //  0
+
+//         // small
+//     ___X,    //  0
+//     ____,    //  1
+//     ____,    //  2
+//     ___X,    //  3
+//     ____,    //  4
+//     ____,    //  5
+//     ___X,    //  6
+//     ____,    //  7
+//     ____,    //  8
+
+//     ___X,    //  0
+//     ____,    //  1
+//     ____,    //  2
+//     ___X,    //  3
+//     ____,    //  4
+//     ____,    //  5
+//     ___X,    //  6
+//     ____,    //  7
+//     ____,    //  8
+
+// };
+
+
+
+// const unsigned char DIRTY_0000[] = {
+//     _XX_,    //  1
+//     ____,    //  2
+//     ____,    //  3
+//     XXX_,    //  4
+//     ____,    //  5
+//     ____,    //  6
+//     X_XX,    //  7
+//     ____,    //  8
+//     ____,    //  9
+//     XXX_,    // 10
+//     ____,    // 11
+//     ____,    // 12
+//     XXXX,    // 13
+//     ____,    // 14
+//     ____,    // 15
+//     XX_X,    // 16
+//     ____,    // 17
+//     ____,    // 18
+//     _XX_,    // 19
+//     ____,    // 20
+//     ____,    //  0
+
+//         // small
+//     ___X,    //  0
+//     ____,    //  1
+//     ____,    //  2
+//     ___X,    //  3
+//     ____,    //  4
+//     ____,    //  5
+//     ___X,    //  6
+//     ____,    //  7
+//     ____,    //  8
+
+//     ___X,    //  0
+//     ____,    //  1
+//     ____,    //  2
+//     ___X,    //  3
+//     ____,    //  4
+//     ____,    //  5
+//     ___X,    //  6
+//     ____,    //  7
+//     ____,    //  8
+
+// };
+
+
+// ;   A
+// ; D X B
+// ;   C
+
+
+
+
+// A|B -> TR
+// B|C -> BR
+// C|D -> BL
+// D|A -> TL
+
+// XX
+// XX
+
+// ..
+// ..
+
+// ..
+// .x
+
+// ..
+// x.
+
+// ..
+// xx
+
+// .x
+// ..
+
+// .x
+// .x
+
+// .x
+// x.
+
+// .x
+// xx
+
+// x.
+// ..
+
+// x.
+// .x
+
+// x.
+// x.
+
+// x.
+// xx
+
+// xx
+// ..
+
+// xx
+// .x
+
+// xx
+// x.
+
+// xx
+// xx
+
+
+
+const unsigned char DIRTY_0001[] = {
+
     X_XX,    //  1
     ____,    //  2
     ____,    //  3
@@ -3215,15 +3456,15 @@ const unsigned char (*charSet[])[] = {
     &BLANK, //UNCOVER4,                          // 68
     &BLANK, //UNCOVER5,                          // 69
 
-#if ENABLE_PARALLAX
+// #if ENABLE_PARALLAX
 
-    (const unsigned char (*)[])&charDiamond,        // 70
-    (const unsigned char (*)[])&charDiamond1,       // 71
-    (const unsigned char (*)[])&charDiamond2,       // 72
-    (const unsigned char (*)[])&charDiamond3,       // 73
-    (const unsigned char (*)[])&charDiamond4,       // 74
+//     (const unsigned char (*)[])&charDiamond,        // 70
+//     (const unsigned char (*)[])&charDiamond1,       // 71
+//     (const unsigned char (*)[])&charDiamond2,       // 72
+//     (const unsigned char (*)[])&charDiamond3,       // 73
+//     (const unsigned char (*)[])&charDiamond4,       // 74
 
-#else
+// #else
 
     &DIAMONDx1,                                     // 70
     &DIAMONDx2,                                     // 71
@@ -3231,10 +3472,10 @@ const unsigned char (*charSet[])[] = {
     &DIAMONDx4,                                     // 73
     &DIAMONDx5,                                     // 74
 
-#endif
+// #endif
 
-    &BLANK,                                         // 75
-    &BLANK,                                         // 76
+    &DIAMONDx6,                                     // 75
+    &DIAMONDx7,                                         // 76
     &BLANK,                                         // 77
     &BLANK,                                         // 78
     &BLANK,                                         // 79
@@ -3331,6 +3572,25 @@ const unsigned char (*charSet[])[] = {
     &CHAR_DRIP3,                         // 123     CH_DRIP3
     &CHAR_DRIPX,                         // 124     CH_DRIPX
 #endif
+
+    &DIRTY,                            // 125 CH_DIRT
+    &DIRT1,                            // 126 CH_DIRT1
+    &DIRT2,                            // 127 CH_DIRT2
+    &DIRT3,                            // 128 CH_DIRT3
+    &DIRT4,                            // 129 CH_DIRT4
+    &DIRT5,                            // 130 CH_DIRT5
+    &DIRT6,                            // 131 CH_DIRT6
+    &DIRT7,                            // 132 CH_DIRT7
+    &DIRT8,                            // 133 CH_DIRT8
+    &DIRT9,                            // 134 CH_DIRT9
+    &DIRTA,                            // 135 CH_DIRTA
+    &DIRTB,                            // 136 CH_DIRTB
+    &DIRTC,                            // 137 CH_DIRTC
+    &DIRTD,                            // 138 CH_DIRTD
+    &DIRTE,                            // 139 CH_DIRTE
+    &DIRTF,                            // 140 CH_DIRTF
+
+
 };
 
 

@@ -9,6 +9,7 @@
 #include "main.h"
 #include "attribute.h"
 #include "bitshapes.h"
+#include "movePlayer.h"
 
 
 // duplicate from defines_cdfj.h
@@ -35,35 +36,28 @@ void removeSprite() {
 
 }
 
-extern int shiftFrac;
-extern int shiftYFrac;
+extern int scrollX;
+extern int scrollY;
 //extern int attractCounter;
 
 
 void drawPlayerSprite() {
 
-#if ENABLE_SHAKE
-    extern int shakeX, shakeY;
-
-    int x = (shiftFrac + (shakeX >> 2)) >> 14;
-    int y = (shiftYFrac + (shakeY>> 2)) >> 16;
-#else
-    int x = shiftFrac >> 14;
-    int y = shiftYFrac >> 16;
-
-#endif
     removeSprite();
 
-    int ypos = (rockfordY * PIECE_DEPTH + 17 -PIECE_DEPTH) - (y * 3) - frameAdjustY + SCORE_SCANLINES - 22 + 4;
+    movePlayer();
+
+    int ypos = absRockfordY; //(rockfordY * PIECE_DEPTH + 17 -PIECE_DEPTH) - (y * 3) - frameAdjustY + SCORE_SCANLINES - 22 + 4;
     // int type = CharToType[RAM[_BOARD + rockfordY * 40 + rockfordX] & 0x7F];
-    int xpos = (rockfordX * 4 /* -frameAdjustX*/) - x;
+    int xpos = absRockfordX; //(rockfordX * 4 /* -frameAdjustX*/) - x;
 
 
     updateAnimation();
 
-    if ((/*rockfordDead &&*/ (frameAdjustY || frameAdjustX)) || (/*(type == TYPE_ROCKFORD)
-        &&*/ xpos >= 0 && xpos < 39
-        && ypos >= 0 && ypos < _ARENA_SCANLINES-PIECE_DEPTH)) {
+
+    if ( xpos >= 0 && xpos < 160
+        && ypos >= 0 && ypos < _ARENA_SCANLINES-PIECE_DEPTH) {
+
 
         const signed char *spr = playerBigSprite[*playerAnimation];
         int frameOffset = *spr++;
@@ -94,7 +88,7 @@ void drawPlayerSprite() {
             }
         }
         
-        P0_X = ((rockfordX * 4)- x) * 4 + (rockfordDirection * (frameOffset + frameAdjustX));
+        P0_X = absRockfordX+ (rockfordDirection * (frameOffset + frameAdjustX));
         if (rockfordDirection == LEFT) {
             P1_X = P0_X;
             P0_X += 8;

@@ -13,8 +13,8 @@
 
 extern int sparkleTimer;
 
-extern int shiftFrac;
-extern int shiftYFrac;
+extern int scrollX;
+extern int scrollY;
 extern int scrollSpeed;
 extern int scrollYSpeed;
 extern int targetScrollSpeed;
@@ -44,7 +44,7 @@ extern int getRandom32();
 void Scroll() {
 
     int rocky = rockfordX * PIXELS_PER_CHAR + (PIXELS_PER_CHAR >> 1);
-    int halfway = (shiftFrac >> 14) + HALFWAYX;
+    int halfway = (scrollX >> 14) + HALFWAYX;
 
     if ((halfway - SCROLLEDGER)- rocky > 0)
         targetScrollSpeed = -SCROLLSPEED_MAXIMUM_X;
@@ -52,7 +52,7 @@ void Scroll() {
         targetScrollSpeed = SCROLLSPEED_MAXIMUM_X;
 
     rocky = rockfordY * TRILINES + (TRILINES >> 1);
-    halfway = (shiftYFrac >> 16) + HALFWAYY;
+    halfway = (scrollY >> 16) + HALFWAYY;
 
     if ((halfway - SCROLLEDGERY) - rocky > 0)
         targetYScrollSpeed = -SCROLL_MAXIMUM_Y;
@@ -84,29 +84,29 @@ void Scroll() {
     }
 
 
-    shiftFrac += scrollSpeed;
-    if (shiftFrac > SCROLL_MAXIMUM_X) {
-        shiftFrac = SCROLL_MAXIMUM_X;
+    scrollX += scrollSpeed;
+    if (scrollX > SCROLL_MAXIMUM_X) {
+        scrollX = SCROLL_MAXIMUM_X;
         targetScrollSpeed = 0;
         scrollSpeed = 0;
     }
 
-    if (shiftFrac < SCROLL_MINIMUM) {
-        shiftFrac = SCROLL_MINIMUM;
+    if (scrollX < SCROLL_MINIMUM) {
+        scrollX = SCROLL_MINIMUM;
         scrollSpeed = 0;
         targetScrollSpeed = 0;
     }
 
 
-    shiftYFrac += scrollYSpeed;
-    if (shiftYFrac > (14*PIECE_DEPTH/3-2)<<16) {
-        shiftYFrac = ((14*PIECE_DEPTH/3-2)<<16);
+    scrollY += scrollYSpeed;
+    if (scrollY > (14*PIECE_DEPTH/3-2)<<16) {
+        scrollY = ((14*PIECE_DEPTH/3-2)<<16);
         scrollYSpeed = 0;
         targetYScrollSpeed = 0;
     }
 
-    if (shiftYFrac < SCROLL_MINIMUM) {
-        shiftYFrac = SCROLL_MINIMUM;
+    if (scrollY < SCROLL_MINIMUM) {
+        scrollY = SCROLL_MINIMUM;
         scrollYSpeed = 0;
         targetYScrollSpeed = 0;
     }
@@ -392,11 +392,11 @@ void drawScreen(){
 
 #if ENABLE_SHAKE
     extern int shakeX, shakeY;
-        int yOffset = ((shiftYFrac + shakeY/* + bgDriftY*/) >> 17) * 3;
-        int offset = ((shiftFrac + shakeX/* + bgDriftX*/) >> 15) & 3;
+        int yOffset = ((scrollY + shakeY/* + bgDriftY*/) >> 17) * 3;
+        int offset = ((scrollX + shakeX/* + bgDriftX*/) >> 15) & 3;
 #else
-        int yOffset = ((shiftYFrac/* + bgDriftY*/) >> 17) * 3;
-        int offset = ((shiftFrac /* + bgDriftX*/) >> 15) & 3;
+        int yOffset = ((scrollY/* + bgDriftY*/) >> 17) * 3;
+        int offset = ((scrollX /* + bgDriftX*/) >> 15) & 3;
 #endif
         while (yOffset >= PIECE_DEPTH)
             yOffset -= PIECE_DEPTH;
@@ -456,13 +456,13 @@ extern const unsigned char DUST3[];
 
     extern int shakeX, shakeY;
 
-    int lcount = -((shiftYFrac + shakeY)>>16) * 3;
-    int shift = ((shiftFrac + shakeX) >> 14 ) & 3;
+    int lcount = -((scrollY + shakeY)>>16) * 3;
+    int shift = ((scrollX + shakeX) >> 14 ) & 3;
 
 #else
 
-    int lcount = -(shiftYFrac >>16) * 3;
-    int shift = (shiftFrac >> 14 ) & 3;
+    int lcount = -(scrollY >>16) * 3;
+    int shift = (scrollX >> 14 ) & 3;
 
 #endif
 
@@ -484,9 +484,9 @@ extern const unsigned char DUST3[];
         int scn = scanline;
 
 #if ENABLE_SHAKE
-        int frac = (shiftFrac + shakeX) >> 16;
+        int frac = (scrollX + shakeX) >> 16;
 #else
-        int frac = shiftFrac >> 16;
+        int frac = scrollX >> 16;
 #endif
 
 
@@ -544,7 +544,9 @@ extern const unsigned char DUST3[];
  //                       if (((rnd >>= 8) & 0xFF) > 252) //5 - WATER_SPEED)
  //                           piece = *xchar = (rnd & 3) + CH_WATER;
                         break;
-                        
+                    case TYPE_DIRT:
+                        break;
+
                     default:
                         piece = (*Animate[type])[AnimIdx[type].index];
                     }

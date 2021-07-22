@@ -52,10 +52,11 @@ enum Direction {
 };
 
 extern enum Direction rockfordDirection;
-
+extern unsigned char bufferedSWCHA;
 
 extern int rockfordX;
 extern int rockfordY;
+extern int playerX, playerY;
 
 extern int frameAdjustX;
 extern int frameAdjustY;
@@ -63,6 +64,9 @@ extern int frameAdjustSmallX;
 extern int frameAdjustSmallY;
 extern bool rockfordDead;
 
+extern int scrollX;
+extern int scrollY;
+extern int diamonds;
 
 enum DisplayMode {
     NORMAL,
@@ -84,6 +88,10 @@ extern struct Animation AnimIdx[];
 
 void updateAnimation();
 void ProcessBoard();
+
+extern void setAnimation(int animID);
+
+extern void* DDR;
 
 
 #endif

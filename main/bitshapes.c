@@ -1556,6 +1556,8 @@ const signed char playerBigSprite[][2 + 23 * 4 + 2+ 18] = {
     -1+0, 0,
 
     ________,________, ____, ____,     //00
+    ________,________, ____, ____,     //00
+    ________,________, ____, ____,     //00
     _______X,XXX_____, HAIR, HAIR,     //00
     ______XX,XXX_____, HAIR, HAIR,     //00
     _____XXX,XXXX____, HAIR, HAIR,     //01
@@ -1570,13 +1572,11 @@ const signed char playerBigSprite[][2 + 23 * 4 + 2+ 18] = {
     ___XXXXX,XXXXX___, TOP2, TOP2,     //10
     ____XXXX,XXXX____, TOP1, TOP1,     //11
     ______XX,XX______, TOP2, TOP2,     //12
-    ______XX,XX______, TOP1, TOP1,     //13
-    ______XX,XX______, TOP2, TOP2,     //14
     ______XX,XX______, BELT, BELT,     //15
-    ______XX,XXX_____, PANT, PANT,     //16
-    ______XX,_XX_____, PANT, BOOT,     //17
-    _____XX_,_XX_____, BOOT, BOOT,     //19
-    _____XXX,_XXX____, BOOT, SOLE,     //20
+    ______XX,_XXX____, PANT, PANT,     //16
+    _______X,X_XX____, PANT, BOOT,     //17
+    ______XX,__XX____, BOOT, BOOT,     //19
+    _____XXX,__XXX___, BOOT, SOLE,     //20
     _____XXX,________, SOLE, SOLE,
     
     //2
@@ -1601,20 +1601,20 @@ const signed char playerBigSprite[][2 + 23 * 4 + 2+ 18] = {
     0+0, 0,
 
     ________,________, ____, ____,     //00
-    _______X,XXX_____, HAIR, HAIR,     //00
-    ______XX,XXX_____, HAIR, HAIR,     //00
-    _____XXX,XXXX____, HAIR, HAIR,     //01
-    _____XXX,XXXXXX__, HAIR, HAIR,     //02
-    _____XXX,XXXX____, SKIN, SKIN,     //03
-    _____XX_,X_X_____, SKIN, SKIN,     //04
-    _____XXX,XXX_____, SKIN, SKIN,     //05
-    _____XXX,XX______, SKIN, SKIN,     //06
-    ______XX,_X___XX_, SKIN, SKIN,     //07
-    ______XX,_X___XX_, SKIN, SKIN,     //08
+    ________,XXXX____, HAIR, HAIR,     //00
+    _______X,XXXX____, HAIR, HAIR,     //00
+    ______XX,XXXXX___, HAIR, HAIR,     //01
+    ______XX,XXXXXXX_, HAIR, HAIR,     //02
+    ______XX,XXXXX___, SKIN, SKIN,     //03
+    ______XX,_X_X____, SKIN, SKIN,     //04
+    ______XX,XXXX____, SKIN, SKIN,     //05
+    ______XX,XXX_____, SKIN, SKIN,     //06
+    _______X,X_X___XX, SKIN, SKIN,     //07
+    _______X,X_X___XX, SKIN, SKIN,     //08
     ____XXXX,XXXXXX__, TOP1, TOP1,     //09
     ___XXXXX,XXXXXX__, TOP2, TOP2,     //10
     __XXX_XX,XXXXX___, TOP1, TOP1,     //11
-    __XX__XX,XX______, TOP2, TOP2,     //12
+    __XX__XX,XXX_____, TOP2, TOP2,     //12
     __XX__XX,XX______, TOP1, TOP1,     //13
     ______XX,XX______, TOP2, TOP2,     //14
     __XX__XX,XX______, BELT, BELT,     //15
@@ -1645,20 +1645,20 @@ const signed char playerBigSprite[][2 + 23 * 4 + 2+ 18] = {
     -1+0, 0,
 
     ________,________, ____, ____,     //00
-    _______X,XXX_____, HAIR, HAIR,     //00
-    ______XX,XXX_____, HAIR, HAIR,     //00
-    _____XXX,XXXX____, HAIR, HAIR,     //01
-    _____XXX,XXXXXX__, HAIR, HAIR,     //02
-    _____XXX,XXXX____, SKIN, SKIN,     //03
-    _____XX_,X_X_____, SKIN, SKIN,     //04
-    _____XXX,XXX_____, SKIN, SKIN,     //05
-    _____XXX,XX______, SKIN, SKIN,     //06
-    _XX___XX,_X______, SKIN, SKIN,     //07
-    _XX___XX,_X______, SKIN, SKIN,     //08
+    ________,XXXX____, HAIR, HAIR,     //00
+    _______X,XXXX____, HAIR, HAIR,     //00
+    ______XX,XXXXX___, HAIR, HAIR,     //01
+    ______XX,XXXXXXX_, HAIR, HAIR,     //02
+    ______XX,XXXXX___, SKIN, SKIN,     //03
+    ______XX,_X_X____, SKIN, SKIN,     //04
+    ______XX,XXXX____, SKIN, SKIN,     //05
+    ______XX,XXX_____, SKIN, SKIN,     //06
+    _XX____X,X_X_____, SKIN, SKIN,     //07
+    _XX____X,X_X_____, SKIN, SKIN,     //08
     __XXXXXX,XXX_____, TOP1, TOP1,     //09
     __XXXXXX,XXXX____, TOP2, TOP2,     //10
     ___XXXXX,XXXXX___, TOP1, TOP1,     //11
-    ______XX,XX_XX___, TOP2, TOP2,     //12
+    ______XX,XXXXX___, TOP2, TOP2,     //12
     ______XX,XX__XX__, TOP1, TOP1,     //13
     ______XX,XX______, TOP2, TOP2,     //14
     ______XX,XX__XX__, BELT, BELT,     //15

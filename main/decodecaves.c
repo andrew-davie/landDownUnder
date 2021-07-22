@@ -1,21 +1,3 @@
-/* decodeCaves.c */
-/* This program decodes the Boulder Dash I cave data from the Commodore 64
-   implementation into human-readable instructions (with minimal HTML
-   formatting) and an ASCII diagram.
-   
-   Boulder Dash I by: Peter Liepa
-   This program written by:
-       Jeff Bevis <bevis@ecn.purdue.edu>
-       Peter Broadribb <peterb@perth.dialix.oz.au>
-   28 Aug 1995
-   
-   01 Oct 1995: Fixed bug in NextRandom(); I have now checked the output
-   of NextRandom() against the output of the original 6510 code, and they
-   appear to be generating the same numbers. However, the cave data,
-   although _almost_ correct, doesn't seem exactly right. I'm puzzled. [PB]
-   
-   */
-
 
 
 #include <stdio.h>
@@ -240,6 +222,10 @@ bool DecodeExplicitData() {
 
 /* **************************************** */
 void StoreObject(int x, int y, objectType anObject) {
+
+    if (anObject == CH_DIRT && (getRandom32() & 0xFF) < 10)
+        anObject = CH_DIRT + (getRandom32() & 0xF);
+        
     if (x >=0 && x < 40 && y >= -1 && y <= 22)
         RAM[_BOARD + x + (y+1)*40] = anObject;
 }
@@ -275,86 +261,11 @@ void DrawFilledRect(objectType anObject, int x, int y, int aWidth, int aHeight, 
 
 
 /* **************************************** */
-void NextRandom(int *RandSeed1, int *RandSeed2)
-/* This is the mathematical random number generator from the Commodore 64
-   implementation of Boulder Dash I. The 6510 disassembly is given in
-   comments, and the C translation follows. */
-{
-    short TempRand1;
-    short TempRand2;
-    short carry;
-    short result;
+void NextRandom(int *RandSeed1, int *RandSeed2) {
 
-    assert(((*RandSeed1 >= 0x00) && (*RandSeed1 <= 0xFF)));
-    assert(((*RandSeed2 >= 0x00) && (*RandSeed2 <= 0xFF)));
-
-/*
-            7085 NextRandom.00  LDA RandSeed1
-            7087                ROR
-            7088                ROR
-            7089                AND #$80
-            708B                STA TempRand1
-        
-            Note: ROR on the 6510 works like this:
-              7-->6-->5-->4-->3-->2-->1-->0-->C
-              ^                               |
-              |_______________________________|
-            In other words, it's a nine-bit rotate. Thus it takes two RORs to shift
-            the low bit (bit zero) into the high bit (bit 7).
-*/
-    TempRand1 = (*RandSeed1 & 0x0001) * 0x0080;	/* Bugfix! */
-
-
-        /*
-            708E                LDA RandSeed2
-            7090                ROR
-            7091                AND #$7F
-            7093                STA TempRand2
-        */
-    TempRand2 = (*RandSeed2 >> 1) & 0x007F;
-
-
-        /*
-            7096                LDA RandSeed2
-            7098                ROR
-            7099                ROR
-            709A                AND #$80
-            709C                CLC
-            709D                ADC RandSeed2
-        */
-    result = (*RandSeed2) + (*RandSeed2 & 0x0001) * 0x0080;
-    carry = (result > 0x00FF);
-    result = result & 0x00FF;
-
-
-        /*
-            709F                ADC #$13
-            70A1                STA RandSeed2
-        */
-    result = result + carry + 0x13;
-    carry = (result > 0x00FF);
-    *RandSeed2 = result & 0x00FF;
-
-
-        /*
-            70A3                LDA RandSeed1
-            70A5                ADC TempRand1
-        */
-    result = *RandSeed1 + carry + TempRand1;
-    carry = (result > 0x00FF);
-    result = result & 0x00FF;
-
-
-        /*
-            70A8                ADC TempRand2
-            70AB                STA RandSeed1
-            70AD                RTS
-        */
-    result = result + carry + TempRand2;
-    *RandSeed1 = result & 0x00FF;
-
-    assert(((*RandSeed1 >= 0x00) && (*RandSeed1 <= 0xFF)));
-    assert(((*RandSeed2 >= 0x00) && (*RandSeed2 <= 0xFF)));
+    int rnd = getRandom32();
+    *RandSeed1 = rnd & 0xFF;
+    *RandSeed2 = (rnd >> 8) & 0xFF;
 }
 
 
