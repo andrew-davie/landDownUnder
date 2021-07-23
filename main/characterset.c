@@ -1546,22 +1546,22 @@ const unsigned char DIAMONDA[] = {
     ____,
     _X__,
     _X__,
-    ____,
+    _X__,
     XXX_,
     XXX_,
-    ____,
     XXX_,
     XXX_,
-    ____,
+    XXX_,
+    X___,
     XXX_,
     XXX_,
-    ____,
+    __X_,
     XXX_,
     XXX_,
-    ____,
+    __X_,
     XXX_,
     XXX_,
-    ____,
+    XXX_,
     _X__,
     _X__,
         // small
@@ -2188,9 +2188,9 @@ const unsigned char DIAMONDx4[] = {
     ____,
     ____,
     ____,
-    X_X_,
     XXX_,
-    X_X_,
+    XXX_,
+    XXX_,
     ____,
     ____,
     ____,
@@ -2238,9 +2238,9 @@ const unsigned char DIAMONDx5[] = {
     _X__,
     _X__,
     _X__,
-    X_X_,
     XXX_,
-    X_X_,
+    XXX_,
+    XXX_,
     _X__,
     _X__,
     _X__,
@@ -2286,9 +2286,9 @@ const unsigned char DIAMONDx6[] = {
     XXX_,
     XXX_,
     XXX_,
-    X_X_,
     XXX_,
-    X_X_,
+    XXX_,
+    XXX_,
     XXX_,
     XXX_,
     XXX_,
@@ -2334,9 +2334,9 @@ const unsigned char DIAMONDx7[] = {
     XXX_,
     XXX_,
     XXX_,
-    X_X_,
     XXX_,
-    X_X_,
+    XXX_,
+    XXX_,
     XXX_,
     XXX_,
     XXX_,
@@ -3342,12 +3342,12 @@ extern unsigned char *charDrip1[];
 extern unsigned char *charDrip2[];
 extern unsigned char *charDrip3[];
 extern unsigned char *charDripSplash[];
-extern unsigned char *charDiamond[];
-extern unsigned char *charDiamond1[];
-extern unsigned char *charDiamond2[];
-extern unsigned char *charDiamond3[];
-extern unsigned char *charDiamond4[];
-extern unsigned char *charDiamond5[];
+// extern unsigned char *charDiamond[];
+// extern unsigned char *charDiamond1[];
+// extern unsigned char *charDiamond2[];
+// extern unsigned char *charDiamond3[];
+// extern unsigned char *charDiamond4[];
+// extern unsigned char *charDiamond5[];
 extern unsigned char *charDust3[];
 #endif
 
@@ -3391,11 +3391,11 @@ const unsigned char (*charSet[])[] = {
     &CHAR_BOULDER,                                  // 18
     &CHAR_BOULDER,                                  // 19
 
-#if ENABLE_PARALLAX
-    (const unsigned char (*)[])&charDiamond,        // 20
-#else
+// #if ENABLE_PARALLAX
+//     (const unsigned char (*)[])&charDiamond,        // 20
+// #else
     &DIAMONDA,                                      // 20
-#endif
+// #endif
     &BLANK,                                         // 21
     &BLANK,                                         // 22
     &BLANK,                                         // 23
@@ -3424,11 +3424,11 @@ const unsigned char (*charSet[])[] = {
     &MAGIC1,                            // 44
     &MAGIC2,                            // 45
     &MAGIC3,                            // 46
-#if ENABLE_PARALLAX
-    (const unsigned char (*)[])&charDiamond1, //1,                     // 47 pulse diamond
-#else
+// #if ENABLE_PARALLAX
+//     (const unsigned char (*)[])&charDiamond1, //1,                     // 47 pulse diamond
+// #else
     &DIAMONDx1,                             // 47
-#endif
+// #endif
     &BUTTERFLY0,                        // 48
     &BUTTERFLY0,                        // 49
 
@@ -3480,12 +3480,12 @@ const unsigned char (*charSet[])[] = {
     &BLANK,                                         // 78
     &BLANK,                                         // 79
 
-#if ENABLE_PARALLAX
+// #if ENABLE_PARALLAX
 
-    (const unsigned char (*)[])&charDiamond,        // 80   STATIC (can switch animations)
-#else
+//     (const unsigned char (*)[])&charDiamond,        // 80   STATIC (can switch animations)
+// #else
     &DIAMONDA,                                      // 80   STATIC (can switch animations)
-#endif
+// #endif
 
     
     &BLANK,                             // 81  AMOEBA THIS

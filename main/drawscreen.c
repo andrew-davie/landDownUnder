@@ -20,8 +20,8 @@ extern int scrollYSpeed;
 extern int targetScrollSpeed;
 extern int targetYScrollSpeed;
 
-int accel = 1024, accelY = 200*256;
-int decel = 160, decelY =200*16;
+int accel = 1536, accelY = 200*256;
+int decel = 200, decelY =200*16;
 
 
 // duplicate from defines_cdfj.h
@@ -32,12 +32,12 @@ extern void* DDR;
 extern int getRandom32();
 
 
-#define SCROLLSPEED_MAXIMUM_X (25 << 8)
+#define SCROLLSPEED_MAXIMUM_X (30 << 8)
 #define SCROLL_MAXIMUM_X (30 << 16)
 #define SCROLL_MAXIMUM_Y (200 << 8)
 #define SCROLL_MINIMUM 0
 
-#define SCROLLEDGER 6
+#define SCROLLEDGER 8
 #define SCROLLEDGERY 11
 
 
@@ -322,6 +322,8 @@ void looneyTuneFade() {
 
 void drawScreen(){
 
+
+
     unsigned char *const arenas[] = {
         RAM + _BUF_PF0_LEFT + SCORE_SCANLINES,
         RAM + _BUF_PF0_RIGHT + SCORE_SCANLINES,
@@ -345,12 +347,12 @@ void drawScreen(){
     extern unsigned char charDrip2[];
     extern unsigned char charDrip3[];
     extern unsigned char charDripSplash[];
-    extern unsigned char charDiamond[];
-    extern unsigned char charDiamond1[];
-    extern unsigned char charDiamond2[];
-    extern unsigned char charDiamond3[];
-    extern unsigned char charDiamond4[];
-    extern unsigned char charDiamond5[];
+    // extern unsigned char charDiamond[];
+    // extern unsigned char charDiamond1[];
+    // extern unsigned char charDiamond2[];
+    // extern unsigned char charDiamond3[];
+    // extern unsigned char charDiamond4[];
+    // extern unsigned char charDiamond5[];
 
     extern unsigned char charDust2[];
     extern unsigned char charDust3[];
@@ -433,12 +435,12 @@ extern const unsigned char DUST3[];
         charDrip2[i] = CHAR_DRIP2[i] | parallaxBlank[i];
         charDrip3[i] = CHAR_DRIP3[i] | parallaxBlank[i];
         charDripSplash[i] = CHAR_DRIPX[i] | parallaxBlank[i];
-        charDiamond[i] = DIAMONDA[i] | parallaxBlank[i];
-        charDiamond1[i] = DIAMONDx1[i] | parallaxBlank[i];
-        charDiamond2[i] = DIAMONDx2[i] | parallaxBlank[i];
-        charDiamond3[i] = DIAMONDx3[i] | parallaxBlank[i];
-        charDiamond4[i] = DIAMONDx4[i] | parallaxBlank[i];
-        charDiamond5[i] = DIAMONDx5[i] | parallaxBlank[i];
+        // charDiamond[i] = DIAMONDA[i] | parallaxBlank[i];
+        // charDiamond1[i] = DIAMONDx1[i] | parallaxBlank[i];
+        // charDiamond2[i] = DIAMONDx2[i] | parallaxBlank[i];
+        // charDiamond3[i] = DIAMONDx3[i] | parallaxBlank[i];
+        // charDiamond4[i] = DIAMONDx4[i] | parallaxBlank[i];
+        // charDiamond5[i] = DIAMONDx5[i] | parallaxBlank[i];
 
 //        charDust2[i] = DUST2[i] | parallaxBlank[i];
         charDust3[i] = DUST3[i] | parallaxBlank[i];

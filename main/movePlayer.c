@@ -23,7 +23,17 @@ void movePlayer() {
 #endif
 
     absRockfordY = (((playerY - y) * 3) >> 16) - frameAdjustY + SCORE_SCANLINES - 22 + 4;
-    diamonds = absRockfordX = (playerX - x) >> 14;
+    absRockfordX = (playerX - x) >> 14;
+
+    rockfordX = playerX >> 16;
+
+    rockfordY = 0;
+    int temp = playerY >> 16;
+    while (temp > 0) {
+        rockfordY++;
+        temp -= 7;
+    }
+
 
 }
 

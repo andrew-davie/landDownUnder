@@ -116,13 +116,13 @@ unsigned char charDrip1[CHAR_SIZE];
 unsigned char charDrip2[CHAR_SIZE];
 unsigned char charDrip3[CHAR_SIZE];
 unsigned char charDripSplash[CHAR_SIZE];
-unsigned char charDiamond[CHAR_SIZE];
+/*unsigned char charDiamond[CHAR_SIZE];
 unsigned char charDiamond1[CHAR_SIZE];
 unsigned char charDiamond2[CHAR_SIZE];
 unsigned char charDiamond3[CHAR_SIZE];
 unsigned char charDiamond4[CHAR_SIZE];
 unsigned char charDiamond5[CHAR_SIZE];
-//unsigned char charDust2[CHAR_SIZE];
+*///unsigned char charDust2[CHAR_SIZE];
 unsigned char charDust3[CHAR_SIZE];
 
 
@@ -575,20 +575,20 @@ void InitGameX() {
 
     // setup RAM chars to contain correct overview-mode char defs
 
-extern const unsigned char DIAMONDA[];
-extern const unsigned char DIAMONDx1[];
-extern const unsigned char DIAMONDx2[];
-extern const unsigned char DIAMONDx3[];
-extern const unsigned char DIAMONDx4[];
-extern const unsigned char DIAMONDx5[];
+// extern const unsigned char DIAMONDA[];
+// extern const unsigned char DIAMONDx1[];
+// extern const unsigned char DIAMONDx2[];
+// extern const unsigned char DIAMONDx3[];
+// extern const unsigned char DIAMONDx4[];
+// extern const unsigned char DIAMONDx5[];
 
     for (int i = 0; i < CHAR_SIZE; i++) {
-        charDiamond[i] = DIAMONDA[i];
-        charDiamond1[i] = DIAMONDx1[i];
-        charDiamond2[i] = DIAMONDx2[i];
-        charDiamond3[i] = DIAMONDx3[i];
-        charDiamond4[i] = DIAMONDx4[i];
-        charDiamond5[i] = DIAMONDx5[i];
+        // charDiamond[i] = DIAMONDA[i];
+        // charDiamond1[i] = DIAMONDx1[i];
+        // charDiamond2[i] = DIAMONDx2[i];
+        // charDiamond3[i] = DIAMONDx3[i];
+        // charDiamond4[i] = DIAMONDx4[i];
+        // charDiamond5[i] = DIAMONDx5[i];
         parallaxBlank[i] = 0;
     }
 
@@ -1300,19 +1300,19 @@ static unsigned char digitShape[] = {
         XX__XX__,
         XX__XX__,
         ________,
-        _XX___X_,
-        _XX___X_,
+        XXX_XXX_,
+        XXX_XXX_,
         ________,
-        __X___X_,
-        X_X___X_,
+        X_X_X_X_,
+        X_X_X_X_,
         ________,
-        X_X___X_,
-        __X___X_,
+        X_X_X_X_,
+        X_X_X_X_,
         ________,
         XXX_XXX_,
         XXX_XXX_,
         ________,
-        XXX_XXX_,
+        XX__XX__,
         XX__XX__,
         ________,
 
@@ -1429,11 +1429,11 @@ static unsigned char digitShape[] = {
         ___X___X,
         ___X___X,
         ________,
-        ___X___X,
-        __XX__XX,
         ________,
-        __XX__XX,
-        ___X___X,
+        ________,
+        ________,
+        ________,
+        ________,
         ________,
         ___X___X,
         ___X___X,
@@ -1509,18 +1509,29 @@ void drawDecimal(int cvt, int pos) {
 
 static inline void drawDiamondAndTime(){
 
-    scoreLineNew[9] = DIGIT_DOGE_L;
-    scoreLineNew[8] = DIGIT_DIAMOND;
+    diamonds = 9;
+    time = 9;
 
-    drawDecimal(diamonds, 7);
+    int base = 0;
+    if (diamonds < 10)
+        base++;
+
+    if (time < 0xA00)
+        base++;
+
+    scoreLineNew[9-base] = DIGIT_DOGE_L;
+    scoreLineNew[8-base] = DIGIT_DIAMOND;
+
+    drawDecimal(diamonds, 7-base);
+
 
     static int pulseCount = 0;
     if (!exitMode && time < 0xA00 && (pulseCount++ & 8)) {
         return;
     }
 
-    scoreLineNew[4] = DIGIT_TIME;    
-    drawDecimal(time>>8, 3);
+    scoreLineNew[5 - base] = DIGIT_TIME;    
+    drawDecimal(time>>8, 5 - base);
 }
 
 
@@ -3441,6 +3452,7 @@ const char AnimDiamondSpin[] = {
     CH_DIAMOND_PULSE_1,3,
     CH_DIAMOND_PULSE_0,4,
     CH_DIAMOND,5,
+
     255
 };
 
