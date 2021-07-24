@@ -14,7 +14,7 @@ const signed char animShake[] = {
     FRAME_SHAKE,10,
     FRAME_SHAKE2,10,
     FRAME_SHAKE3,10,
-    FRAME_LOOP,
+//    FRAME_LOOP,
     FRAME_STOP,
 };
 

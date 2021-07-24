@@ -28,9 +28,9 @@ TYPE___NOTHING,
 #endif
 TYPE_FIREFLY,                // CH_FIREFLY_7,               // 15
 TYPE_BOULDER,                // CH_BOULDER,                 // 16
-TYPE___THISFRAME,            // CH_BOULDER_FALLING_THIS,    // 17
+TYPE_ZZAP1,                  // CH_ZZAP2,                   // 17
 TYPE_BOULDER_FALLING,        // CH_BOULDER_FALLING,         // 18
-TYPE___THISFRAME,            // CH_BOULDER_THIS,            // 19
+TYPE_ROCK,                   // CH_ROCKSEED                 // 19
 TYPE_DIAMOND,                // CH_DIAMOND,                 // 20
 TYPE___THISFRAME,            // CH_DIAMOND_FALLING_THIS,    // 21
 TYPE_DIAMOND,                // CH_DIAMOND_FALLING,         // 22
@@ -41,8 +41,8 @@ TYPE___NOTHING,              // CH_FIREFLY3,                // 26
 TYPE_BUTTERFLY,              // CH_BUTTERFLY2U,             // 27
 TYPE_BUTTERFLY,              // CH_BUTTERFLY3U,             // 28
 TYPE___NOTHING,              // CH_BLANK_ALTERNATE_3,       // 29
-TYPE___NOTHING,                // CH_UNCOVER0,                // 30
-TYPE___NOTHING,                // CH_UNCOVER1,                // 31
+TYPE___NOTHING,              // CH_UNCOVER0,                // 30
+TYPE___NOTHING,              // CH_UNCOVER1,                // 31
 TYPE_EXPLODE_DIAMOND_0,      // CH_EXPLODETODIAMOND0,       // 32
 TYPE_EXPLODE_DIAMOND_1,      // CH_EXPLODETODIAMOND1,       // 33
 TYPE_EXPLODE_DIAMOND_2,      // CH_EXPLODETODIAMOND2,       // 34
@@ -55,7 +55,7 @@ TYPE_ROCKFORD_PRE,           // CH_ROCKYd,                  // 40
 TYPE_BOULDER,                // CH_BOULDER2,                // 41
 TYPE_BOULDER,                // CH_BOULDER3,                // 42
 TYPE_BOULDER,                // CH_BOULDER4,                // 43
-TYPE___NOTHING,                // CH_MAGIC1,                  // 44
+TYPE___NOTHING,              // CH_MAGIC1,                  // 44
 TYPE___NOTHING,              // CH_MAGIC2,                  // 45
 TYPE___NOTHING,              // CH_MAGIC3,                  // 46
 TYPE_DIAMOND_PULSE_0,        // CH_DIAMONDx1U,              // 47 pulse diamond
@@ -73,7 +73,7 @@ TYPE_AMOEBA,                 // CH_AMOEBA0,                 // 58
 TYPE_AMOEBA,                 // CH_AMOEBA1,                 // 59
 TYPE_AMOEBA,                 // CH_AMOEBA2,                 // 60
 TYPE_AMOEBA,                 // CH_AMOEBA3,                 // 61
-TYPE___NOTHING,                   //                // 62 
+TYPE_ZZAP,                   // CH_ZZAP,                    // 62 
 TYPE___NOTHING,         // CH_STEELWALL_1,             // 63
 TYPE___NOTHING,         // CH_UNCOVER0b,               // 64
 TYPE___NOTHING,         // CH_UNCOVER1b,               // 65
@@ -170,14 +170,29 @@ TYPE_DIRT,                   // 138     CH_DIRTD
 TYPE_DIRT,                   // 139     CH_DIRTE
 TYPE_DIRT,                   // 140     CH_DIRTF
 
+TYPE_ZZAP,                   // 141     CH_ZZAP2
 
-// 141...
+TYPE_ROCK,                   // 142     CH_ROCK0
+TYPE_ROCK,                   // 143     CH_ROCK0
+TYPE_ROCK,                   // 144     CH_ROCK0
+TYPE_ROCK,                   // 145     CH_ROCK0
+TYPE_ROCK,                   // 146     CH_ROCK0
+TYPE_ROCK,                   // 147     CH_ROCK0
+TYPE_ROCK,                   // 148     CH_ROCK0
+TYPE_ROCK,                   // 149     CH_ROCK0
+TYPE_ROCK,                   // 150     CH_ROCK0
+TYPE_ROCK,                   // 151     CH_ROCK0
+TYPE_ROCK,                   // 152     CH_ROCK0
+TYPE_ROCK,                   // 153     CH_ROCK0
+TYPE_ROCK,                   // 154     CH_ROCK0
+TYPE_ROCK,                   // 155     CH_ROCK0
+TYPE_ROCK,                   // 156     CH_ROCK0
+TYPE_ROCK,                   // 157     CH_ROCK0
 
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
+
+// 158...
+
+TYPE___THISFRAME, TYPE___THISFRAME,
 TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
 TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
 TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
@@ -256,7 +271,7 @@ const int Attribute[] = {
      _ | _ | _ | _ | _ | _ | _ | _ | _ |HRD| _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 4  OUTBOX PRE
      _ | _ | _ | _ | _ | _ | _ | _ |XIT| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 5  OUTBOX
     RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ |XPD| _ | _  , // 6  BOULDER FALL
-     _ |DRP| _ | _ | _ | _ | _ | _ | _ |HRD| _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 7  STEEL WALL
+     _ | _ | _ | _ | _ | _ | _ | _ | _ |HRD| _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 7  STEEL WALL
     RND| _ | _ | _ | _ |WTR|LAV| _ | _ | _ |SQB|ACT| _ | _ | _ | _ | _ |XPD| _ | _  , // 8  FIREFLY
     RND| _ | _ |PSH| _ | _ | _ | _ | _ |HRD| _ |ACT| _ | _ | _ | _ | _ |XPD| _ |ROL , // 9  BOULDER
     RND| _ | _ | _ | _ | _ | _ |QUI| _ | _ | _ |ACT| _ |GRB| _ | _ | _ |XPD| _ |ROL , // 10 DIAMOND
@@ -315,6 +330,7 @@ const int Attribute[] = {
 #if ENABLE_EGG
     RND| _ | _ | _ |SSP| _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ |PER| _ | _ | _  , // 63 EGG
 #endif
+    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT|BNG| _ | _ | _ | _ | _ | _ | _  , // 64 ZZAP
 
 //  RND|DRP RKF PSH SSP WTR LAV QUI XIT HRD SQB ACT BNG GRB SQD SPC PER XPD FLY ROL
 //   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |

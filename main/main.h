@@ -10,7 +10,7 @@
 #define ENABLE_PARALLAX 1
 #define ENABLE_TOGGLE_DISPLAY_ON_DEATH 0
 #define ENABLE_SHAKE 1
-#define ENABLE_EGG 0
+#define ENABLE_EGG 1
 
 #define DEF_OVERVIEW 0x80
 #define DEF_PARALLAX 0x40
@@ -93,5 +93,7 @@ extern void setAnimation(int animID);
 
 extern void* DDR;
 
+extern unsigned char spaceToggle[40];
+extern unsigned char spaceToggleDisplayed[40];
 
 #endif

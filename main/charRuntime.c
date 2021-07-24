@@ -780,33 +780,28 @@ void buildRuntimeDirt() {
 
 void roundDirtCorner(unsigned char *this) {
 
-    if (CharToType[*this] == TYPE_DIRT) {
+    // Round the corners of dirt chars where needed
 
-        // Round the corners of dirt chars where needed
+    int U = Attribute[CharToType[*(this - 40)]] & ATT_ROUNDDIRT;
+    int L = Attribute[CharToType[*(this - 1)]] & ATT_ROUNDDIRT;
+    int R = Attribute[CharToType[*(this + 1)]] & ATT_ROUNDDIRT;
+    int D = Attribute[CharToType[*(this + 40)]] & ATT_ROUNDDIRT;
 
-        int U = Attribute[CharToType[*(this - 40)]] & ATT_ROUNDDIRT;
-        int L = Attribute[CharToType[*(this - 1)]] & ATT_ROUNDDIRT;
-        int R = Attribute[CharToType[*(this + 1)]] & ATT_ROUNDDIRT;
-        int D = Attribute[CharToType[*(this + 40)]] & ATT_ROUNDDIRT;
+    unsigned char roundedDirt = CH_DIRT;
 
-        unsigned char roundedDirt = CH_DIRT;
+    if (U && R)
+        roundedDirt += 1;
 
-        if (U && R)
-            roundedDirt += 1;
+    if (R && D)
+        roundedDirt += 2;
 
-        if (R && D)
-            roundedDirt += 2;
+    if (D && L)
+        roundedDirt += 4;
 
-        if (D && L)
-            roundedDirt += 4;
+    if (L && U)
+        roundedDirt += 8;
 
-        if (L && U)
-            roundedDirt += 8;
-
-        *this = roundedDirt;
-
-    }
-
+    *this = roundedDirt;
 
 }
 

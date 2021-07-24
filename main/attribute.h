@@ -75,6 +75,10 @@ enum ObjectType {
     TYPE_EGG,                // 63
 #endif
 
+    TYPE_ZZAP,               // 64          UP SPIRAL
+    TYPE_ZZAP1,              // 65          DOWN SPIRAL
+    TYPE_ROCK,               // 66          CONGLOMERATE
+
     TYPE_MAX
 };
 
@@ -103,7 +107,7 @@ enum ChName {
 #endif
     CH_FIREFLY_7,               // 15 unused
     CH_BOULDER,                 // 16
-    CH_BOULDER_FALLING_THIS,    // 17       [+1]    scanned this frame
+    CH_ZZAP1,                   // 17       TYPE_ZZAP1
     CH_BOULDER_FALLING,         // 18       [+2]
     CH_BOULDER_THIS,            // 19
     CH_DIAMOND,                 // 20
@@ -116,7 +120,7 @@ enum ChName {
     CH_BUTTERFLY2U,             // 27
     CH_BUTTERFLY3U,             // 28
     CH_BLANK_ALTERNATE_3,       // 29
-    CH_____0, // UNCOVER0,      // 30
+    CH_____0,                   // 30
     CH_____1, // CH_UNCOVER1,   // 31
     CH_EXPLODETODIAMOND0,       // 32
     CH_EXPLODETODIAMOND1,       // 33
@@ -148,7 +152,7 @@ enum ChName {
     CH_AMOEBA1,                 // 59
     CH_AMOEBA2,                 // 60
     CH_AMOEBA3,                 // 61
-    CH_LIFE,                    // 62
+    CH_ZZAP,                    // 62
     CH_STEELWALL_1,             // 63
     CH_____2, // CH_UNCOVER0b,  // 64 Objects before this line can be generated via cave data (0-63)
     CH_____3, // CH_UNCOVER1b,  // 65
@@ -235,6 +239,24 @@ enum ChName {
     CH_DIRTE,                   // 139
     CH_DIRTF,                   // 140
 
+    CH_ZZAP2,                   // 141
+
+    CH_ROCK0,                // 142
+    CH_ROCK1,                // 143
+    CH_ROCK2,                // 144
+    CH_ROCK3,                // 145
+    CH_ROCK4,                // 146
+    CH_ROCK5,                // 147
+    CH_ROCK6,                // 148
+    CH_ROCK7,                // 149
+    CH_ROCK8,                // 150
+    CH_ROCK9,                // 151
+    CH_ROCKA,                // 152
+    CH_ROCKB,                // 153
+    CH_ROCKC,                // 154
+    CH_ROCKD,                // 154
+    CH_ROCKE,                // 155
+    CH_ROCKF,                // 156
 
 };
 

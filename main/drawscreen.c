@@ -322,8 +322,6 @@ void looneyTuneFade() {
 
 void drawScreen(){
 
-
-
     unsigned char *const arenas[] = {
         RAM + _BUF_PF0_LEFT + SCORE_SCANLINES,
         RAM + _BUF_PF0_RIGHT + SCORE_SCANLINES,
@@ -342,11 +340,11 @@ void drawScreen(){
     // bgDriftY += 8192;
 
     extern unsigned char parallaxBlank[];
-    extern unsigned char charDrip[];
-    extern unsigned char charDrip1[];
-    extern unsigned char charDrip2[];
-    extern unsigned char charDrip3[];
-    extern unsigned char charDripSplash[];
+    // extern unsigned char charDrip[];
+    // extern unsigned char charDrip1[];
+    // extern unsigned char charDrip2[];
+    // extern unsigned char charDrip3[];
+    // extern unsigned char charDripSplash[];
     // extern unsigned char charDiamond[];
     // extern unsigned char charDiamond1[];
     // extern unsigned char charDiamond2[];
@@ -430,11 +428,11 @@ extern const unsigned char DUST3[];
 
     for (int i=0; i < PIECE_DEPTH; i++) {
 
-        charDrip[i] = CHAR_DRIP[i] | parallaxBlank[i];
-        charDrip1[i] = CHAR_DRIP1[i] | parallaxBlank[i];
-        charDrip2[i] = CHAR_DRIP2[i] | parallaxBlank[i];
-        charDrip3[i] = CHAR_DRIP3[i] | parallaxBlank[i];
-        charDripSplash[i] = CHAR_DRIPX[i] | parallaxBlank[i];
+        // charDrip[i] = CHAR_DRIP[i] | parallaxBlank[i];
+        // charDrip1[i] = CHAR_DRIP1[i] | parallaxBlank[i];
+        // charDrip2[i] = CHAR_DRIP2[i] | parallaxBlank[i];
+        // charDrip3[i] = CHAR_DRIP3[i] | parallaxBlank[i];
+        // charDripSplash[i] = CHAR_DRIPX[i] | parallaxBlank[i];
         // charDiamond[i] = DIAMONDA[i] | parallaxBlank[i];
         // charDiamond1[i] = DIAMONDx1[i] | parallaxBlank[i];
         // charDiamond2[i] = DIAMONDx2[i] | parallaxBlank[i];
@@ -500,7 +498,8 @@ extern const unsigned char DUST3[];
             scanline = scn;
             lcount = slc;
 
-            unsigned char *xchar = RAM + _BOARD + ((row +1 )* 40) + (half * 5) + frac;
+            int xOffset = (half * 5) + frac;
+            unsigned char *xchar = RAM + _BOARD + ((row +1 )* 40) + xOffset;
             const unsigned char *image[6];
             // int base = row * 5 + _UNCOVER;
 
@@ -525,7 +524,14 @@ extern const unsigned char DUST3[];
                             piece = ( 7 & (rnd >>= 3)) + CH_BLANK_EXTRA1;
                         }
                         else {
-                            piece = (*Animate[type])[AnimIdx[type].index];
+
+                            if (Animate[type] && spaceToggleDisplayed[xOffset + ch] > row)
+                                piece = (*Animate[type])[AnimIdx[type].index];
+                            else
+                            {
+                                piece = 6;      // anything blank
+                            }
+                            
                         }
                         break;
                     case TYPE_AMOEBA:
@@ -550,7 +556,9 @@ extern const unsigned char DUST3[];
                         break;
 
                     default:
-                        piece = (*Animate[type])[AnimIdx[type].index];
+
+                        if (Animate[type])
+                            piece = (*Animate[type])[AnimIdx[type].index];
                     }
                 // }
 
@@ -650,12 +658,14 @@ void drawOverviewScreen() {
                     break;
 
                 default:
-                    p2 = (*Animate[type])[AnimIdx[type].index];
+
+                    if (Animate[type])
+                        p2 = (*Animate[type])[AnimIdx[type].index];
                     break;
                 }
             // }
 
-            int offset = PIECE_DEPTH + 9 * ((row + i) & 1);
+            int offset = PIECE_DEPTH + 10 * ((row + i) & 1);
             img[i] = *charSet[p2] + offset;
 
             p++;

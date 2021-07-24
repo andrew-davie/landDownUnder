@@ -487,7 +487,7 @@ void playAudio() {
                                 flashTime += lavaV;
 #if ENABLE_SHAKE
     extern int shakeTime;
-                                shakeTime += 15; //(lavaV * 6);
+                                //shakeTime += 15; //(lavaV * 6);
 #endif
                             }
 
