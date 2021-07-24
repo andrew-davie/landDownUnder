@@ -43,7 +43,7 @@
 #define DIGIT_SIZE_ROLLER 24        /* stored lines - rolling with spaces! */
 
 
-#define DIGIT_DIAMOND   (11 * DIGIT_SIZE_ROLLER)
+#define DIGIT_DOGE   (11 * DIGIT_SIZE_ROLLER)
 #define DIGIT_TIME      (12 * DIGIT_SIZE_ROLLER)
 #define DIGIT_SPACE     (13 * DIGIT_SIZE_ROLLER)
 #define DIGIT_LIVES     (14 * DIGIT_SIZE_ROLLER)
@@ -91,7 +91,7 @@ bool magicWallActive;
 
 int scoreCycle;
 
-int diamonds;
+int doge;
 int time;
 int level;
 int terminalDelay;
@@ -115,12 +115,12 @@ unsigned char parallaxBlank[CHAR_SIZE];
 // unsigned char charDrip2[CHAR_SIZE];
 // unsigned char charDrip3[CHAR_SIZE];
 // unsigned char charDripSplash[CHAR_SIZE];
-/*unsigned char charDiamond[CHAR_SIZE];
-unsigned char charDiamond1[CHAR_SIZE];
-unsigned char charDiamond2[CHAR_SIZE];
-unsigned char charDiamond3[CHAR_SIZE];
-unsigned char charDiamond4[CHAR_SIZE];
-unsigned char charDiamond5[CHAR_SIZE];
+/*unsigned char charDogeCoin[CHAR_SIZE];
+unsigned char charDogeCoin1[CHAR_SIZE];
+unsigned char charDogeCoin2[CHAR_SIZE];
+unsigned char charDogeCoin3[CHAR_SIZE];
+unsigned char charDogeCoin4[CHAR_SIZE];
+unsigned char charDogeCoin5[CHAR_SIZE];
 *///unsigned char charDust2[CHAR_SIZE];
 unsigned char charDust3[CHAR_SIZE];
 
@@ -248,7 +248,7 @@ unsigned char displayMode, lastDisplayMode;
 
 //unsigned char joy0FireBuffer = 0xFF;
 unsigned int triggerPressCounter = 0;
-unsigned int diamondsCollected;
+unsigned int dogeCollected;
 
 //#define PUSH_DELAY 10
 #define DELAY_AFTER_PUSH 3
@@ -266,7 +266,7 @@ int resetDelay = 0;
 int selectDelay = 0;
 
 int diamondValue;
-int extraDiamondValue;
+int extraDogeCoinValue;
 
 int amoebaCounter = 0;
 int amoebaGrew = 1;
@@ -580,20 +580,20 @@ void InitGameX() {
 
     // setup RAM chars to contain correct overview-mode char defs
 
-// extern const unsigned char DIAMONDA[];
-// extern const unsigned char DIAMONDx1[];
-// extern const unsigned char DIAMONDx2[];
-// extern const unsigned char DIAMONDx3[];
-// extern const unsigned char DIAMONDx4[];
-// extern const unsigned char DIAMONDx5[];
+// extern const unsigned char DOGEA[];
+// extern const unsigned char DOGEx1[];
+// extern const unsigned char DOGEx2[];
+// extern const unsigned char DOGEx3[];
+// extern const unsigned char DOGEx4[];
+// extern const unsigned char DOGEx5[];
 
     for (int i = 0; i < CHAR_SIZE; i++) {
-        // charDiamond[i] = DIAMONDA[i];
-        // charDiamond1[i] = DIAMONDx1[i];
-        // charDiamond2[i] = DIAMONDx2[i];
-        // charDiamond3[i] = DIAMONDx3[i];
-        // charDiamond4[i] = DIAMONDx4[i];
-        // charDiamond5[i] = DIAMONDx5[i];
+        // charDogeCoin[i] = DOGEA[i];
+        // charDogeCoin1[i] = DOGEx1[i];
+        // charDogeCoin2[i] = DOGEx2[i];
+        // charDogeCoin3[i] = DOGEx3[i];
+        // charDogeCoin4[i] = DOGEx4[i];
+        // charDogeCoin5[i] = DOGEx5[i];
         parallaxBlank[i] = 0;
     }
 
@@ -664,7 +664,7 @@ extern int rinc;
 
 //    joy0FireBuffer = 0xFF;
 
-    diamondsCollected = 0;
+    dogeCollected = 0;
 
     scrollSpeed = 0;
     scrollYSpeed = 0;
@@ -1550,12 +1550,12 @@ void drawDecimal(int cvt, int pos) {
 
 
 
-static inline void drawDiamondAndTime(){
+static inline void drawDogeCoinAndTime(){
 
     scoreLineNew[9] = DIGIT_DOGE_L;
-    scoreLineNew[8] = DIGIT_DIAMOND;
+    scoreLineNew[8] = DIGIT_DOGE;
 
-    drawDecimal(diamonds, 7);
+    drawDecimal(doge, 7);
 
 
     static int pulseCount = 0;
@@ -1630,7 +1630,7 @@ void drawScore() {
 
     switch (displayedScoreCycle) {
     case 0:
-        drawDiamondAndTime();
+        drawDogeCoinAndTime();
         break;
     case 1:
         drawTheScore();
@@ -2398,7 +2398,7 @@ void moveRockford(unsigned char *this, unsigned char blanker) {
 
 
 #define DIRT_DIRT 0x80
-#define DIRT_DIAMOND 0x40
+#define DIRT_DOGE 0x40
 
     unsigned char dirtFlag = 0;
 
@@ -2445,10 +2445,10 @@ void moveRockford(unsigned char *this, unsigned char blanker) {
 
                 if (Attribute[destType] & ATT_GRAB) {
 
-                    addScore(diamonds? diamondValue: extraDiamondValue);
+                    addScore(doge? diamondValue: extraDogeCoinValue);
 
-                    if (diamonds) {
-                        if (!--diamonds) {
+                    if (doge) {
+                        if (!--doge) {
                             setFlash(0x0F, 4);     //open door
                             exitTrigger = true;
                             AddAudio(SFX_EXIT);
@@ -2456,11 +2456,11 @@ void moveRockford(unsigned char *this, unsigned char blanker) {
                     }
 
 
-                    diamondsCollected++;
+                    dogeCollected++;
                     diamondGrabTime = 10;
-                    dirtFlag = DIRT_DIAMOND;
+                    dirtFlag = DIRT_DOGE;
 
-                    AddAudio(SFX_DIAMOND);
+                    AddAudio(SFX_DOGE);
                 }
 
                 if (JOY0_FIRE) {
@@ -2471,7 +2471,7 @@ void moveRockford(unsigned char *this, unsigned char blanker) {
                                (destType == TYPE_DIRT)
                             || (destType == TYPE_DIRT2)
                             || (destType == TYPE_DIRT3)
-                            ? CH_DUST : CH_DIAMOND_GRAB) ; // | FLAG_THISFRAME;
+                            ? CH_DUST : CH_DOGE_GRAB) ; // | FLAG_THISFRAME;
                         diamondGrabTime = 1;
                         setAnimation(newSnatch[dir]);
                     }
@@ -2497,7 +2497,7 @@ void moveRockford(unsigned char *this, unsigned char blanker) {
                         AnimIdx[TYPE_ROCKFORD].count = 0;
                     }
 
-                    if (dirtFlag & DIRT_DIAMOND) {
+                    if (dirtFlag & DIRT_DOGE) {
                         AnimIdx[TYPE_ROCKFORD].index = 6;
                         AnimIdx[TYPE_ROCKFORD].count = 0;
                     }
@@ -2555,7 +2555,7 @@ void moveRockford(unsigned char *this, unsigned char blanker) {
 
     pushCounter = 0;
 
-    if (*(this-40) == (CH_DIAMOND_FALLING ; // | FLAG_THISFRAME)
+    if (*(this-40) == (CH_DOGE_FALLING ; // | FLAG_THISFRAME)
         || *(this-40) == (CH_BOULDER_FALLING ; // | FLAG_THISFRAME))
             setAnimation(ID_DIE);
 
@@ -2590,6 +2590,24 @@ void moveRockford(unsigned char *this, unsigned char blanker) {
 }
 
 
+void fixRock(unsigned char *rock) {
+
+
+    unsigned char linkage = CH_ROCK0;
+
+    if (CharToType[*(rock+1)] == TYPE_ROCK)
+        linkage += 1;
+    if (CharToType[*(rock+40)] == TYPE_ROCK)
+        linkage += 2;
+    if (CharToType[*(rock-1)] == TYPE_ROCK)
+        linkage += 4;
+    if (CharToType[*(rock-40)] == TYPE_ROCK)
+        linkage += 8;
+
+    *rock = linkage;
+}
+
+
 void doRoll(unsigned char *this, unsigned int creature) {
 
     if (boardRow > 20)
@@ -2599,7 +2617,7 @@ void doRoll(unsigned char *this, unsigned int creature) {
     unsigned char *LEFTWARDS = this - 1;
     unsigned char *RIGHTWARDS = this + 1;
 
-    unsigned char c = creature == CH_DIAMOND ? CH_DIAMOND : CH_ROCK0;
+    unsigned char c = creature == CH_DOGE ? CH_DOGE : CH_ROCK0;
 
 
     if (Attribute[_DOWN] & ATT_ROLL
@@ -2840,7 +2858,6 @@ void GameScheduleProcessBoardRow() {
 
                 switch (type) {
 
-#if ENABLE_EGG
                 case TYPE_EGG: {
 
 
@@ -2883,7 +2900,6 @@ void GameScheduleProcessBoardRow() {
 
                 }
                 break;
-#endif
 
 
                 case TYPE_AMOEBA:
@@ -2891,9 +2907,9 @@ void GameScheduleProcessBoardRow() {
 
                         block+=2;
 
-                        // Trapped? Change to diamonds
+                        // Trapped? Change to doge
                         if (!lastAmoebaGrew) {
-                            *this = CH_DIAMOND;
+                            *this = CH_DOGE;
                             break;
                         }
 
@@ -2975,7 +2991,7 @@ void GameScheduleProcessBoardRow() {
                 break;
 
                 case TYPE_BUTTERFLY:
-                    handleFly(this, CH_BUTTERFLY0, 1, CH_EXPLODETODIAMOND0);
+                    handleFly(this, CH_BUTTERFLY0, 1, CH_EXPLODETODOGE0);
                     block += 10;
                     break;
 
@@ -2987,19 +3003,7 @@ void GameScheduleProcessBoardRow() {
                     break;
 
                 case TYPE_ROCK: {
-
-                        unsigned char linkage = CH_ROCK0;
-
-                        if (CharToType[*(this+1)] == TYPE_ROCK)
-                            linkage += 1;
-                        if (CharToType[*(this+40)] == TYPE_ROCK)
-                            linkage += 2;
-                        if (CharToType[*(this-1)] == TYPE_ROCK)
-                            linkage += 4;
-                        if (CharToType[*(this-40)] == TYPE_ROCK)
-                            linkage += 8;
-
-                        *this = linkage;
+                        fixRock(this);
                     }
                     break;
 
@@ -3111,13 +3115,13 @@ void GameScheduleProcessBoardRow() {
 
                     break;
 
-                // Diamond explosions
+                // DogeCoin explosions
                 // Cycle through explosion frames (0-3) and then become a diamond
 
-                case CH_EXPLODETODIAMOND0:
-                case CH_EXPLODETODIAMOND1:
-                case CH_EXPLODETODIAMOND2:
-                case CH_EXPLODETODIAMOND3:
+                case CH_EXPLODETODOGE0:
+                case CH_EXPLODETODOGE1:
+                case CH_EXPLODETODOGE2:
+                case CH_EXPLODETODOGE3:
                 case CH_EXPLODETOBLANK0:
                 case CH_EXPLODETOBLANK1:
                 case CH_EXPLODETOBLANK2:
@@ -3129,37 +3133,37 @@ void GameScheduleProcessBoardRow() {
                     *this = CH_BLANK ; // | FLAG_THISFRAME;
                     break;
 
-                case CH_EXPLODETODIAMOND4:
-                    *this = CH_DIAMOND;
+                case CH_EXPLODETODOGE4:
+                    *this = CH_DOGE;
 
                     __attribute__  ((fallthrough));
 
-                case CH_DIAMOND:
-                case CH_DIAMOND_PULSE_0:
-                case CH_DIAMOND_PULSE_1:
-                case CH_DIAMOND_PULSE_2:
-                case CH_DIAMOND_PULSE_3:
-                case CH_DIAMOND_PULSE_4:
-                case CH_DIAMOND_PULSE_5:
-                case CH_DIAMOND_PULSE_6:
-                case CH_DIAMOND_PULSE_7:
-                case CH_DIAMOND_PULSE_8:
-                case CH_DIAMOND_PULSE_9:{
+                case CH_DOGE:
+                case CH_DOGE_PULSE_0:
+                case CH_DOGE_PULSE_1:
+                case CH_DOGE_PULSE_2:
+                case CH_DOGE_PULSE_3:
+                case CH_DOGE_PULSE_4:
+                case CH_DOGE_PULSE_5:
+                case CH_DOGE_PULSE_6:
+                case CH_DOGE_PULSE_7:
+                case CH_DOGE_PULSE_8:
+                case CH_DOGE_PULSE_9:{
                     
-                    // if (creature == CH_DIAMOND) {
+                    // if (creature == CH_DOGE) {
 
 
-                    //     if ((getRandom32() & 0xFF) < 20) //DIAMOND_PULSE_EDGE)
-                    //         *this = CH_DIAMOND_PULSE_0;
+                    //     if ((getRandom32() & 0xFF) < 20) //DOGE_PULSE_EDGE)
+                    //         *this = CH_DOGE_PULSE_0;
 
                     // } else {
 
                         
 
-                    //     if (Animate[type] && (*Animate[type])[AnimIdx[type].index] == CH_DIAMOND) {
+                    //     if (Animate[type] && (*Animate[type])[AnimIdx[type].index] == CH_DOGE) {
                     //         unsigned int rnd = getRandom32();
-                    //         if ((rnd & 0xFF) < 30) //DIAMOND_PULSE_EDGE)
-                    //             *this = CH_DIAMOND;
+                    //         if ((rnd & 0xFF) < 30) //DOGE_PULSE_EDGE)
+                    //             *this = CH_DOGE;
                     //     }
 
 
@@ -3210,8 +3214,8 @@ void GameScheduleProcessBoardRow() {
 
                         *this = CH_BLANK ; // | FLAG_THISFRAME;
                         
-                        if (CharToType[creature] == TYPE_DIAMOND)
-                            *next = CH_DIAMOND + 2;
+                        if (CharToType[creature] == TYPE_DOGE)
+                            *next = CH_DOGE + 2;
 
                         else
                         {
@@ -3219,6 +3223,9 @@ void GameScheduleProcessBoardRow() {
                         }
                         
                         
+
+
+
                         
 //                        *next = (creature + 2) ; // | FLAG_THISFRAME;       // falling, scanned this frame
 
@@ -3238,9 +3245,9 @@ void GameScheduleProcessBoardRow() {
                 break;
 
 
-                case CH_DIAMOND_FALLING:
+                case CH_DOGE_FALLING:
 
-                    AddAudio(SFX_DIAMOND);
+                    AddAudio(SFX_DOGE);
 
                     __attribute__  ((fallthrough));
 
@@ -3278,14 +3285,14 @@ void GameScheduleProcessBoardRow() {
                         }
                     }
 
-                    else if (Attribute[_DOWN] & (ATT_SQUASHABLE_TO_DIAMONDS | ATT_SQUASHABLE_TO_BLANKS)) {
+                    else if (Attribute[_DOWN] & (ATT_SQUASHABLE_TO_DOGES | ATT_SQUASHABLE_TO_BLANKS)) {
 
-                        if (Attribute[_DOWN] & ATT_SQUASHABLE_TO_DIAMONDS)
-                            Explode(next, CH_EXPLODETODIAMOND0);
+                        if (Attribute[_DOWN] & ATT_SQUASHABLE_TO_DOGES)
+                            Explode(next, CH_EXPLODETODOGE0);
                     
                         else if (Attribute[_DOWN] & ATT_SQUASHABLE_TO_BLANKS) {
                             
-                            if (_DOWN != TYPE_DIAMOND && _DOWN != TYPE_EGG) {
+                            if (_DOWN != TYPE_DOGE && _DOWN != TYPE_EGG) {
 
                                 Explode(next, CH_EXPLODETOBLANK0);
 
@@ -3303,7 +3310,7 @@ void GameScheduleProcessBoardRow() {
                     else if (_DOWN == TYPE_MAGICWALL) {
 
                         int sfx = SFX_ROCK;;
-                        unsigned char trnsf = CH_DIAMOND_FALLING;
+                        unsigned char trnsf = CH_DOGE_FALLING;
 
                         if (millingTime && !magicWallActive) {
                             magicWallActive = true;
@@ -3314,10 +3321,10 @@ void GameScheduleProcessBoardRow() {
                         switch (*this) {
 //                        case CH_BOULDER_FALLING:
 //                            sfx = SFX_ROCK;
-//                            trnsf = CH_DIAMOND_FALLING;
+//                            trnsf = CH_DOGE_FALLING;
 //                            break;
-                        case CH_DIAMOND_FALLING:
-                            sfx = SFX_DIAMOND;
+                        case CH_DOGE_FALLING:
+                            sfx = SFX_DOGE;
                             trnsf = CH_BOULDER_FALLING;
                             break;
                         }
@@ -3338,8 +3345,8 @@ void GameScheduleProcessBoardRow() {
                         // stop falling
 
 
-                        if (CharToType[creature] == TYPE_DIAMOND)
-                            *this = CH_DIAMOND;
+                        if (CharToType[creature] == TYPE_DOGE)
+                            *this = CH_DOGE;
                         else
                         {
                             *this = CH_ROCK0;
@@ -3405,7 +3412,7 @@ void GameScheduleProcessBoardRow() {
                     break;
 
 
-                case CH_DIAMOND_GRAB:
+                case CH_DOGE_GRAB:
                 case CH_DIRT_GRAB:
                     // Only works because there's only ever one grab
                     if (!--diamondGrabTime)
@@ -3528,25 +3535,24 @@ const char AnimBoulderShake[] = {
 };
 
 
-const char AnimBoulderFalling[] = {
-    CH_ROCK0,255,
-};
-
-const char AnimDiamond[] = {
-    CH_DIAMOND_PULSE_0,4,
-    CH_DIAMOND_PULSE_1,3,
-    CH_DIAMOND_PULSE_2,3,
-    CH_DIAMOND_PULSE_3,2,
-    CH_DIAMOND_PULSE_4,2,
-    CH_DIAMOND_PULSE_5,2,
-    CH_DIAMOND_PULSE_6,1,
-    CH_DIAMOND_PULSE_5,2,
-    CH_DIAMOND_PULSE_4,2,
-    CH_DIAMOND_PULSE_3,2,
-    CH_DIAMOND_PULSE_2,3,
-    CH_DIAMOND_PULSE_1,3,
-    CH_DIAMOND_PULSE_0,4,
-    CH_DIAMOND,5,
+const char AnimDogeCoin[] = {
+    
+    CH_DOGE_PULSE_0,10,
+    CH_DOGE_PULSE_1,8,
+    CH_DOGE_PULSE_2,6,
+    CH_DOGE_PULSE_3,5,
+    CH_DOGE_PULSE_4,5,
+    CH_DOGE_PULSE_5,6,
+    CH_DOGE_PULSE_6,8,
+    CH_DOGE_PULSE_0,15,
+    CH_DOGE_PULSE_6,10,
+    CH_DOGE_PULSE_5,8,
+    CH_DOGE_PULSE_4,5,
+    CH_DOGE_PULSE_3,5,
+    CH_DOGE_PULSE_2,6,
+    CH_DOGE_PULSE_1,8,
+    CH_DOGE_PULSE_0,10,
+    CH_DOGE_STATIC,15,
     255,
 };
 
@@ -3555,69 +3561,12 @@ const char AnimExplodeThis[] = {
     CH_EXPLODE_THIS,255,
 };
 
-const char AnimExplodeSpace[] = {
-    CH_BLANK,255,
-};
 
-const char AnimExplodeDiamond0[] = {
-    CH_EXPLODETODIAMOND0,255,
-};
-
-const char AnimExplodeDiamond1[] = {
-    CH_EXPLODETODIAMOND1,255
-};
-
-const char AnimExplodeDiamond2[] = {
-    CH_EXPLODETODIAMOND2,255,
-};
-
-const char AnimExplodeDiamond3[] = {
-    CH_EXPLODETODIAMOND3,255,
-};
-
-const char AnimExplodeDiamond4[] = {
-    CH_EXPLODETODIAMOND4,255,
-};
-
-
-const char AnimExplodeBlank0[] = {
-    CH_EXPLODETOBLANK0,255,
-};
-
-const char AnimExplodeBlank1[] = {
-    CH_EXPLODETOBLANK1,255,
-};
-
-const char AnimExplodeBlank2[] = {
-    CH_EXPLODETOBLANK2,255,
-};
-
-const char AnimExplodeBlank3[] = {
-    CH_EXPLODETOBLANK3,255,
-};
-
-const char AnimExplodeBlank4[] = {
-    CH_EXPLODETOBLANK4,255,
-};
-
-
-const char AnimDiamondGrab[] = {
-    CH_DIAMOND_GRAB,255,
-};
-
-const char AnimDirtGrab[] = {
-    CH_DIRT_GRAB,255,
-};
-
-
-
-#if ENABLE_EGG
 const char AnimEgg[] = {
     CH_EGG, 30,
     CH_EGG2, 20,
     255,
 };
-#endif
 
 
 const char AnimZzapUP[] = {
@@ -3642,23 +3591,6 @@ const char AnimDrill[] = {
 };
 
 
-const char AnimPreRockford[] = {
-
-    CH_BLANK,255,
-//    CH_EXPLODETODIAMOND1,8,
-//    CH_EXPLODETODIAMOND2,8,
-//    CH_EXPLODETODIAMOND3,8,
-//    CH_ROCKYb,16,
-};
-
-const char AnimButterfly[] = {
-
-    CH_BUTTERFLY0,6,
-//    CH_BUTTERFLY2U,3,
-//    CH_BUTTERFLY3U,4,
-//    CH_BUTTERFLY2U,3,
-    255
-};
 
 const char AnimRockford[] = {
 
@@ -3667,28 +3599,11 @@ const char AnimRockford[] = {
     CH_DUST3, 8,
     CH_ROCKFORD,255,
 
-    CH_DIAMOND, 3,
-    CH_DIAMOND_GRAB,5,
+    CH_DOGE, 3,
+    CH_DOGE_GRAB,5,
     CH_ROCKFORD,255,
 
 };
-
-const char AnimAmoeba[] = {
-    CH_AMOEBA0,255,
-};
-
-// const char AnimUncover[] = {
-
-//     CH_STEELWALL_1,3,
-//     CH_UNCOVER0b,3,
-//     CH_UNCOVER1b,3,
-//     CH_UNCOVER2b,3,
-//     CH_UNCOVER3b,3,
-//     CH_UNCOVER4b,3,
-//     CH_UNCOVER5b,3,
-//     255
-
-// };
 
 const char AnimDrip[] = {
     CH_DRIP, 3,
@@ -3721,84 +3636,69 @@ const char AnimDripSplash[] = {
 };
 
 
-const char (*Animate[])[] = {
+
+const char (*Animate[TYPE_MAX])[] = {
 
     // indexed by object TYPE
     // 0 if the object does not animate
 
-0,                         // 0    TYPE_SPACE
-&AnimDirt,                  // 1
-&AnimBrickWall,             // 2
-&AnimMagicWall,             // 3
-&AnimPreOut,                // 4
-&AnimFlashOut,              // 5
-&AnimBoulderFalling,        // 6
-&AnimWall,                  // 7
-&AnimFirefly,               // 8
-&AnimBoulder,               // 9
-&AnimDiamond,               // 10
-&AnimExplodeSpace,          // 11
-&AnimExplodeSpace,          // 12
-&AnimExplodeSpace,          // 13
-&AnimExplodeSpace,          // 14
-&AnimExplodeSpace,          // 15
-&AnimExplodeDiamond0,       // 16
-&AnimExplodeDiamond1,       // 17
-&AnimExplodeDiamond2,       // 18
-&AnimExplodeDiamond3,       // 19
-&AnimExplodeDiamond4,       // 20
-&AnimPreRockford,           // 21
-&AnimButterfly,             // 22
-&AnimRockford,              // 23
-&AnimAmoeba,                // 24
-&AnimDrip,                  // 25
-&AnimDripSplash,            // 26
-0,                          // 27   (unused)
-0,         // 28
-0,         // 29
-0,         // 30
-0,         // 31
-0,         // 32
-0,         // 33
-0,         // 34
-0,         // 35
-0,         // 36
-0,        // 37
-0,                 // 38 nothing
-0 ,                // 39 THISFRAME OBJECT
-&AnimExplodeThis,           // 40 EXPLODE THIS OBJECT NOW
-0,                 // 41 BLANK THIS
-0,                 // 42 boulderlingk
-0,                 // 43 boulderlingk
-&AnimExplodeBlank0,         // 44
-&AnimExplodeBlank1,         // 45
-&AnimExplodeBlank2,         // 46
-&AnimExplodeBlank3,         // 47
-&AnimExplodeBlank4,         // 48
-&AnimDiamondGrab,           // 49
-&AnimDirtGrab,              // 50
-0,                          // 51   TYPE_DUST
-0,                          // 52   TYPE_DUST2
-0,                          // 53   TYPE_DUST3
-&AnimBoulderShake,          // 54
-0,                          // 55
-0,                          // 56   TYPE_DUST2_LEFT
-0,                          // 57   TYPE_DUST3_LEFT
-0,                          // 58
-0,                          // 59   TYPE_DUST2_RIGHT
-0,                          // 60   TYPE_DUST3_RIGHT
-0,                          // 61   TYPE_LAVA
-0,                          // 62   TYPE_WATER
-
-#if ENABLE_EGG
-&AnimEgg,                   // 63
-#endif
-
-&AnimZzapUP,                // 64
-&AnimZzapDOWN,              // 65
-0,                          // 66   Conglomerate rock
-
-&AnimDrill,                 // 67   DRILL
+    0,                          // 00 SPACE           
+    &AnimDirt,                  // 01 DIRT            
+    &AnimBrickWall,             // 02 BRICKWALL       
+    &AnimMagicWall,             // 03 MAGICWALL       
+    &AnimPreOut,                // 04 OUTBOX_PRE      
+    &AnimFlashOut,              // 05 OUTBOX          
+    0,                          // 06 BOULDER_FALLING 
+    &AnimWall,                  // 07 STEELWALL       
+    &AnimFirefly,               // 08 FIREFLY         
+    &AnimBoulder,               // 09 BOULDER         
+    &AnimDogeCoin,              // 10 DOGE            
+    0,                          // 11 EXPLODE_SPACE_0 
+    0,                          // 12 EXPLODE_SPACE_1 
+    0,                          // 13 EXPLODE_SPACE_2 
+    0,                          // 14 EXPLODE_SPACE_3 
+    0,                          // 15 EXPLODE_SPACE_4 
+    0,                          // 16 EXPLODE_DOGE_0  
+    0,                          // 17 EXPLODE_DOGE_1  
+    0,                          // 18 EXPLODE_DOGE_2  
+    0,                          // 19 EXPLODE_DOGE_3  
+    0,                          // 20 EXPLODE_DOGE_4  
+    0,                          // 21 ROCKFORD_PRE    
+    0,                          // 22 BUTTERFLY       
+    &AnimRockford,              // 23 ROCKFORD        
+    0,                          // 24 AMOEBA          
+    &AnimDrip,                  // 25 DRIP            
+    &AnimDripSplash,            // 26 DRIP_SPLASH     
+    0,                          // 27 __NOTHING       
+    0,                          // 28 __THISFRAME     
+    0,                          // 29 EXPLODE_THIS    
+    0,                          // 30 BLANK_THIS      
+    0,                          // 31 DIRT3           
+    0,                          // 32 DIRT2           
+    0,                          // 33 EXPLODE_BLANK_0 
+    0,                          // 34 EXPLODE_BLANK_1 
+    0,                          // 35 EXPLODE_BLANK_2 
+    0,                          // 36 EXPLODE_BLANK_3 
+    0,                          // 37 EXPLODE_BLANK_4 
+    0,                          // 38 DOGE_GRAB       
+    0,                          // 39 DIRT_GRAB       
+    0,                          // 40 DUST            
+    0,                          // 41 DUST2           
+    0,                          // 42 DUST3           
+    &AnimBoulderShake,          // 43 BOULDER_SHAKE   
+    0,                          // 44 DUST_LEFT       
+    0,                          // 45 DUST2_LEFT      
+    0,                          // 46 DUST3_LEFT      
+    0,                          // 47 DUST_RIGHT      
+    0,                          // 48 DUST2_RIGHT     
+    0,                          // 49 DUST3_RIGHT     
+    0,                          // 50 LAVA            
+    0,                          // 51 WATER           
+    &AnimEgg,                   // 52 EGG             
+    &AnimZzapUP,                // 53 ZZAP            
+    &AnimZzapDOWN,              // 54 ZZAP1           
+    0,                          // 55 ROCK            
+    &AnimDrill,                 // 56 DRILL           
 
 };
 

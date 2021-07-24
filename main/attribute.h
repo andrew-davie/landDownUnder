@@ -7,78 +7,63 @@ enum ObjectType {
 
     // +--> modify Attribute[]
 
-    TYPE_SPACE,              // 0
-    TYPE_DIRT,               // 1
-    TYPE_BRICKWALL,          // 2
-    TYPE_MAGICWALL,          // 3
-    TYPE_OUTBOX_PRE,         // 4
-    TYPE_OUTBOX,             // 5
-    TYPE_BOULDER_FALLING,    // 6
-    TYPE_STEELWALL,          // 7
-    TYPE_FIREFLY,            // 8
-    TYPE_BOULDER,            // 9
-    TYPE_DIAMOND,            // 10
+    TYPE_SPACE,              // 00
+    TYPE_DIRT,               // 01
+    TYPE_BRICKWALL,          // 02
+    TYPE_MAGICWALL,          // 03
+    TYPE_OUTBOX_PRE,         // 04
+    TYPE_OUTBOX,             // 05
+    TYPE_BOULDER_FALLING,    // 06
+    TYPE_STEELWALL,          // 07
+    TYPE_FIREFLY,            // 08
+    TYPE_BOULDER,            // 09
+    TYPE_DOGE,               // 10
     TYPE_EXPLODE_SPACE_0,    // 11
     TYPE_EXPLODE_SPACE_1,    // 12
     TYPE_EXPLODE_SPACE_2,    // 13
     TYPE_EXPLODE_SPACE_3,    // 14
     TYPE_EXPLODE_SPACE_4,    // 15
-    TYPE_EXPLODE_DIAMOND_0,  // 16
-    TYPE_EXPLODE_DIAMOND_1,  // 17
-    TYPE_EXPLODE_DIAMOND_2,  // 18
-    TYPE_EXPLODE_DIAMOND_3,  // 19
-    TYPE_EXPLODE_DIAMOND_4,  // 20
+    TYPE_EXPLODE_DOGE_0,     // 16
+    TYPE_EXPLODE_DOGE_1,     // 17
+    TYPE_EXPLODE_DOGE_2,     // 18
+    TYPE_EXPLODE_DOGE_3,     // 19
+    TYPE_EXPLODE_DOGE_4,     // 20
     TYPE_ROCKFORD_PRE,       // 21
     TYPE_BUTTERFLY,          // 22
     TYPE_ROCKFORD,           // 23
     TYPE_AMOEBA,             // 24
     TYPE_DRIP,               // 25
     TYPE_DRIP_SPLASH,        // 26
-    TYPE_DIAMOND_PULSE_0,    // 27  /delete
-    TYPE_DIAMOND_PULSE_1,    // 28  /delete
-    TYPE_DIAMOND_PULSE_2,    // 29  /delete
-    TYPE_DIAMOND_PULSE_3,    // 30  /delete
-    TYPE_DIAMOND_PULSE_4,    // 31  /delete
-    TYPE_DIAMOND_PULSE_5,    // 32  /delete
-    TYPE_DIAMOND_PULSE_6,    // 33  /delete
-    TYPE_DIAMOND_PULSE_7,    // 34  /delete
-    TYPE_DIAMOND_PULSE_8,    // 35  /delete
-    TYPE_DIAMOND_PULSE_9,    // 36  /delete
-    TYPE_DIAMOND_PULSE_10,   // 37  /delete
-    TYPE___NOTHING,          // 38
-    TYPE___THISFRAME,        // 39
-    TYPE_EXPLODE_THIS,       // 40
-    TYPE_BLANK_THIS,         // 41
-    TYPE_DIRT3,              // 42
-    TYPE_DIRT2,              // 43
-    TYPE_EXPLODE_BLANK_0,    // 44
-    TYPE_EXPLODE_BLANK_1,    // 45
-    TYPE_EXPLODE_BLANK_2,    // 46
-    TYPE_EXPLODE_BLANK_3,    // 47
-    TYPE_EXPLODE_BLANK_4,    // 48
-    TYPE_DIAMOND_GRAB,       // 49
-    TYPE_DIRT_GRAB,          // 50
-    TYPE_DUST,               // 51
-    TYPE_DUST2,              // 52
-    TYPE_DUST3,              // 53
-    TYPE_BOULDER_SHAKE,      // 54
-    TYPE_DUST_LEFT,          // 55
-    TYPE_DUST2_LEFT,         // 56
-    TYPE_DUST3_LEFT,         // 57
-    TYPE_DUST_RIGHT,         // 58
-    TYPE_DUST2_RIGHT,        // 59
-    TYPE_DUST3_RIGHT,        // 60
-    TYPE_LAVA,               // 61
-    TYPE_WATER,              // 62
-#if ENABLE_EGG
-    TYPE_EGG,                // 63
-#endif
-
-    TYPE_ZZAP,               // 64          UP SPIRAL
-    TYPE_ZZAP1,              // 65          DOWN SPIRAL
-    TYPE_ROCK,               // 66          CONGLOMERATE
-
-    TYPE_DRILL,              // 67          DRILL
+    TYPE___NOTHING,          // 27
+    TYPE___THISFRAME,        // 28
+    TYPE_EXPLODE_THIS,       // 29
+    TYPE_BLANK_THIS,         // 30
+    TYPE_DIRT3,              // 31
+    TYPE_DIRT2,              // 32
+    TYPE_EXPLODE_BLANK_0,    // 33
+    TYPE_EXPLODE_BLANK_1,    // 34
+    TYPE_EXPLODE_BLANK_2,    // 35
+    TYPE_EXPLODE_BLANK_3,    // 36
+    TYPE_EXPLODE_BLANK_4,    // 37
+    TYPE_DOGE_GRAB,          // 38
+    TYPE_DIRT_GRAB,          // 39
+    TYPE_DUST,               // 40
+    TYPE_DUST2,              // 41
+    TYPE_DUST3,              // 42
+    TYPE_BOULDER_SHAKE,      // 43
+    TYPE_DUST_LEFT,          // 44
+    TYPE_DUST2_LEFT,         // 45
+    TYPE_DUST3_LEFT,         // 46
+    TYPE_DUST_RIGHT,         // 47
+    TYPE_DUST2_RIGHT,        // 48
+    TYPE_DUST3_RIGHT,        // 49
+    TYPE_LAVA,               // 50
+    TYPE_WATER,              // 51
+    TYPE_EGG,                // 52
+    TYPE_ZZAP,               // 53
+    TYPE_ZZAP1,              // 54
+    TYPE_ROCK,               // 55
+    TYPE_DRILL,              // 56
 
 // +--> modify Attribute[]
 
@@ -89,117 +74,113 @@ enum ChName {
 
     // see charSet @ characterset.c
 
-    CH_BLANK,                   // 0
-    CH_DIRTY,                   // 1
-    CH_BRICKWALL,               // 2
-    CH_MAGICWALL,               // 3       // magic wall
-    CH_DOORCLOSED,              // 4       exit door
-    CH_DOOROPEN_0,              // 5
-    CH_DOOROPEN_1,              // 6
-    CH_STEELWALL_0,             // 7
-    CH_FIREFLY_0,               // 8
-    CH_FIREFLY_1,               // 9
-    CH_FIREFLY_2,               // 10
-    CH_FIREFLY_3,               // 11
-    CH_DIRTY3,                  // 12
-    CH_DIRTY2,                  // 13
-#if ENABLE_EGG
-    CH_EGG,                     // 14
-#else
-    CH_____8,
-#endif
-    CH_FIREFLY_7,               // 15 unused
-    CH_BOULDER,                 // 16
-    CH_ZZAP1,                   // 17       TYPE_ZZAP1
-    CH_BOULDER_FALLING,         // 18       [+2]
-    CH_ROCKSEED,                // 19
-    CH_DIAMOND,                 // 20
-    CH_DIAMOND_FALLING_THIS,    // 21       [+1]    scanned this frame
-    CH_DIAMOND_FALLING,         // 22       [+2]
-    CH_DIAMOND_THIS,            // 23
-    CH_DIAMOND_4,               // 24
-    CH_FIREFLY2,                // 25
-    CH_FIREFLY3,                // 26
-    CH_BUTTERFLY2U,             // 27
-    CH_BUTTERFLY3U,             // 28
-    CH_BLANK_ALTERNATE_3,       // 29
-    CH_____0,                   // 30
-    CH_____1, // CH_UNCOVER1,   // 31
-    CH_EXPLODETODIAMOND0,       // 32
-    CH_EXPLODETODIAMOND1,       // 33
-    CH_EXPLODETODIAMOND2,       // 34
-    CH_EXPLODETODIAMOND3,       // 35
-    CH_EXPLODETODIAMOND4,       // 36
-    CH_ROCKYa,                  // 37
-    CH_ROCKYb,                  // 38
-    CH_ROCKYc,                  // 39
-    CH_ROCKYd,                  // 40
-    CH_BOULDER2,                // 41
-    CH_BOULDER3,                // 42
-    CH_BOULDER4,                // 43
-    CH_MAGIC1,                  // 44
-    CH_MAGIC2,                  // 45
-    CH_MAGIC3,                  // 46
-    CH_DIAMONDx1U,              // 47 pulse diamond
-    CH_BUTTERFLY0,              // 48
-    CH_BUTTERFLY1,              // 49
-    CH_BUTTERFLY2,              // 50
-    CH_BUTTERFLY3,              // 51
-    CH_BUTTERFLY_4,             // 52
-    CH_BUTTERFLY_5,             // 53
-    CH_BUTTERFLY_6,             // 54
-    CH_BUTTERFLY_7,             // 55
-    CH_xxROCKFORD,                // 56         unused
-    CH_xxROCKFORD_THIS,           // 57       unused scanned this frame
-    CH_AMOEBA0,                 // 58
-    CH_AMOEBA1,                 // 59
-    CH_AMOEBA2,                 // 60
-    CH_AMOEBA3,                 // 61
-    CH_ZZAP,                    // 62
-    CH_STEELWALL_1,             // 63
-    CH_____2, // CH_UNCOVER0b,  // 64 Objects before this line can be generated via cave data (0-63)
-    CH_____3, // CH_UNCOVER1b,  // 65
-    CH_____4, // CH_UNCOVER2b,  // 66
-    CH_____5, // CH_UNCOVER3b,  // 67
-    CH_____6, // CH_UNCOVER4b,  // 68
-    CH_____7, // CH_UNCOVER5b,  // 69
-    CH_DIAMOND_PULSE_0,         // 70
-    CH_DIAMOND_PULSE_1,         // 71
-    CH_DIAMOND_PULSE_2,         // 72
-    CH_DIAMOND_PULSE_3,         // 73
-    CH_DIAMOND_PULSE_4,         // 74
-    CH_DIAMOND_PULSE_5,         // 75
-    CH_DIAMOND_PULSE_6,         // 76
-    CH_DIAMOND_PULSE_7,         // 77     /delete
-    CH_DIAMOND_PULSE_8,         // 78     /delete
-    CH_DIAMOND_PULSE_9,         // 79     /delete
-    CH_DIAMOND_STATIC,          // 80  (CAN SWITCH ANIMATIONS ON THIS!)
-    CH_AMOEBA_BLANK,            // 81   ???
-    CH_EXPLODE_THIS,            // 82   OBJECT EXPLODES NEXT FRAME
-    CH_BLANK_EXTRA1,            // 83
-    CH_BLANK_EXTRA2,            // 84
-    CH_BLANK_EXTRA3,            // 85
-    CH_BLANK_EXTRA4,            // 86
-    CH_BLANK_EXTRA5,            // 86
-    CH_BLANK_EXTRA6,            // 87
-    CH_BLANK_EXTRA7,            // 88
-    CH_BLANK_EXTRA8,            // 90
-    CH_UNKNOWN23,               // 91   ???
-    CH_EXPLODETOBLANK0,         // 92
-    CH_EXPLODETOBLANK1,         // 93
-    CH_EXPLODETOBLANK2,         // 94
-    CH_EXPLODETOBLANK3,         // 95
-    CH_EXPLODETOBLANK4,         // 96
-    CH_DIAMOND_GRAB,            // 97
-    CH_DIRT_GRAB,               // 98
-    CH_DUST,                    // 99
+    CH_BLANK,                   // 000
+    CH_DIRTY,                   // 001
+    CH_BRICKWALL,               // 002
+    CH_MAGICWALL,               // 003
+    CH_DOORCLOSED,              // 004
+    CH_DOOROPEN_0,              // 005
+    CH_DOOROPEN_1,              // 006
+    CH_STEELWALL_0,             // 007
+    CH_FIREFLY_0,               // 008
+    CH_FIREFLY_1,               // 009
+    CH_FIREFLY_2,               // 010
+    CH_FIREFLY_3,               // 011
+    CH_DIRTY3,                  // 012
+    CH_DIRTY2,                  // 013
+    CH_EGG,                     // 014
+    CH_FIREFLY_7,               // 015
+    CH_BOULDER,                 // 016
+    CH_ZZAP1,                   // 017
+    CH_BOULDER_FALLING,         // 018
+    CH_ROCKSEED,                // 019
+    CH_DOGE,                    // 020
+    CH_DOGE_FALLING_THIS,       // 021
+    CH_DOGE_FALLING,            // 022
+    CH_DOGE_THIS,               // 023
+    CH_DOGE_4,                  // 024
+    CH_FIREFLY2,                // 025
+    CH_FIREFLY3,                // 026
+    CH_BUTTERFLY2U,             // 027
+    CH_BUTTERFLY3U,             // 028
+    CH_BLANK_ALTERNATE_3,       // 029
+    CH_____0,                   // 030
+    CH_____1,                   // 031
+    CH_EXPLODETODOGE0,          // 032
+    CH_EXPLODETODOGE1,          // 033
+    CH_EXPLODETODOGE2,          // 034
+    CH_EXPLODETODOGE3,          // 035
+    CH_EXPLODETODOGE4,          // 036
+    CH_ROCKYa,                  // 037
+    CH_ROCKYb,                  // 038
+    CH_ROCKYc,                  // 039
+    CH_ROCKYd,                  // 040
+    CH_BOULDER2,                // 041
+    CH_BOULDER3,                // 042
+    CH_BOULDER4,                // 043
+    CH_MAGIC1,                  // 044
+    CH_MAGIC2,                  // 045
+    CH_MAGIC3,                  // 046
+    CH_DOGEx1U,                 // 047
+    CH_BUTTERFLY0,              // 048
+    CH_BUTTERFLY1,              // 049
+    CH_BUTTERFLY2,              // 050
+    CH_BUTTERFLY3,              // 051
+    CH_BUTTERFLY_4,             // 052
+    CH_BUTTERFLY_5,             // 053
+    CH_BUTTERFLY_6,             // 054
+    CH_BUTTERFLY_7,             // 055
+    CH_xxROCKFORD,              // 056
+    CH_xxROCKFORD_THIS,         // 057
+    CH_AMOEBA0,                 // 058
+    CH_AMOEBA1,                 // 059
+    CH_AMOEBA2,                 // 060
+    CH_AMOEBA3,                 // 061
+    CH_ZZAP,                    // 062
+    CH_STEELWALL_1,             // 063
+    CH_____2,                   // 064
+    CH_____3,                   // 065
+    CH_____4,                   // 066
+    CH_____5,                   // 067
+    CH_____6,                   // 068
+    CH_____7,                   // 069
+    CH_DOGE_PULSE_0,            // 070
+    CH_DOGE_PULSE_1,            // 071
+    CH_DOGE_PULSE_2,            // 072
+    CH_DOGE_PULSE_3,            // 073
+    CH_DOGE_PULSE_4,            // 074
+    CH_DOGE_PULSE_5,            // 075
+    CH_DOGE_PULSE_6,            // 076
+    CH_DOGE_PULSE_7,            // 077
+    CH_DOGE_PULSE_8,            // 078
+    CH_DOGE_PULSE_9,            // 079
+    CH_DOGE_STATIC,             // 080
+    CH_AMOEBA_BLANK,            // 081
+    CH_EXPLODE_THIS,            // 082
+    CH_BLANK_EXTRA1,            // 083
+    CH_BLANK_EXTRA2,            // 084
+    CH_BLANK_EXTRA3,            // 085
+    CH_BLANK_EXTRA4,            // 086
+    CH_BLANK_EXTRA5,            // 087
+    CH_BLANK_EXTRA6,            // 088
+    CH_BLANK_EXTRA7,            // 089
+    CH_BLANK_EXTRA8,            // 090
+    CH_UNKNOWN23,               // 091
+    CH_EXPLODETOBLANK0,         // 092
+    CH_EXPLODETOBLANK1,         // 093
+    CH_EXPLODETOBLANK2,         // 094
+    CH_EXPLODETOBLANK3,         // 095
+    CH_EXPLODETOBLANK4,         // 096
+    CH_DOGE_GRAB,               // 097
+    CH_DIRT_GRAB,               // 098
+    CH_DUST,                    // 099
     CH_DUST2,                   // 100
     CH_DUST3,                   // 101
     CH_BOULDER_SHAKE,           // 102
     CH_DUST_LEFT,               // 103
     CH_DUST2_LEFT,              // 104
     CH_DUST3_LEFT,              // 105
-    CH_DUST_RIGHT,              // 106      (dummy)
+    CH_DUST_RIGHT,              // 106
     CH_DUST2_RIGHT,             // 107
     CH_DUST3_RIGHT,             // 108
     CH_LAVA,                    // 109
@@ -210,21 +191,14 @@ enum ChName {
     CH_WATER1,                  // 114
     CH_WATER2,                  // 115
     CH_WATER3,                  // 116
-#if ENABLE_EGG
     CH_EGG2,                    // 117
-#else
-    CH_____9,
-#endif
-    
     CH_ROCKFORD,                // 118
     CH_ROCKFORD_THIS,           // 119
-
     CH_DRIP,                    // 120
     CH_DRIP1,                   // 121
     CH_DRIP2,                   // 122
     CH_DRIP3,                   // 123
     CH_DRIPX,                   // 124
-
     CH_DIRT,                    // 125
     CH_DIRT1,                   // 126
     CH_DIRT2,                   // 127
@@ -241,30 +215,28 @@ enum ChName {
     CH_DIRTD,                   // 138
     CH_DIRTE,                   // 139
     CH_DIRTF,                   // 140
-
     CH_ZZAP2,                   // 141
+    CH_ROCK0,                   // 142
+    CH_ROCK1,                   // 143
+    CH_ROCK2,                   // 144
+    CH_ROCK3,                   // 145
+    CH_ROCK4,                   // 146
+    CH_ROCK5,                   // 147
+    CH_ROCK6,                   // 148
+    CH_ROCK7,                   // 149
+    CH_ROCK8,                   // 150
+    CH_ROCK9,                   // 151
+    CH_ROCKA,                   // 152
+    CH_ROCKB,                   // 153
+    CH_ROCKC,                   // 154
+    CH_ROCKD,                   // 155
+    CH_ROCKE,                   // 156
+    CH_ROCKF,                   // 157
+    CH_DRILL,                   // 158
+    CH_DRILL1,                  // 159
+    CH_DRILL2,                  // 160
 
-    CH_ROCK0,                // 142
-    CH_ROCK1,                // 143
-    CH_ROCK2,                // 144
-    CH_ROCK3,                // 145
-    CH_ROCK4,                // 146
-    CH_ROCK5,                // 147
-    CH_ROCK6,                // 148
-    CH_ROCK7,                // 149
-    CH_ROCK8,                // 150
-    CH_ROCK9,                // 151
-    CH_ROCKA,                // 152
-    CH_ROCKB,                // 153
-    CH_ROCKC,                // 154
-    CH_ROCKD,                // 155
-    CH_ROCKE,                // 156
-    CH_ROCKF,                // 157
-
-    CH_DRILL,                // 158
-    CH_DRILL1,               // 159
-    CH_DRILL2                // 160
-
+    CH_MAX,
 };
 
 
@@ -274,7 +246,7 @@ enum ChName {
 #define ATT_EXPLODABLE 4                 /*  object can be destroyed by explosion */
 #define ATT_PERMEABLE 8                  /*  amoeba can grow here */
 #define ATT_BLANK 16                     /*  blank square */
-#define ATT_SQUASHABLE_TO_DIAMONDS 32                /*  objects can fall on this */
+#define ATT_SQUASHABLE_TO_DOGES 32                /*  objects can fall on this */
 #define ATT_GRAB 64                      /*  grabbable object */
 #define ATT_EXPLODES 128                 /*  object explodes if killed */
 #define ATT_ACTIVE 256                   /*  object requires checking/AI DISABLED!!!*/

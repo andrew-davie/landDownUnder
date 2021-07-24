@@ -17,7 +17,7 @@ enum AudioID {
     SFX_DIRT,
     SFX_ROCK,
     SFX_ROCK2,
-    SFX_DIAMOND,
+    SFX_DOGE,
     SFX_EXTRA,
 //    SFX_UNCOVER,
     SFX_BLIP,

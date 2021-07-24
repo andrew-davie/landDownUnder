@@ -131,10 +131,10 @@ void doPlayer() {
 
 //                 if (Attribute[destType] & ATT_GRAB) {
 
-//                     addScore(diamonds? diamondValue: extraDiamondValue);
+//                     addScore(doge? diamondValue: extraDogeCoinValue);
 
-//                     if (diamonds) {
-//                         if (!--diamonds) {
+//                     if (doge) {
+//                         if (!--doge) {
 //                             setFlash(0x0F, 4);     //open door
 //                             exitTrigger = true;
 //                             AddAudio(SFX_EXIT);
@@ -142,11 +142,11 @@ void doPlayer() {
 //                     }
 
 
-//                     diamondsCollected++;
+//                     dogeCollected++;
 //                     diamondGrabTime = 10;
-//                     dirtFlag = DIRT_DIAMOND;
+//                     dirtFlag = DIRT_DOGE;
 
-//                     AddAudio(SFX_DIAMOND);
+//                     AddAudio(SFX_DOGE);
 //                 }
 
 //                 if (JOY0_FIRE) {
@@ -157,7 +157,7 @@ void doPlayer() {
 //                                (destType == TYPE_DIRT)
 //                             || (destType == TYPE_DIRT2)
 //                             || (destType == TYPE_DIRT3)
-//                             ? CH_DUST : CH_DIAMOND_GRAB) | FLAG_THISFRAME;
+//                             ? CH_DUST : CH_DOGE_GRAB) | FLAG_THISFRAME;
 //                         diamondGrabTime = 1;
 //                         setAnimation(newSnatch[dir]);
 //                     }
@@ -183,7 +183,7 @@ void doPlayer() {
 //                         AnimIdx[TYPE_ROCKFORD].count = 0;
 //                     }
 
-//                     if (dirtFlag & DIRT_DIAMOND) {
+//                     if (dirtFlag & DIRT_DOGE) {
 //                         AnimIdx[TYPE_ROCKFORD].index = 6;
 //                         AnimIdx[TYPE_ROCKFORD].count = 0;
 //                     }
@@ -241,7 +241,7 @@ void doPlayer() {
 
 //     pushCounter = 0;
 
-//     if (*(this-40) == (CH_DIAMOND_FALLING | FLAG_THISFRAME)
+//     if (*(this-40) == (CH_DOGE_FALLING | FLAG_THISFRAME)
 //         || *(this-40) == (CH_BOULDER_FALLING | FLAG_THISFRAME))
 //             setAnimation(ID_DIE);
 

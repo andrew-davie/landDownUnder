@@ -97,8 +97,8 @@ void DecodeCave(UBYTE *acaveData)
 
 extern int level;
 extern int diamondValue;
-extern int extraDiamondValue;
-extern int diamonds;
+extern int extraDogeCoinValue;
+extern int doge;
 extern int time;
 extern int millingTime;
 
@@ -107,7 +107,7 @@ extern int millingTime;
 
 
     diamondValue = acaveData[2];
-    extraDiamondValue = acaveData[3];
+    extraDogeCoinValue = acaveData[3];
 
     extern int lava;
     extern int water;
@@ -124,7 +124,7 @@ extern int millingTime;
     displayMode = acaveData[21] & 0x80 ? OVERVIEW : NORMAL;
     parallax = acaveData[21] & 0x40;
 
-    diamonds = acaveData[9+level]; 
+    doge = acaveData[9+level]; 
     
     time = (acaveData[14+level]<<8)+60;
 

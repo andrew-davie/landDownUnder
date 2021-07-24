@@ -9,7 +9,7 @@
 #define RECT 0b11000000
 
 #define DIRT 1
-#define DIAMOND 0x14
+#define DOGE 0x14
 #define WALL 2
 #define MAGIC 3
 #define STEEL 7
@@ -52,10 +52,10 @@ $10 Boulder, stationary
 $11 Boulder, stationary, scanned this frame
 $12 Boulder, falling
 $13 Boulder, falling, scanned this frame
-$14 Diamond, stationary
-$15 Diamond, stationary, scanned this frame
-$16 Diamond, falling
-$17 Diamond, falling, scanned this frame
+$14 DogeCoin, stationary
+$15 DogeCoin, stationary, scanned this frame
+$16 DogeCoin, falling
+$17 DogeCoin, falling, scanned this frame
 $18 Fireflyx
 $19 fireflyx
 $1A
@@ -64,11 +64,11 @@ $1C Explode to Space stage 1
 $1D Explode to Space stage 2
 $1E Explode to Space stage 3
 $1F Explode to Space stage 4
-$20 Explode to Diamond stage 0
-$21 Explode to Diamond stage 1
-$22 Explode to Diamond stage 2
-$23 Explode to Diamond stage 3
-$24 Explode to Diamond stage 4
+$20 Explode to DogeCoin stage 0
+$21 Explode to DogeCoin stage 1
+$22 Explode to DogeCoin stage 2
+$23 Explode to DogeCoin stage 3
+$24 Explode to DogeCoin stage 4
 $25 Pre Rockford stage 1 (ie when inbox morphs into Rockford)
 $26 Pre Rockford stage 2
 $27 Pre Rockford stage 3
@@ -111,11 +111,11 @@ $05     Initial randomiser seed value for difficulty level 2
 $06     Initial randomiser seed value for difficulty level 3 
 $07     Initial randomiser seed value for difficulty level 4 
 $08     Initial randomiser seed value for difficulty level 5 
-$09     Diamonds needed on difficulty level 1 
-$0A     Diamonds needed on difficulty level 2 
-$0B     Diamonds needed on difficulty level 3 
-$0C     Diamonds needed on difficulty level 4 
-$0D     Diamonds needed on difficulty level 5 
+$09     DogeCoins needed on difficulty level 1 
+$0A     DogeCoins needed on difficulty level 2 
+$0B     DogeCoins needed on difficulty level 3 
+$0C     DogeCoins needed on difficulty level 4 
+$0D     DogeCoins needed on difficulty level 5 
 $0E     Cave time for difficulty level 1 
 $0F     Cave time for difficulty level 2 
 $10     Cave time for difficulty level 3 
@@ -144,8 +144,8 @@ UBYTE BD2_caveA[] = {
 /*
 [cave]
 Name=Cave A
-DiamondValue=15
-DiamondsRequired=10 10 10 20 20
+DogeCoinValue=15
+DogeCoinsRequired=10 10 10 20 20
 CaveTime=240 160 120 100 100
 Colors=Orange Gray1 White
 MagicWallTime=25
@@ -157,7 +157,7 @@ MagicWallTime=25
 
 11,12,13,14,15,         // randomiser[level]
 
-10,       // diamonds needed
+10,       // doge needed
 10,
 10,
 20,
@@ -173,7 +173,7 @@ MagicWallTime=25
 STEEL,DIRT,
 
 /*
-RandomFill=BOULDER 50 DIAMOND 5
+RandomFill=BOULDER 50 DOGE 5
 */
 
 0x10,0x14,0,0,
@@ -344,7 +344,7 @@ UBYTE BD2_caveB[] = { //tetris
 3,10,       // diamond $
 
 100,137,140,251,51,             // randomiser[level]
-75,80,85,90,95,                 // diamonds[level]
+75,80,85,90,95,                 // doge[level]
 200, 190, 180, 170, 160,        // time[level]
 
 0,0,DEF_PARALLAX,
@@ -434,7 +434,7 @@ UBYTE BD4_caveD[] = {
 
 0x0,0x0,0x0,0x0,0x0,        // randomiser[level]
 
-75,       // diamonds needed
+75,       // doge needed
 80,
 85,
 90,
@@ -488,7 +488,7 @@ UBYTE caveCat[] = {
 0x0A,0x0F,  // diamond $
 
 0xFA,0x0B,0x0C,0x0D,0x0E,       // randomiser[level]
-0x0C,0x0C,0x0C,0x0C,0x0C,       // diamonds[level]
+0x0C,0x0C,0x0C,0x0C,0x0C,       // doge[level]
 0x96,0x6E,0x46,0x28,0x1E,       // time[level]
 
 24,0,DEF_PARALLAX,
@@ -572,7 +572,7 @@ UBYTE cave1[]= {
 STEEL,CH_DIRT,
 
 
-CH_DIAMOND,CH_BLANK,CH_BOULDER,CH_EGG,
+CH_DOGE,CH_BLANK,CH_BOULDER,CH_EGG,
 0x68, 0x60,0x10,0x2,
 
 //0x42,0x01,0x09+SHIFTY_1,0x1E,0x02,
@@ -845,7 +845,7 @@ UBYTE cave8[]= {
 0x0A,0x14,  // diamond $
 
 0x01,0x03,0x04,0x05,0x06,       // randomiser[level]
-0x0A,0x0F,0x14,0x14,0x14,       // diamonds[level]
+0x0A,0x0F,0x14,0x14,0x14,       // doge[level]
 0x78,0x6E,0x64,0x5A,0x50,       // time[level]
 
 0,0,DEF_PARALLAX,
@@ -893,7 +893,7 @@ UBYTE cave9[]= {
 0x05,0x0A,  // diamond $
 
 0x64,0x89,0x8C,0xFB,0x33,       // randomiser[level]
-0x4B,0x4B,0x50,0x55,0x5A,            // diamonds
+0x4B,0x4B,0x50,0x55,0x5A,            // doge
 0x96,0x96,0x82,0x82,0x78,
 
 0,20,0,  // NO PARALLAX
@@ -1025,7 +1025,7 @@ UBYTE cave12[]= {
 STEEL,CH_DIRT,
 
 
-CH_DIAMOND,CH_BLANK,CH_ROCKSEED,CH_EGG,
+CH_DOGE,CH_BLANK,CH_ROCKSEED,CH_EGG,
 0x68, 0x60,0x60,0x2,
 
 //0x42,0x01,0x09+SHIFTY_1,0x1E,0x02,
@@ -1241,14 +1241,14 @@ UBYTE cave17[]= {
 0x1E,0x00,  // diamond $
 
 0x0A,0x0B,0x0C,0x0D,0x0E,       // randomiser[level]
-0x06,0x06,0x06,0x06,0x06,       // diamonds[level]
+0x06,0x06,0x06,0x06,0x06,       // doge[level]
 0x14,0x14,0x14,0x14,0x14,       // time[level]
 
 0,0,DEF_PARALLAX,
 STEEL,DIRT,                      // border, fill
 
 
-BOULDER,DIAMOND,0x00,0x00,            // random objects
+BOULDER,DOGE,0x00,0x00,            // random objects
 0x04,0x08,0x00,0x00,            // probability
 
 //FILLRECT+DIRT,0x00,0x02,0x28,0x16,DIRT,       // was STEEL
@@ -1277,7 +1277,7 @@ UBYTE cave18[]= {
 0x0A,0x00,  // diamond $
 
 0x0A,0x0B,0x0C,0x0D,0x0E,       // randomiser[level]
-0x10,0x10,0x10,0x10,0x10,       // diamonds[level]
+0x10,0x10,0x10,0x10,0x10,       // doge[level]
 0x0F,0x0F,0x0F,0x0F,0x0F,       // time[level]
 
 0,0,0,
@@ -1603,7 +1603,7 @@ const struct caveInfo caveList[] = {
 //             },
 //     },
 
-//     {   // 8 fireflies in boxes guarding diamonds
+//     {   // 8 fireflies in boxes guarding doge
 
 //         cave5,      {   { 0xE4, 0x44, 0xA8,
 //                     0x24, 0x24, 0x24, 0x34, 0x34, 0x34, 0x44, 0x44, 0x44, 0x54, 0x54, 0x54,

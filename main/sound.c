@@ -11,7 +11,7 @@ extern void* DDR;
 
 extern int time;
 extern int tuneIndex;
-extern int diamonds;
+extern int doge;
 extern unsigned int getRandom32();
 
 

@@ -1294,7 +1294,7 @@ const unsigned char CHAR_BOULDER_SHAKE[] = {
 
 
 
-const unsigned char EXPLODETODIAMOND0[] = {
+const unsigned char EXPLODETODOGE0[] = {
 
     __X_    //0
     X_X_  
@@ -1346,7 +1346,7 @@ const unsigned char EXPLODETODIAMOND0[] = {
 
 
 
-const unsigned char EXPLODETODIAMOND1[] = {
+const unsigned char EXPLODETODOGE1[] = {
 
     ____     //5
     _X__  
@@ -1394,7 +1394,7 @@ const unsigned char EXPLODETODIAMOND1[] = {
 };
 
 
-const unsigned char EXPLODETODIAMOND2[] = {
+const unsigned char EXPLODETODOGE2[] = {
 
     __X_    //2
     __X_
@@ -1445,7 +1445,7 @@ const unsigned char EXPLODETODIAMOND2[] = {
 
 
 
-const unsigned char EXPLODETODIAMOND3[] = {
+const unsigned char EXPLODETODOGE3[] = {
 
     ____     //0
     X___  
@@ -1493,7 +1493,7 @@ const unsigned char EXPLODETODIAMOND3[] = {
 };
 
 
-const unsigned char EXPLODETODIAMOND4[] = {
+const unsigned char EXPLODETODOGE4[] = {
 
     ____     //2
     ____  
@@ -1542,7 +1542,7 @@ const unsigned char EXPLODETODIAMOND4[] = {
 
 
 
-const unsigned char DIAMONDA[] = {
+const unsigned char DOGEA[] = {
     ____  
     _X__  
     _X__  
@@ -1593,22 +1593,22 @@ const unsigned char DIAMONDA[] = {
 
 
 
-const unsigned char DIAMOND_GRABBED[] = {
+const unsigned char DOGE_GRABBED[] = {
     ____  
     ____  
     ____  
     ____  
-    __X_
-    __X_
-    ____  
-    _XX_  
-    _XX_  
+    ____
+    ____
     ____  
     _XX_  
     _XX_  
     ____  
-    __X_
-    __X_
+    _XX_  
+    _XX_  
+    ____  
+    ____
+    ____
     ____  
     ____  
     ____  
@@ -2021,9 +2021,7 @@ const unsigned char DUST2_LEFT[] = {
 
 
 
-const unsigned char DIAMONDx1[] = {
-
-    // FACET RHS
+const unsigned char DOGE1[] = {
 
     ____  
     ____  
@@ -2073,7 +2071,7 @@ const unsigned char DIAMONDx1[] = {
 
 
 
-const unsigned char DIAMONDx2[] = {
+const unsigned char DOGE2[] = {
 
     // FACET MID
     ____  
@@ -2123,7 +2121,7 @@ const unsigned char DIAMONDx2[] = {
 
 
 
-const unsigned char DIAMONDx3[] = {
+const unsigned char DOGE3[] = {
 
     // FACET 3
 
@@ -2175,7 +2173,7 @@ const unsigned char DIAMONDx3[] = {
 
 
 
-const unsigned char DIAMONDx4[] = {
+const unsigned char DOGE4[] = {
 
     // FACET 3
 
@@ -2227,7 +2225,7 @@ const unsigned char DIAMONDx4[] = {
 };
 
 
-const unsigned char DIAMONDx5[] = {
+const unsigned char DOGE5[] = {
 
     ____  
     ____  
@@ -2276,7 +2274,7 @@ const unsigned char DIAMONDx5[] = {
 };
 
 
-const unsigned char DIAMONDx6[] = {
+const unsigned char DOGE6[] = {
     ____  
     ____  
     ____  
@@ -3028,7 +3026,6 @@ const unsigned char CHAR_WATER3[] = {
 
 };
 
-#if ENABLE_EGG
 const unsigned char CHAR_EGG[] = {
     ____      // 20
     _X__      // 20
@@ -3123,7 +3120,6 @@ const unsigned char CHAR_EGG2[] = {
     // small
 
 };
-#endif
 
 
 const unsigned char CHAR_ZZAP[] = {
@@ -3774,9 +3770,9 @@ const unsigned char CHAR_ROCK5[] = {
     ____  
     XXXX  
     __X_
-    XXXX  
+    _XXX  
     XXX_  
-    X___  
+    ____  
     ____  
     ____  
     ____  
@@ -3860,25 +3856,25 @@ const unsigned char CHAR_ROCK6[] = {
 
 const unsigned char CHAR_ROCK7[] = {
 
-    __XX  
-    _XXX  
-    X__X  
-    X_X_  
-    XX_X  
-    ____  
-    ____  
-    XXXX  
-    ____  
-    ____  
-    XXXX  
-    ____  
-    ____  
-    XXXX  
-    ____  
-    ____  
-    XXXX  
     ___X  
-    __XX
+    _XXX  
+    ___X  
+    X___  
+    XX_X  
+    X___  
+    ____  
+    XXXX  
+    ____  
+    ____  
+    XXXX  
+    ____  
+    ____  
+    XXXX  
+    ____  
+    ____  
+    XXXX  
+    ____  
+    __X_
     XXXX  
     __X_  
 
@@ -3910,7 +3906,7 @@ const unsigned char CHAR_ROCK7[] = {
 
 const unsigned char CHAR_ROCK8[] = {
 
-    _X__  
+    ____  
     _XXX  
     ____  
     __X_
@@ -3965,7 +3961,7 @@ const unsigned char CHAR_ROCK9[] = {
     XX_X  
     ____  
     ____  
-    _XXX  
+    XXXX  
     ____  
     X___  
     XXXX  
@@ -3973,7 +3969,7 @@ const unsigned char CHAR_ROCK9[] = {
     ____  
     XXXX  
     ____  
-    __XX  
+    ___X  
     _XXX  
     ___X
     ____  
@@ -4007,26 +4003,26 @@ const unsigned char CHAR_ROCK9[] = {
 
 const unsigned char CHAR_ROCKA[] = {
 
-    _XX_  
+    ____  
     _XXX  
-    __X_
+    ____
     __X_
     XX_X  
-    ___X
-    ___X
-    XXXX  
-    ___X
-    ___X
-    XXXX  
-    ____  
-    ___X
-    XXXX  
-    ____  
     __X_
+    ____
+    XXXX  
+    ____
+    ____
     XXXX  
     ____  
+    ___X
+    XXXX  
     ____  
-    XXX_  
+    X_X_
+    XXXX  
+    X___  
+    ____  
+    _XX_  
     ____  
 
     ___X     //  5
@@ -4059,24 +4055,24 @@ const unsigned char CHAR_ROCKB[] = {
     ____  
     _XXX  
     ____  
-    __X_
+    ____
     XX_X  
     ____  
     ____  
     XXXX  
     ____  
-    X___  
+    ____  
     XXXX  
-    X___  
+    ____  
     ____  
     _XXX  
-    ___X
-    ___X
+    ____
+    X__X
     XXXX  
-    ____  
-    __XX  
+    X__X  
+    __X_  
     XXXX  
-    ___X
+    ____
 
     ___X     //  5
     ___X     //  0
@@ -4158,7 +4154,7 @@ const unsigned char CHAR_ROCKD[] = {
     XXXX  
     ____  
     ____  
-    X_XX  
+    XXXX  
     ____  
     ____  
     XXX_  
@@ -4301,17 +4297,6 @@ const unsigned char CHAR_ROCKF[] = {
 
 #if ENABLE_PARALLAX
 extern unsigned char *parallaxBlank[];
-// extern unsigned char *charDrip[];
-// extern unsigned char *charDrip1[];
-// extern unsigned char *charDrip2[];
-// extern unsigned char *charDrip3[];
-// extern unsigned char *charDripSplash[];
-// extern unsigned char *charDiamond[];
-// extern unsigned char *charDiamond1[];
-// extern unsigned char *charDiamond2[];
-// extern unsigned char *charDiamond3[];
-// extern unsigned char *charDiamond4[];
-// extern unsigned char *charDiamond5[];
 extern unsigned char *charDust3[];
 #endif
 
@@ -4341,12 +4326,7 @@ const unsigned char (*charSet[])[] = {
 
     &DIRTY3,                                        // 12
     &DIRTY2,                                        // 13
-
-#if ENABLE_EGG
     &CHAR_EGG,                                      // 14
-#else
-    &BLANK,
-#endif
     &BLANK,                                         // 15
 
 
@@ -4356,9 +4336,9 @@ const unsigned char (*charSet[])[] = {
     &CHAR_ROCK0,                                    // 19   ROCKSEED
 
 // #if ENABLE_PARALLAX
-//     (const unsigned char (*)[])&charDiamond,        // 20
+//     (const unsigned char (*)[])&charDogeCoin,        // 20
 // #else
-    &DIAMONDA,                                      // 20
+    &DOGEA,                                      // 20
 // #endif
     &BLANK,                                         // 21
     &BLANK,                                         // 22
@@ -4371,11 +4351,11 @@ const unsigned char (*charSet[])[] = {
     &BLANK,                                         // 29
     &BLANK, //UNCOVER0,                          // 30
     &BLANK, //UNCOVER1,                          // 31
-    &EXPLODETODIAMOND0,                 // 32
-    &EXPLODETODIAMOND1,                 // 33
-    &EXPLODETODIAMOND2,                 // 34
-    &EXPLODETODIAMOND3,                 // 35
-    &EXPLODETODIAMOND4,                 // 36
+    &EXPLODETODOGE0,                 // 32
+    &EXPLODETODOGE1,                 // 33
+    &EXPLODETODOGE2,                 // 34
+    &EXPLODETODOGE3,                 // 35
+    &EXPLODETODOGE4,                 // 36
     &BLANK, //ROCKYa,                            // 37
     &BLANK, //ROCKYb,                            // 38
     &BLANK, //ROCKYc,                            // 39
@@ -4389,9 +4369,9 @@ const unsigned char (*charSet[])[] = {
     &MAGIC2,                            // 45
     &MAGIC3,                            // 46
 // #if ENABLE_PARALLAX
-//     (const unsigned char (*)[])&charDiamond1, //1,                     // 47 pulse diamond
+//     (const unsigned char (*)[])&charDogeCoin1, //1,                     // 47 pulse diamond
 // #else
-    &DIAMONDx1,                             // 47
+    &DOGE1,                             // 47
 // #endif
     &BUTTERFLY0,                        // 48
     &BUTTERFLY0,                        // 49
@@ -4420,40 +4400,21 @@ const unsigned char (*charSet[])[] = {
     &BLANK, //UNCOVER4,                          // 68
     &BLANK, //UNCOVER5,                          // 69
 
-// #if ENABLE_PARALLAX
+    &DOGE1,                             // 70
+    &DOGE2,                             // 71
+    &DOGE3,                             // 72
+    &DOGE4,                             // 73
+    &DOGE5,                             // 74
+    &DOGE6,                             // 75
+    &BLANK,                             // 76     /delete
+    &BLANK,                             // 77
+    &BLANK,                             // 78
+    &BLANK,                             // 79
 
-//     (const unsigned char (*)[])&charDiamond,        // 70
-//     (const unsigned char (*)[])&charDiamond1,       // 71
-//     (const unsigned char (*)[])&charDiamond2,       // 72
-//     (const unsigned char (*)[])&charDiamond3,       // 73
-//     (const unsigned char (*)[])&charDiamond4,       // 74
-
-// #else
-
-    &DIAMONDx1,                                     // 70
-    &DIAMONDx2,                                     // 71
-    &DIAMONDx3,                                     // 72
-    &DIAMONDx4,                                     // 73
-    &DIAMONDx5,                                     // 74
-
-// #endif
-
-    &DIAMONDx6,                                     // 75
-    &BLANK,                                         // 76     /delete
-    &BLANK,                                         // 77
-    &BLANK,                                         // 78
-    &BLANK,                                         // 79
-
-// #if ENABLE_PARALLAX
-
-//     (const unsigned char (*)[])&charDiamond,        // 80   STATIC (can switch animations)
-// #else
-    &DIAMONDA,                                      // 80   STATIC (can switch animations)
-// #endif
-
+    &DOGEA,                             // 80
     
     &BLANK,                             // 81  AMOEBA THIS
-    &EXPLODETODIAMOND0,                 // 82  EXPLODE THIS!
+    &EXPLODETODOGE0,                    // 82  EXPLODE THIS!
 
     &BLANK_EXTRA1,                      // 83
     &BLANK_EXTRA2,                      // 84
@@ -4466,13 +4427,13 @@ const unsigned char (*charSet[])[] = {
 
     &BLANK,                             // 91
 
-    &EXPLODETODIAMOND0,                 // 92       // explode to BLANK!
-    &EXPLODETODIAMOND1,                 // 93
-    &EXPLODETODIAMOND2,                 // 94
-    &EXPLODETODIAMOND3,                 // 95
-    &EXPLODETODIAMOND4,                 // 96
+    &EXPLODETODOGE0,                 // 92       // explode to BLANK!
+    &EXPLODETODOGE1,                 // 93
+    &EXPLODETODOGE2,                 // 94
+    &EXPLODETODOGE3,                 // 95
+    &EXPLODETODOGE4,                 // 96
 
-    &DIAMOND_GRABBED,                   // 97       grabbed diamond
+    &DOGE_GRABBED,                   // 97       grabbed diamond
     &DIRT_GRABBED,                      // 98       grabbed dirt
 
     &DUST,                              // 99       post-dirt dust
@@ -4505,12 +4466,7 @@ const unsigned char (*charSet[])[] = {
     &CHAR_WATER1,                                   // 114     WATER
     &CHAR_WATER2,                                   // 115     WATER
     &CHAR_WATER3,                                   // 116     WATER
-
-#if ENABLE_EGG
     &CHAR_EGG2,                                     // 117     EGG2
-#else
-    &BLANK,
-#endif
 
 #if ENABLE_PARALLAX
 

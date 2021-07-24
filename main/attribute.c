@@ -3,225 +3,171 @@
     #include "attribute.h"
     #include "main.h"
 
-const unsigned char CharToType[256]= {
+const unsigned char CharToType[CH_MAX]= {
 
     // see ChName for corresponding character name/number
 
-TYPE_SPACE,                  // CH_BLANK,                   // 0
-TYPE_DIRT,                   // CH_DIRTY,                   // 1
-TYPE_BRICKWALL,              // CH_BRICKWALL,               // 2
-TYPE_MAGICWALL,              // CH_MAGICWALL,               // 3       // magic wall
-TYPE_OUTBOX_PRE,             // CH_STEELWALL,               // 4        exit door closed
-TYPE_OUTBOX,                 // CH_DOOROPEN_0,              // 5        exit door (open)
-TYPE_OUTBOX,                 // CH_DOOROPEN_1               // 6        exit door (open)
-TYPE_STEELWALL,              // CH_STEELWALL_0,             // 7
-TYPE_FIREFLY,                // CH_FIREFLY_0,               // 8
-TYPE_FIREFLY,                // CH_FIREFLY_1,               // 9
-TYPE_FIREFLY,                // CH_FIREFLY_2,               // 10
-TYPE_FIREFLY,                // CH_FIREFLY_3,               // 11
-TYPE_DIRT3,                  // CH_DIRTY3,                  // 12
-TYPE_DIRT2,                  // CH_DIRTY2,                  // 13 poss error/overload on firefly 4-7
-#if ENABLE_EGG
-TYPE_EGG,                                                   // 14
-#else
-TYPE___NOTHING,
-#endif
-TYPE_FIREFLY,                // CH_FIREFLY_7,               // 15
-TYPE_BOULDER,                // CH_BOULDER,                 // 16
-TYPE_ZZAP1,                  // CH_ZZAP2,                   // 17
-TYPE_BOULDER_FALLING,        // CH_BOULDER_FALLING,         // 18
-TYPE_ROCK,                   // CH_ROCKSEED                 // 19
-TYPE_DIAMOND,                // CH_DIAMOND,                 // 20
-TYPE___THISFRAME,            // CH_DIAMOND_FALLING_THIS,    // 21
-TYPE_DIAMOND,                // CH_DIAMOND_FALLING,         // 22
-TYPE___THISFRAME,            // CH_DIAMOND_THIS,            // 23
-TYPE_FIREFLY,                // CH_DIAMOND_4,               // 24
-TYPE_FIREFLY,                // CH_FIREFLY2,                // 25
-TYPE___NOTHING,              // CH_FIREFLY3,                // 26
-TYPE_BUTTERFLY,              // CH_BUTTERFLY2U,             // 27
-TYPE_BUTTERFLY,              // CH_BUTTERFLY3U,             // 28
-TYPE___NOTHING,              // CH_BLANK_ALTERNATE_3,       // 29
-TYPE___NOTHING,              // CH_UNCOVER0,                // 30
-TYPE___NOTHING,              // CH_UNCOVER1,                // 31
-TYPE_EXPLODE_DIAMOND_0,      // CH_EXPLODETODIAMOND0,       // 32
-TYPE_EXPLODE_DIAMOND_1,      // CH_EXPLODETODIAMOND1,       // 33
-TYPE_EXPLODE_DIAMOND_2,      // CH_EXPLODETODIAMOND2,       // 34
-TYPE_EXPLODE_DIAMOND_3,      // CH_EXPLODETODIAMOND3,       // 35
-TYPE_EXPLODE_DIAMOND_4,      // CH_EXPLODETODIAMOND4,       // 36
-TYPE_ROCKFORD_PRE,           // CH_ROCKYa,                  // 37
-TYPE_ROCKFORD_PRE,           // CH_ROCKYb,                  // 38
-TYPE_ROCKFORD_PRE,           // CH_ROCKYc,                  // 39
-TYPE_ROCKFORD_PRE,           // CH_ROCKYd,                  // 40
-TYPE_BOULDER,                // CH_BOULDER2,                // 41
-TYPE_BOULDER,                // CH_BOULDER3,                // 42
-TYPE_BOULDER,                // CH_BOULDER4,                // 43
-TYPE___NOTHING,              // CH_MAGIC1,                  // 44
-TYPE___NOTHING,              // CH_MAGIC2,                  // 45
-TYPE___NOTHING,              // CH_MAGIC3,                  // 46
-TYPE_DIAMOND_PULSE_0,        // CH_DIAMONDx1U,              // 47 pulse diamond
-TYPE_BUTTERFLY,              // CH_BUTTERFLY0,              // 48
-TYPE_BUTTERFLY,              // CH_BUTTERFLY1,              // 49
-TYPE_BUTTERFLY,              // CH_BUTTERFLY2,              // 50
-TYPE_BUTTERFLY,              // CH_BUTTERFLY3,              // 51
-TYPE_BUTTERFLY,              // CH_BUTTERFLY_4,             // 52
-TYPE_BUTTERFLY,              // CH_BUTTERFLY_5,             // 53
-TYPE_BUTTERFLY,              // CH_BUTTERFLY_6,             // 54
-TYPE_BUTTERFLY,              // CH_BUTTERFLY_7,             // 55
-TYPE___NOTHING,                                             // 56
-TYPE___NOTHING,                                             // 57
-TYPE_AMOEBA,                 // CH_AMOEBA0,                 // 58
-TYPE_AMOEBA,                 // CH_AMOEBA1,                 // 59
-TYPE_AMOEBA,                 // CH_AMOEBA2,                 // 60
-TYPE_AMOEBA,                 // CH_AMOEBA3,                 // 61
-TYPE_ZZAP,                   // CH_ZZAP,                    // 62 
-TYPE___NOTHING,         // CH_STEELWALL_1,             // 63
-TYPE___NOTHING,         // CH_UNCOVER0b,               // 64
-TYPE___NOTHING,         // CH_UNCOVER1b,               // 65
-TYPE___NOTHING,         // CH_UNCOVER2b,               // 66
-TYPE___NOTHING,         // CH_UNCOVER3b,               // 67
-TYPE___NOTHING,         // CH_UNCOVER4b,               // 68
-TYPE___NOTHING,         // CH_UNCOVER5b,               // 69
-TYPE_DIAMOND_PULSE_0,        // CH_DIAMOND_PULSE_0,         // 70
-TYPE_DIAMOND_PULSE_1,        // CH_DIAMOND_PULSE_1,         // 71
-TYPE_DIAMOND_PULSE_2,        // CH_DIAMOND_PULSE_2,         // 72
-TYPE_DIAMOND_PULSE_3,        // CH_DIAMOND_PULSE_3,         // 73
-TYPE_DIAMOND_PULSE_4,        // CH_DIAMOND_PULSE_4,         // 74
-TYPE_DIAMOND_PULSE_5,        // CH_DIAMOND_PULSE_5,         // 75
-TYPE_DIAMOND_PULSE_6,        // CH_DIAMOND_PULSE_6,         // 76
-TYPE_DIAMOND_PULSE_7,        // CH_DIAMOND_PULSE_7,         // 77
-TYPE_DIAMOND_PULSE_8,        // CH_DIAMOND_PULSE_8,         // 78
-TYPE_DIAMOND_PULSE_9,       // CH_DIAMOND_PULSE_9,         // 79
-TYPE_DIAMOND,                // CH_DIAMOND_STATIC,          // 80  (CAN SWITCH ANIMATIONS ON THIS!)
-TYPE_AMOEBA,                 // CH_AMOEBA_BLANK             // 81 ???
-TYPE_EXPLODE_THIS,           // CH_EXPLODE_THIS             // 82   NEXT FRAME EXPLODING OBJECT
-TYPE_SPACE,                  // CH_BLANK_EXTRA1             // 83
-TYPE_SPACE,                  // CH_BLANK_EXTRA2             // 84
-TYPE_SPACE,                  // CH_BLANK_EXTRA3             // 85
-TYPE_SPACE,                  // CH_BLANK_EXTRA4             // 86
-TYPE_SPACE,                  // CH_BLANK_EXTRA5             // 87
-TYPE_SPACE,                  // CH_BLANK_EXTRA6             // 88
-TYPE_SPACE,                  // CH_BLANK_EXTRA7             // 89
-TYPE_SPACE,                  // CH_BLANK_EXTRA8             // 90
-
-TYPE___NOTHING,              // CH_UNKOWN23                 // 91
-
-TYPE_EXPLODE_BLANK_0,        // CH_EXPLODETOBLANK0,         // 92
-TYPE_EXPLODE_BLANK_1,        // CH_EXPLODETOBLANK1,         // 93
-TYPE_EXPLODE_BLANK_2,        // CH_EXPLODETOBLANK2,         // 94
-TYPE_EXPLODE_BLANK_3,        // CH_EXPLODETOBLANK3,         // 95
-TYPE_EXPLODE_BLANK_4,        // CH_EXPLODETOBLANK4,         // 96
-
-TYPE_DIAMOND_GRAB,           // CH_DIAMOND_GRAB,            // 97
-TYPE_DIRT_GRAB,              // CH_DIRT_GRAB,               // 98
-
-TYPE_DUST,                   // CH_DUST,                    // 99
-TYPE_DUST2,                  // CH_DUST2,                   // 100
-TYPE_DUST3,                  // CH_DUST3,                   // 101
-
-TYPE_BOULDER_SHAKE,          // CH_BOULDER_SHAKE            // 102
-
-TYPE_DUST_LEFT,              // CH_DUST_LEFT                // 103
-TYPE_DUST2_LEFT,             // CH_DUST2_LEFT               // 104
-TYPE_DUST3_LEFT,             // CH_DUST2_LEFT               // 105
-
-TYPE_DUST_RIGHT,             // CH_DUST_RIGHT               // 106
-TYPE_DUST2_RIGHT,            // CH_DUST2_RIGHT              // 107
-TYPE_DUST3_RIGHT,            // CH_DUST3_RIGHT              // 108
-
-TYPE_LAVA,                   // CH_LAVA                     // 109
-TYPE_LAVA,                   // CH_LAVA                     // 110
-TYPE_LAVA,                   // CH_LAVA                     // 111
-TYPE_LAVA,                   // CH_LAVA                     // 112
-
-TYPE_WATER,                  // CH_WATER                    // 113
-TYPE_WATER,                  // CH_WATER1                   // 114
-TYPE_WATER,                  // CH_WATER2                   // 115
-TYPE_WATER,                  // CH_WATER3                   // 116
-
-#if ENABLE_EGG
-TYPE_EGG,                    // CH_EGG2                     // 117
-#else
-TYPE___NOTHING,
-#endif
-
-TYPE_ROCKFORD,               // 118     CH_ROCKFORD
-TYPE_ROCKFORD,               // 119     CH_ROCKFORD_THIS
-
-TYPE_DRIP,                   // 120     CH_DRIP
-TYPE_DRIP,                   // 121     CH_DRIP1
-TYPE_DRIP,                   // 122     CH_DRIP2
-TYPE_DRIP,                   // 123     CH_DRIP3
-TYPE_DRIP_SPLASH,            // 124     CH_DRIPX
-
-TYPE_DIRT,                   // 125     CH_DIRT
-TYPE_DIRT,                   // 126     CH_DIRT1
-TYPE_DIRT,                   // 127     CH_DIRT2
-TYPE_DIRT,                   // 128     CH_DIRT3
-TYPE_DIRT,                   // 129     CH_DIRT4
-TYPE_DIRT,                   // 130     CH_DIRT5
-TYPE_DIRT,                   // 131     CH_DIRT6
-TYPE_DIRT,                   // 132     CH_DIRT7
-TYPE_DIRT,                   // 133     CH_DIRT8
-TYPE_DIRT,                   // 134     CH_DIRT9
-TYPE_DIRT,                   // 135     CH_DIRTA
-TYPE_DIRT,                   // 136     CH_DIRTB
-TYPE_DIRT,                   // 137     CH_DIRTC
-TYPE_DIRT,                   // 138     CH_DIRTD
-TYPE_DIRT,                   // 139     CH_DIRTE
-TYPE_DIRT,                   // 140     CH_DIRTF
-
-TYPE_ZZAP,                   // 141     CH_ZZAP2
-
-TYPE_ROCK,                   // 142     CH_ROCK0
-TYPE_ROCK,                   // 143     CH_ROCK0
-TYPE_ROCK,                   // 144     CH_ROCK0
-TYPE_ROCK,                   // 145     CH_ROCK0
-TYPE_ROCK,                   // 146     CH_ROCK0
-TYPE_ROCK,                   // 147     CH_ROCK0
-TYPE_ROCK,                   // 148     CH_ROCK0
-TYPE_ROCK,                   // 149     CH_ROCK0
-TYPE_ROCK,                   // 150     CH_ROCK0
-TYPE_ROCK,                   // 151     CH_ROCK0
-TYPE_ROCK,                   // 152     CH_ROCK0
-TYPE_ROCK,                   // 153     CH_ROCK0
-TYPE_ROCK,                   // 154     CH_ROCK0
-TYPE_ROCK,                   // 155     CH_ROCK0
-TYPE_ROCK,                   // 156     CH_ROCK0
-TYPE_ROCK,                   // 157     CH_ROCK0
-
-TYPE_DRILL,                  // 158     CH_DRILL
-TYPE_DRILL,                  // 159     CH_DRILL1
-TYPE_DRILL,                  // 160     CH_DRILL2
-
-
-// 161...
-
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
-
+TYPE_SPACE,                  // 000 CH_BLANK  
+TYPE_DIRT,                   // 001 CH_DIRTY  
+TYPE_BRICKWALL,              // 002 CH_BRICKWALL  
+TYPE_MAGICWALL,              // 003 CH_MAGICWALL  
+TYPE_OUTBOX_PRE,             // 004 CH_DOORCLOSED  
+TYPE_OUTBOX,                 // 005 CH_DOOROPEN_0  
+TYPE_OUTBOX,                 // 006 CH_DOOROPEN_1  
+TYPE_STEELWALL,              // 007 CH_STEELWALL_0  
+TYPE_FIREFLY,                // 008 CH_FIREFLY_0  
+TYPE_FIREFLY,                // 009 CH_FIREFLY_1  
+TYPE_FIREFLY,                // 010 CH_FIREFLY_2  
+TYPE_FIREFLY,                // 011 CH_FIREFLY_3  
+TYPE_DIRT3,                  // 012 CH_DIRTY3  
+TYPE_DIRT2,                  // 013 CH_DIRTY2  
+TYPE_EGG,                    // 014 CH_EGG 
+TYPE_FIREFLY,                // 015 CH_FIREFLY_7 
+TYPE_BOULDER,                // 016 CH_BOULDER 
+TYPE_ZZAP1,                  // 017 CH_ZZAP1 
+TYPE_BOULDER_FALLING,        // 018 CH_BOULDER_FALLING 
+TYPE_ROCK,                   // 019 CH_ROCKSEED 
+TYPE_DOGE,                   // 020 CH_DOGE 
+TYPE___THISFRAME,            // 021 CH_DOGE_FALLING_THIS 
+TYPE_DOGE,                   // 022 CH_DOGE_FALLING 
+TYPE___THISFRAME,            // 023 CH_DOGE_THIS 
+TYPE_FIREFLY,                // 024 CH_DOGE_4 
+TYPE_FIREFLY,                // 025 CH_FIREFLY2 
+TYPE___NOTHING,              // 026 CH_FIREFLY3 
+TYPE_BUTTERFLY,              // 027 CH_BUTTERFLY2U 
+TYPE_BUTTERFLY,              // 028 CH_BUTTERFLY3U 
+TYPE___NOTHING,              // 029 CH_BLANK_ALTERNATE_3 
+TYPE___NOTHING,              // 030 CH_____0 
+TYPE___NOTHING,              // 031 CH_____1 
+TYPE_EXPLODE_DOGE_0,         // 032 CH_EXPLODETODOGE0 
+TYPE_EXPLODE_DOGE_1,         // 033 CH_EXPLODETODOGE1 
+TYPE_EXPLODE_DOGE_2,         // 034 CH_EXPLODETODOGE2 
+TYPE_EXPLODE_DOGE_3,         // 035 CH_EXPLODETODOGE3 
+TYPE_EXPLODE_DOGE_4,         // 036 CH_EXPLODETODOGE4 
+TYPE_ROCKFORD_PRE,           // 037 CH_ROCKYa 
+TYPE_ROCKFORD_PRE,           // 038 CH_ROCKYb 
+TYPE_ROCKFORD_PRE,           // 039 CH_ROCKYc 
+TYPE_ROCKFORD_PRE,           // 040 CH_ROCKYd 
+TYPE_BOULDER,                // 041 CH_BOULDER2 
+TYPE_BOULDER,                // 042 CH_BOULDER3 
+TYPE_BOULDER,                // 043 CH_BOULDER4 
+TYPE___NOTHING,              // 044 CH_MAGIC1 
+TYPE___NOTHING,              // 045 CH_MAGIC2 
+TYPE___NOTHING,              // 046 CH_MAGIC3 
+TYPE_DOGE,                   // 047 CH_DOGEx1U 
+TYPE_BUTTERFLY,              // 048 CH_BUTTERFLY0 
+TYPE_BUTTERFLY,              // 049 CH_BUTTERFLY1 
+TYPE_BUTTERFLY,              // 050 CH_BUTTERFLY2 
+TYPE_BUTTERFLY,              // 051 CH_BUTTERFLY3 
+TYPE_BUTTERFLY,              // 052 CH_BUTTERFLY_4 
+TYPE_BUTTERFLY,              // 053 CH_BUTTERFLY_5 
+TYPE_BUTTERFLY,              // 054 CH_BUTTERFLY_6 
+TYPE_BUTTERFLY,              // 055 CH_BUTTERFLY_7 
+TYPE___NOTHING,              // 056 CH_xxROCKFORD 
+TYPE___NOTHING,              // 057 CH_xxROCKFORD_THIS 
+TYPE_AMOEBA,                 // 058 CH_AMOEBA0 
+TYPE_AMOEBA,                 // 059 CH_AMOEBA1 
+TYPE_AMOEBA,                 // 060 CH_AMOEBA2 
+TYPE_AMOEBA,                 // 061 CH_AMOEBA3 
+TYPE_ZZAP,                   // 062 CH_ZZAP 
+TYPE___NOTHING,              // 063 CH_STEELWALL_1 
+TYPE___NOTHING,              // 064 CH_____2 
+TYPE___NOTHING,              // 065 CH_____3 
+TYPE___NOTHING,              // 066 CH_____4 
+TYPE___NOTHING,              // 067 CH_____5 
+TYPE___NOTHING,              // 068 CH_____6 
+TYPE___NOTHING,              // 069 CH_____7 
+TYPE_DOGE,                   // 070 CH_DOGE_PULSE_0 
+TYPE_DOGE,                   // 071 CH_DOGE_PULSE_1 
+TYPE_DOGE,                   // 072 CH_DOGE_PULSE_2 
+TYPE_DOGE,                   // 073 CH_DOGE_PULSE_3 
+TYPE_DOGE,                   // 074 CH_DOGE_PULSE_4 
+TYPE_DOGE,                   // 075 CH_DOGE_PULSE_5 
+TYPE_DOGE,                   // 076 CH_DOGE_PULSE_6 
+TYPE_DOGE,                   // 077 CH_DOGE_PULSE_7 
+TYPE_DOGE,                   // 078 CH_DOGE_PULSE_8 
+TYPE_DOGE,                   // 079 CH_DOGE_PULSE_9 
+TYPE_DOGE,                   // 080 CH_DOGE_STATIC 
+TYPE_AMOEBA,                 // 081 CH_AMOEBA_BLANK 
+TYPE_EXPLODE_THIS,           // 082 CH_EXPLODE_THIS 
+TYPE_SPACE,                  // 083 CH_BLANK_EXTRA1 
+TYPE_SPACE,                  // 084 CH_BLANK_EXTRA2 
+TYPE_SPACE,                  // 085 CH_BLANK_EXTRA3 
+TYPE_SPACE,                  // 086 CH_BLANK_EXTRA4 
+TYPE_SPACE,                  // 087 CH_BLANK_EXTRA5 
+TYPE_SPACE,                  // 088 CH_BLANK_EXTRA6 
+TYPE_SPACE,                  // 089 CH_BLANK_EXTRA7 
+TYPE_SPACE,                  // 090 CH_BLANK_EXTRA8 
+TYPE___NOTHING,              // 091 CH_UNKNOWN23 
+TYPE_EXPLODE_BLANK_0,        // 092 CH_EXPLODETOBLANK0 
+TYPE_EXPLODE_BLANK_1,        // 093 CH_EXPLODETOBLANK1 
+TYPE_EXPLODE_BLANK_2,        // 094 CH_EXPLODETOBLANK2 
+TYPE_EXPLODE_BLANK_3,        // 095 CH_EXPLODETOBLANK3 
+TYPE_EXPLODE_BLANK_4,        // 096 CH_EXPLODETOBLANK4 
+TYPE_DOGE_GRAB,              // 097 CH_DOGE_GRAB 
+TYPE_DIRT_GRAB,              // 098 CH_DIRT_GRAB 
+TYPE_DUST,                   // 099 CH_DUST 
+TYPE_DUST2,                  // 100 CH_DUST2 
+TYPE_DUST3,                  // 101 CH_DUST3 
+TYPE_BOULDER_SHAKE,          // 102 CH_BOULDER_SHAKE 
+TYPE_DUST_LEFT,              // 103 CH_DUST_LEFT 
+TYPE_DUST2_LEFT,             // 104 CH_DUST2_LEFT 
+TYPE_DUST3_LEFT,             // 105 CH_DUST3_LEFT 
+TYPE_DUST_RIGHT,             // 106 CH_DUST_RIGHT 
+TYPE_DUST2_RIGHT,            // 107 CH_DUST2_RIGHT 
+TYPE_DUST3_RIGHT,            // 108 CH_DUST3_RIGHT 
+TYPE_LAVA,                   // 109 CH_LAVA 
+TYPE_LAVA,                   // 110 CH_LAVA1 
+TYPE_LAVA,                   // 111 CH_LAVA2 
+TYPE_LAVA,                   // 112 CH_LAVA3 
+TYPE_WATER,                  // 113 CH_WATER 
+TYPE_WATER,                  // 114 CH_WATER1 
+TYPE_WATER,                  // 115 CH_WATER2 
+TYPE_WATER,                  // 116 CH_WATER3 
+TYPE_EGG,                    // 117 CH_EGG2 
+TYPE_ROCKFORD,               // 118 CH_ROCKFORD 
+TYPE_ROCKFORD,               // 119 CH_ROCKFORD_THIS 
+TYPE_DRIP,                   // 120 CH_DRIP 
+TYPE_DRIP,                   // 121 CH_DRIP1 
+TYPE_DRIP,                   // 122 CH_DRIP2 
+TYPE_DRIP,                   // 123 CH_DRIP3 
+TYPE_DRIP_SPLASH,            // 124 CH_DRIPX 
+TYPE_DIRT,                   // 125 CH_DIRT 
+TYPE_DIRT,                   // 126 CH_DIRT1 
+TYPE_DIRT,                   // 127 CH_DIRT2 
+TYPE_DIRT,                   // 128 CH_DIRT3 
+TYPE_DIRT,                   // 129 CH_DIRT4 
+TYPE_DIRT,                   // 130 CH_DIRT5 
+TYPE_DIRT,                   // 131 CH_DIRT6 
+TYPE_DIRT,                   // 132 CH_DIRT7 
+TYPE_DIRT,                   // 133 CH_DIRT8 
+TYPE_DIRT,                   // 134 CH_DIRT9 
+TYPE_DIRT,                   // 135 CH_DIRTA 
+TYPE_DIRT,                   // 136 CH_DIRTB 
+TYPE_DIRT,                   // 137 CH_DIRTC 
+TYPE_DIRT,                   // 138 CH_DIRTD 
+TYPE_DIRT,                   // 139 CH_DIRTE 
+TYPE_DIRT,                   // 140 CH_DIRTF 
+TYPE_ZZAP,                   // 141 CH_ZZAP2 
+TYPE_ROCK,                   // 142 CH_ROCK0 
+TYPE_ROCK,                   // 143 CH_ROCK1 
+TYPE_ROCK,                   // 144 CH_ROCK2 
+TYPE_ROCK,                   // 145 CH_ROCK3 
+TYPE_ROCK,                   // 146 CH_ROCK4 
+TYPE_ROCK,                   // 147 CH_ROCK5 
+TYPE_ROCK,                   // 148 CH_ROCK6 
+TYPE_ROCK,                   // 149 CH_ROCK7 
+TYPE_ROCK,                   // 150 CH_ROCK8 
+TYPE_ROCK,                   // 151 CH_ROCK9 
+TYPE_ROCK,                   // 152 CH_ROCKA 
+TYPE_ROCK,                   // 153 CH_ROCKB 
+TYPE_ROCK,                   // 154 CH_ROCKC 
+TYPE_ROCK,                   // 155 CH_ROCKD 
+TYPE_ROCK,                   // 156 CH_ROCKE 
+TYPE_ROCK,                   // 157 CH_ROCKF 
+TYPE_DRILL,                  // 158 CH_DRILL 
+TYPE_DRILL,                  // 159 CH_DRILL1 
+TYPE_DRILL,                  // 160 CH_DRILL2 
 
 };
 
@@ -244,7 +190,7 @@ const int Attribute[] = {
 #define ACT ATT_ACTIVE
 #define BNG ATT_EXPLODES
 #define GRB ATT_GRAB
-#define SQD ATT_SQUASHABLE_TO_DIAMONDS
+#define SQD ATT_SQUASHABLE_TO_DOGES
 #define SPC ATT_BLANK
 #define PER ATT_PERMEABLE
 #define XPD ATT_EXPLODABLE
@@ -267,77 +213,63 @@ const int Attribute[] = {
 //   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
 //  RND DRP RKF PSH SSP WTR LAV QUI XIT HRD SQB ACT BNG GRB SQD SPC PER XPD FLY ROL
 
-    RND| _ |RKF| _ | _ |WTR|LAV|QUI| _ | _ | _ | _ | _ | _ | _ |SPC|PER|XPD| _ | _  , // 0  SPACE
-     _ |DRP| _ | _ | _ |WTR|LAV| _ | _ | _ | _ | _ | _ | _ | _ | _ |PER|XPD| _ | _  , // 1  DIRT
-     _ |DRP| _ | _ | _ | _ | _ | _ | _ |HRD| _ | _ | _ | _ | _ | _ | _ |XPD| _ |ROL , // 2  BRICK WALL
-     _ |DRP| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |XPD| _ | _  , // 3  MAGIC WALL
-     _ | _ | _ | _ | _ | _ | _ | _ | _ |HRD| _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 4  OUTBOX PRE
-     _ | _ | _ | _ | _ | _ | _ | _ |XIT| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 5  OUTBOX
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ |XPD| _ | _  , // 6  BOULDER FALL
-     _ | _ | _ | _ | _ | _ | _ | _ | _ |HRD| _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 7  STEEL WALL
-    RND| _ | _ | _ | _ |WTR|LAV| _ | _ | _ |SQB|ACT| _ | _ | _ | _ | _ |XPD| _ | _  , // 8  FIREFLY
-    RND| _ | _ |PSH| _ | _ | _ | _ | _ |HRD| _ |ACT| _ | _ | _ | _ | _ |XPD| _ |ROL , // 9  BOULDER
-    RND| _ | _ | _ | _ | _ | _ |QUI| _ | _ |SQB|ACT| _ |GRB| _ | _ | _ |XPD| _ | _  , // 10 DIAMOND
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 11 EXPLODE SPACE 0
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 12 EXPLODE SPACE 1
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 13 EXPLODE SPACE 2
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 14 EXPLODE SPACE 3
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 15 EXPLODE SPACE 4
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 16 EXPLODE DIAMOND 0
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 17 EXPLODE DIAMOND 1
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 18 EXPLODE DIAMOND 2
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 19 EXPLODE DIAMOND 3
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 20 EXPLODE DIAMOND 4
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 21 ROCKFORD PRE 
-    RND| _ | _ | _ | _ |WTR|LAV| _ | _ | _ | _ |ACT| _ | _ |SQD| _ | _ |XPD| _ | _  , // 22 BUTERFLY
+    RND| _ |RKF| _ | _ |WTR|LAV|QUI| _ | _ | _ | _ | _ | _ | _ |SPC|PER|XPD| _ | _  , // 00 SPACE
+     _ |DRP| _ | _ | _ |WTR|LAV| _ | _ | _ | _ | _ | _ | _ | _ | _ |PER|XPD| _ | _  , // 01 DIRT
+     _ |DRP| _ | _ | _ | _ | _ | _ | _ |HRD| _ | _ | _ | _ | _ | _ | _ |XPD| _ |ROL , // 02 BRICKWALL  
+     _ |DRP| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |XPD| _ | _  , // 03 MAGICWALL  
+     _ | _ | _ | _ | _ | _ | _ | _ | _ |HRD| _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 04 OUTBOX_PRE 
+     _ | _ | _ | _ | _ | _ | _ | _ |XIT| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 05 OUTBOX  
+    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ |XPD| _ | _  , // 06 BOULDER_FALLING  
+     _ | _ | _ | _ | _ | _ | _ | _ | _ |HRD| _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 07 STEELWALL  
+    RND| _ | _ | _ | _ |WTR|LAV| _ | _ | _ |SQB|ACT| _ | _ | _ | _ | _ |XPD| _ | _  , // 08 FIREFLY 
+    RND| _ | _ |PSH| _ | _ | _ | _ | _ |HRD| _ |ACT| _ | _ | _ | _ | _ |XPD| _ |ROL , // 09 BOULDER 
+    RND| _ | _ | _ | _ | _ | _ |QUI| _ | _ |SQB|ACT| _ |GRB| _ | _ | _ |XPD| _ | _  , // 10 DOGE  
+    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 11 EXPLODE_SPACE_0  
+    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 12 EXPLODE_SPACE_1
+    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 13 EXPLODE_SPACE_2
+    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 14 EXPLODE_SPACE_3
+    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 15 EXPLODE_SPACE_4  
+    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 16 EXPLODE_DOGE_0
+    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 17 EXPLODE_DOGE_1
+    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 18 EXPLODE_DOGE_2
+    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 19 EXPLODE_DOGE_3
+    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 20 EXPLODE_DOGE_4
+    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 21 ROCKFORD_PRE  
+    RND| _ | _ | _ | _ |WTR|LAV| _ | _ | _ | _ |ACT| _ | _ |SQD| _ | _ |XPD| _ | _  , // 22 BUTTERFLY  
     RND| _ |RKF| _ | _ | _ | _ |QUI| _ | _ |SQB|ACT| _ | _ | _ | _ | _ |XPD|FLY| _  , // 23 ROCKFORD
-    RND| _ | _ | _ | _ |WTR|LAV| _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ |XPD|FLY| _  , // 24 AMOEBA
-    RND| _ |RKF| _ | _ | _ |LAV| _ | _ | _ | _ |ACT| _ | _ | _ |SPC|PER| _ | _ | _  , // 25 DRIP
-    RND| _ |RKF| _ | _ | _ |LAV| _ | _ | _ | _ |ACT| _ | _ | _ |SPC|PER| _ | _ | _  , // 26 DRIP SPLASH
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ |GRB| _ | _ | _ |XPD| _ |ROL , // 27 DIAMOND PULSE 0
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ |GRB| _ | _ | _ |XPD| _ |ROL , // 28 DIAMOND PULSE 1
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ |GRB| _ | _ | _ |XPD| _ |ROL , // 29 DIAMOND PULSE 2
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ |GRB| _ | _ | _ |XPD| _ |ROL , // 30 DIAMOND PULSE 3
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ |GRB| _ | _ | _ |XPD| _ |ROL , // 31 DIAMOND PULSE 4
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ |GRB| _ | _ | _ |XPD| _ |ROL , // 32 DIAMOND PULSE 5
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ |GRB| _ | _ | _ |XPD| _ |ROL , // 33 DIAMOND PULSE 6
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ |GRB| _ | _ | _ |XPD| _ |ROL , // 34 DIAMOND PULSE 7
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ |GRB| _ | _ | _ |XPD| _ |ROL , // 35 DIAMOND PULSE 8
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ |GRB| _ | _ | _ |XPD| _ |ROL , // 36 DIAMOND PULSE 9
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ |GRB| _ | _ | _ |XPD| _ |ROL , // 37 DIAMOND PULSE 10
-     _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 38 UNUSED (LIFE)
-     _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 39 "THIS FRAME" CREATURES
-     _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 40 __EXPLODE_THIS ??
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 41 THIS FRAME "BLANK" ??
-    RND| _ | _ | _ | _ |WTR|LAV| _ | _ | _ | _ | _ | _ | _ | _ | _ |PER|XPD| _ | _  , // 42 DIRT 3
-    RND| _ | _ | _ | _ |WTR|LAV| _ | _ | _ | _ | _ | _ | _ | _ | _ |PER|XPD| _ | _  , // 43 DIRT 2
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 44 EXPLODE BLANK 0
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 45 EXPLODE BLANK 1
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 46 EXPLODE BLANK 2
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 47 EXPLODE BLANK 3
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 48 EXPLODE BLANK 4
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ |SPC| _ |XPD| _ | _  , // 49 DIAMOND GRABBED
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ |XPD| _ | _  , // 50 DIRT GRABBED
-    RND| _ |RKF| _ | _ | _ | _ |QUI| _ | _ | _ |ACT| _ | _ | _ |SPC|PER|XPD| _ | _  , // 51 DUST
-    RND| _ |RKF| _ | _ | _ | _ |QUI| _ | _ | _ |ACT| _ | _ | _ |SPC|PER|XPD| _ | _  , // 52 DUST 2
-    RND| _ |RKF| _ | _ | _ | _ |QUI| _ | _ | _ |ACT| _ | _ | _ |SPC|PER|XPD| _ | _  , // 53 DUST 3
-    RND| _ | _ |PSH| _ | _ | _ | _ | _ |HRD| _ |ACT| _ | _ | _ | _ | _ |XPD| _ |ROL , // 54 BOULDER SHAKE
-    RND| _ |RKF| _ | _ | _ | _ |QUI| _ | _ | _ |ACT| _ | _ | _ |SPC|PER|XPD| _ | _  , // 55 DUST
-    RND| _ |RKF| _ | _ | _ | _ |QUI| _ | _ | _ |ACT| _ | _ | _ |SPC|PER|XPD| _ | _  , // 56 DUST
-    RND| _ |RKF| _ | _ | _ | _ |QUI| _ | _ | _ |ACT| _ | _ | _ |SPC|PER|XPD| _ | _  , // 57 DUST
-    RND| _ |RKF| _ | _ | _ | _ |QUI| _ | _ | _ |ACT| _ | _ | _ |SPC|PER|XPD| _ | _  , // 58 DUST
-    RND| _ |RKF| _ | _ | _ | _ |QUI| _ | _ | _ |ACT| _ | _ | _ |SPC|PER|XPD| _ | _  , // 59 DUST
-    RND| _ |RKF| _ | _ | _ | _ |QUI| _ | _ | _ |ACT| _ | _ | _ |SPC|PER|XPD| _ | _  , // 60 DUST
-    RND| _ |RKF| _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ |SPC|PER|XPD| _ | _  , // 61 LAVA
-    RND| _ |RKF| _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ |SPC|PER|XPD| _ | _  , // 61 WATER (*)
-#if ENABLE_EGG
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ |SQB|ACT| _ | _ | _ | _ |PER| _ | _ | _  , // 63 EGG
-#endif
-     _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 64 ZZAP   SCALATOR
-     _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 65 ZZAP1  SCALATOR
-    RND| _ | _ |PSH| _ | _ | _ | _ | _ |HRD| _ |ACT| _ | _ | _ | _ | _ |XPD| _ |ROL , // 66 ROCK
-     _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 64 DRILL
-
+    RND| _ | _ | _ | _ |WTR|LAV| _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ |XPD|FLY| _  , // 24 AMOEBA  
+    RND| _ |RKF| _ | _ | _ |LAV| _ | _ | _ | _ |ACT| _ | _ | _ |SPC|PER| _ | _ | _  , // 25 DRIP 
+    RND| _ |RKF| _ | _ | _ |LAV| _ | _ | _ | _ |ACT| _ | _ | _ |SPC|PER| _ | _ | _  , // 26 DRIP_SPLASH
+     _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 27 __NOTHING  
+     _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 28 __THISFRAME
+     _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 29 EXPLODE_THIS  
+    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 30 BLANK_THIS 
+    RND| _ | _ | _ | _ |WTR|LAV| _ | _ | _ | _ | _ | _ | _ | _ | _ |PER|XPD| _ | _  , // 31 DIRT3
+    RND| _ | _ | _ | _ |WTR|LAV| _ | _ | _ | _ | _ | _ | _ | _ | _ |PER|XPD| _ | _  , // 32 DIRT2
+    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 33 EXPLODE_BLANK_0  
+    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 34 EXPLODE_BLANK_1  
+    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 35 EXPLODE_BLANK_2  
+    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 36 EXPLODE_BLANK_3  
+    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 37 EXPLODE_BLANK_4  
+    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ |SPC| _ |XPD| _ | _  , // 38 DOGE_GRAB  
+    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ |XPD| _ | _  , // 39 DIRT_GRAB  
+    RND| _ |RKF| _ | _ | _ | _ |QUI| _ | _ | _ |ACT| _ | _ | _ |SPC|PER|XPD| _ | _  , // 40 DUST 
+    RND| _ |RKF| _ | _ | _ | _ |QUI| _ | _ | _ |ACT| _ | _ | _ |SPC|PER|XPD| _ | _  , // 41 DUST2
+    RND| _ |RKF| _ | _ | _ | _ |QUI| _ | _ | _ |ACT| _ | _ | _ |SPC|PER|XPD| _ | _  , // 42 DUST3
+    RND| _ | _ |PSH| _ | _ | _ | _ | _ |HRD| _ |ACT| _ | _ | _ | _ | _ |XPD| _ |ROL , // 43 BOULDER_SHAKE 
+    RND| _ |RKF| _ | _ | _ | _ |QUI| _ | _ | _ |ACT| _ | _ | _ |SPC|PER|XPD| _ | _  , // 44 DUST_LEFT  
+    RND| _ |RKF| _ | _ | _ | _ |QUI| _ | _ | _ |ACT| _ | _ | _ |SPC|PER|XPD| _ | _  , // 45 DUST2_LEFT 
+    RND| _ |RKF| _ | _ | _ | _ |QUI| _ | _ | _ |ACT| _ | _ | _ |SPC|PER|XPD| _ | _  , // 46 DUST3_LEFT 
+    RND| _ |RKF| _ | _ | _ | _ |QUI| _ | _ | _ |ACT| _ | _ | _ |SPC|PER|XPD| _ | _  , // 47 DUST_RIGHT 
+    RND| _ |RKF| _ | _ | _ | _ |QUI| _ | _ | _ |ACT| _ | _ | _ |SPC|PER|XPD| _ | _  , // 48 DUST2_RIGHT
+    RND| _ |RKF| _ | _ | _ | _ |QUI| _ | _ | _ |ACT| _ | _ | _ |SPC|PER|XPD| _ | _  , // 49 DUST3_RIGHT
+    RND| _ |RKF| _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ |SPC|PER|XPD| _ | _  , // 50 LAVA 
+    RND| _ |RKF| _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ |SPC|PER|XPD| _ | _  , // 51 WATER
+    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ |SQB|ACT| _ | _ | _ | _ |PER| _ | _ | _  , // 52 EGG  
+     _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 53 ZZAP 
+     _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 54 ZZAP1
+    RND| _ | _ |PSH| _ | _ | _ | _ | _ |HRD| _ |ACT| _ | _ | _ | _ | _ |XPD| _ |ROL , // 55 ROCK  
+     _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 56 DRILL
 
 //  RND|DRP RKF PSH SSP WTR LAV QUI XIT HRD SQB ACT BNG GRB SQD SPC PER XPD FLY ROL
 //   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |

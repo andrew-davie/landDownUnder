@@ -10,7 +10,6 @@
 #define ENABLE_PARALLAX 1
 #define ENABLE_TOGGLE_DISPLAY_ON_DEATH 0
 #define ENABLE_SHAKE 1
-#define ENABLE_EGG 1
 
 #define DEF_OVERVIEW 0x80
 #define DEF_PARALLAX 0x40
@@ -22,7 +21,7 @@
 #define PIECE_DEPTH 21
 #define SPRITE_DEPTH 23
 
-#define DIAMOND_PULSE_EDGE 60
+#define DOGE_PULSE_EDGE 60
 
 
 #define MAXIMUM_AMOEBA_SIZE 200
@@ -66,7 +65,7 @@ extern bool rockfordDead;
 
 extern int scrollX;
 extern int scrollY;
-extern int diamonds;
+extern int doge;
 
 enum DisplayMode {
     NORMAL,
