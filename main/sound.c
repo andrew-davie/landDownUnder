@@ -43,18 +43,6 @@ const unsigned char sampleDrip[] = {
    CMD_STOP,
 };
 
-// const unsigned char sampleUncover[] = {
-//      0xC, 0x8, 3, 4,
-//     0xC, 0x4, 3, 4,
-//     CMD_LOOP,
-// };
-
-const unsigned char sampleMagic[] = {
-    0xC, 0x8, 2, 2,
-    CMD_LOOP,
-};
-
-
 
 const unsigned char sampleRock[] = {
     8, 18, 4, 5,
@@ -325,7 +313,6 @@ const struct AudioTable AudioSamples[] = {
     { sampleExplode, 126 },
     { sampleDeadBeat, -1 },
     { sample10987654321, -1 },
-    { sampleMagic, 50 },
     { sampleTick, -3 },
     { sampleExit, 127 },
     { sampleBirth, 127 },
@@ -447,10 +434,6 @@ void playAudio() {
             audV = AudioSamples[best->id].sample[(best->index) + 2];
 
             switch (best->id) {
-
-            case SFX_MAGIC:
-                audF = (getRandom32() & 0xF) + 2;
-                break;
 
             case SFX_COUNTDOWN2:
                 audF = ((time & ~0xFF) >> 8) + 16;

@@ -335,27 +335,9 @@ void drawScreen(){
 
 #if ENABLE_PARALLAX
 
-
-    // bgDriftX += 8192/4;
-    // bgDriftY += 8192;
-
     extern unsigned char parallaxBlank[];
-    // extern unsigned char charDrip[];
-    // extern unsigned char charDrip1[];
-    // extern unsigned char charDrip2[];
-    // extern unsigned char charDrip3[];
-    // extern unsigned char charDripSplash[];
-    // extern unsigned char charDogeCoin[];
-    // extern unsigned char charDogeCoin1[];
-    // extern unsigned char charDogeCoin2[];
-    // extern unsigned char charDogeCoin3[];
-    // extern unsigned char charDogeCoin4[];
-    // extern unsigned char charDogeCoin5[];
-
     extern unsigned char charDust2[];
     extern unsigned char charDust3[];
-
-
 
     unsigned char dirtBG[] = {
         0b00000000,
@@ -383,7 +365,7 @@ void drawScreen(){
 
     extern int parallax;
 
-    for (int i = 0; i < PIECE_DEPTH + 9 + 9; i++) {
+    for (int i = 0; i < PIECE_DEPTH + 9 + 9; i++) {     /// todo on char format switch!
         parallaxBlank[i] = 0;
     }
 
@@ -529,7 +511,7 @@ extern const unsigned char DUST3[];
                                 piece = (*Animate[type])[AnimIdx[type].index];
                             else
                             {
-                                piece = 6;      // anything blank
+                                piece = CH_BLANK;      // anything blank
                             }
                             
                         }

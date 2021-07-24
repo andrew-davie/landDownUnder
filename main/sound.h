@@ -19,12 +19,10 @@ enum AudioID {
     SFX_ROCK2,
     SFX_DOGE,
     SFX_EXTRA,
-//    SFX_UNCOVER,
     SFX_BLIP,
     SFX_EXPLODE,
     SFX_DEADBEAT,
     SFX_COUNTDOWN2,     // time expiring
-    SFX_MAGIC,
     SFX_TICK,
     SFX_EXIT,
     SFX_BIRTH,

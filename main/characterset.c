@@ -662,148 +662,6 @@ const unsigned char CHAR_DRIPX[] = {
 
 
 
-const unsigned char CHAR_FIREFLY[] = {
-    XXXX      // 20
-    XXXX      // 20
-    XXXX      // 20
-    X__X      //  2
-    X__X      //  1
-    XXXX      //  2
-    X__X      //  6
-    X__X      //  5
-    XXXX      //  6
-    X__X      //  9
-    X__X      //  8
-    XXXX      //  6
-    X__X      // 12
-    X__X      // 11
-    XXXX      //  6
-    X__X      // 15
-    X__X      // 14
-    XXXX      //  6
-    XXXX      // 18
-    XXXX      // 17
-    XXXX      // 18
-
-
-    // small
-    ___X     //  0
-    ___X     //  1
-    ___X     //  2
-    ___X     //  3
-    ___X     //  4
-    ___X     //  5
-    ___X     //  6
-    ___X     //  7
-    ____      //  8
-
-    ___X     //  0
-    ___X     //  1
-    ___X     //  2
-    ___X     //  3
-    ___X     //  4
-    ___X     //  5
-    ___X     //  6
-    ___X     //  7
-    ____      //  8
-};
-
-
-const unsigned char FIREFLY2[] = {
-    ____      // 20
-    ____      //  0
-    ____      //  1
-    _XX_      //  2
-    _XX_      //  4
-    _XX_      //  5
-    X__X      //  6
-    X__X      //  7
-    XXXX      //  8
-    X__X      //  9
-    X__X      // 10
-    XXXX      // 11
-    X__X      // 12
-    X__X      // 13
-    XXXX      // 14
-    _XX_      // 15
-    _XX_      // 16
-    _XX_      // 17
-    ____      // 18
-    ____      // 19
-    ____      // 20
-
-
-    // small
-    ____      //  1
-    ___X     //  2
-    ____      //  3
-    ____      //  4
-    ___X     //  5
-    ____      //  6
-    ____      //  6
-    ___X     //  7
-    ____      //  8
-
- 
-    ____      //  1
-    ___X     //  2
-    ____      //  3
-    ____      //  4
-    ___X     //  5
-    ____      //  6
-    ____      //  6
-    ___X     //  7
-    ____      //  8
-};
-
-
-const unsigned char FIREFLY3[] = {
-    ____      // 20
-    ____      //  0
-    ____      //  1
-    ____      //  2
-    ____      //  4
-    ____      //  5
-    _XX_      //  7
-    _XX_      //  6
-    _XX_      //  8
-    _XX_      // 10
-    _XX_      //  9
-    _XX_      // 11
-    _XX_      // 13
-    _XX_      // 12
-    _XX_      // 14
-    ____      // 15
-    ____      // 16
-    ____      // 17
-    ____      // 18
-    ____      // 19
-    ____      // 20
-
-
-    // small
-    ____      //  0
-    ____      //  1
-    ____      //  2
-    ____      //  3
-    ____      //  4
-    ____      //  5
-    ____      //  6
-    ____      //  7
-    ____      //  8
-
- 
-    ____      //  1
-    ____      //  2
-    ____      //  3
-    ____      //  4
-    ____      //  5
-    ____      //  6
-    ____      //  7
-    ____      //  8
-    ____      //  0
-
- };
 
 const unsigned char BUTTERFLY0[] = {
 
@@ -954,7 +812,7 @@ const unsigned char BUTTERFLY3[] = {
 
 
 
-const unsigned char CHAR_STEELWALL[] = {
+const unsigned char CHAR_STEEL[] = {
     X__X      //  4
     XXXX      //  8
     XXXX      //  0
@@ -1047,149 +905,6 @@ const unsigned char CHAR_BRICKWALL[] = {
     ___X     //  8
 };
 
-const unsigned char MAGIC1[] = {
-    ____      // 20
-    _XXX      //  0
-    XXXX      //  1
-    _XXX      //  2
-    _XXX      //  3
-    XXXX      //  4
-    _XXX      //  5
-    _XXX      //  6
-    XXXX      //  7
-    _XXX      //  8
-    ____      // 10
-    XXXX      // 11
-    XX_X      // 12
-    XX_X      // 13
-    XXXX      // 14
-    XX_X      // 15
-    XX_X      // 16
-    XXXX      // 17
-    XX_X      // 18
-    XX_X      // 19
-    XXXX      // 19
-
-        // small
-    ____      //  0
-    ____      //  1
-    ___X     //  2
-    ___X     //  3
-    ____      //  4
-    ___X     //  5
-    ___X     //  6
-    ____      //  7
-    ____      //  8
-
-    ____      //  0
-    ____      //  1
-    ___X     //  2
-    ___X     //  3
-    ____      //  4
-    ___X     //  5
-    ___X     //  6
-    ____      //  7
-    ____      //  8
-
-
-};
-
-
-const unsigned char MAGIC2[] = {
-    ____      // 20
-    X_XX      //  0
-    XXXX      //  1
-    X_XX      //  2
-    X_XX      //  3
-    XXXX      //  4
-    X_XX      //  5
-    X_XX      //  6
-    XXXX      //  7
-    X_XX      //  8
-    ____      // 10
-    XXXX      // 11
-    XXX_      // 12
-    XXX_      // 13
-    XXXX      // 14
-    XXX_      // 15
-    XXX_      // 16
-    XXXX      // 17
-    XXX_      // 18
-    XXX_      // 19
-    XXXX      // 19
-
-        // small
-    ____      //  0
-    ____      //  1
-    ___X     //  2
-    ___X     //  3
-    ____      //  4
-    ___X     //  5
-    ___X     //  6
-    ____      //  7
-    ____      //  8
-
-    ____      //  0
-    ___X     //  1
-    ___X     //  2
-    ___X     //  3
-    ___X     //  4
-    ___X     //  5
-    ___X     //  6
-    ___X     //  7
-    ____      //  8
-
-
-};
-
-
-const unsigned char MAGIC3[] = {
-    ____      // 20
-    XX_X      //  0
-    XXXX      //  1
-    XX_X      //  2
-    XX_X      //  3
-    XXXX      //  4
-    XX_X      //  5
-    XX_X      //  6
-    XXXX      //  7
-    XX_X      //  8
-    ____      // 10
-    XXXX      // 11
-    _XXX      // 12
-    _XXX      // 13
-    XXXX      // 14
-    _XXX      // 15
-    _XXX      // 16
-    XXXX      // 17
-    _XXX      // 18
-    _XXX      // 19
-    XXXX      // 19
-
-        // small
-    ____  
-    ___X     //  0
-    ____      //  1
-    ___X     //  2
-    ___X     //  3
-    ___X     //  5
-    ___X     //  6
-    ____      //  7
-    ____      //  8
-
-
-    ____  
-    ____      //  0
-    ___X     //  1
-    ___X     //  2
-    ___X     //  3
-    ___X     //  5
-    ___X     //  6
-    ___X     //  7
-    ____      //  8
-
-
-};
 
 
 
@@ -4293,7 +4008,101 @@ const unsigned char CHAR_ROCKF[] = {
 };
 
 
+const unsigned char CHAR_DRILLBODY[] = {
 
+    X_X_  
+    XXX_  
+    X_X_  
+    X_X_  
+    XXX_  
+    X_X_  
+    X_X_
+    XXX_  
+    X_X_  
+    X_X_
+    XXX_  
+    X_X_  
+    X_X_  
+    XXX_  
+    X_X_  
+    X_X_  
+    XXX_  
+    X_X_  
+    X_X_  
+    _X__  
+    _X__  
+
+
+    ___X     //  5
+    ___X     //  0
+    ___X     //  2
+    ____      //  4
+    ___X     //  6
+    ____      //  3
+    ____      //  3
+    ___X     //  7
+    ____      //  8
+
+    ____      //  5
+    ___X     //  0
+    ___X     //  2
+    ____      //  4
+    ___X     //  6
+    ____      //  3
+    ___X     //  3
+    ___X     //  7
+    ____      //  8
+
+
+
+};
+
+
+const unsigned char CHAR_DRILLBODY1[] = {
+
+    ____  
+    XXX_  
+    ____  
+    XXX_  
+    ____  
+    XXX_  
+    ____
+    XXX_  
+    X_X_  
+    X_X_
+    XXX_  
+    X_X_  
+    X_X_  
+    XXX_  
+    X_X_  
+    X_X_  
+    XXX_  
+    X_X_  
+    X_X_  
+    XXX_  
+    XXX_
+
+
+    ___X     //  5
+    ___X     //  0
+    ___X     //  2
+    ____      //  4
+    ___X     //  6
+    ____      //  3
+    ____      //  3
+    ___X     //  7
+    ____      //  8
+
+    ____      //  5
+    ___X     //  0
+    ___X     //  2
+    ____      //  4
+    ___X     //  6
+    ____      //  3
+    ___X     //  3
+    ___X     //  7
+    ____      //  8
+};
 
 #if ENABLE_PARALLAX
 extern unsigned char *parallaxBlank[];
@@ -4305,234 +4114,141 @@ const unsigned char (*charSet[])[] = {
     // +--> ChName
     // +--> CharToType[]
 
-#if ENABLE_PARALLAX
-    (const unsigned char (*)[])&parallaxBlank,                     // 0
-#else
-    &BLANK,                             // 0
-#endif
-
-    &DIRTY,                                         // 1
-    &CHAR_BRICKWALL,                                // 2
-    &CHAR_BRICKWALL,                                // 3       // magic wall
-    &CHAR_STEELWALL,                                // 4       exit door (closed)
-    &CHAR_STEELWALL,                                // 5       exit door (open)
-    &BLANK,                                         // 6       exit door (open)
-    &CHAR_STEELWALL,                                // 7
-
-    &CHAR_FIREFLY,                                  // 8
-    &CHAR_FIREFLY,                                  // 9
-    &CHAR_FIREFLY,                                  // 10
-    &CHAR_FIREFLY,                                  // 11
-
-    &DIRTY3,                                        // 12
-    &DIRTY2,                                        // 13
-    &CHAR_EGG,                                      // 14
-    &BLANK,                                         // 15
-
-
-    &CHAR_BOULDER,                                  // 16
-    &CHAR_ZZAP1,                                    // 17
-    &CHAR_BOULDER,                                  // 18
-    &CHAR_ROCK0,                                    // 19   ROCKSEED
-
-// #if ENABLE_PARALLAX
-//     (const unsigned char (*)[])&charDogeCoin,        // 20
-// #else
-    &DOGEA,                                      // 20
-// #endif
-    &BLANK,                                         // 21
-    &BLANK,                                         // 22
-    &BLANK,                                         // 23
-    &BLANK,                                         // 24
-    &FIREFLY2,                                      // 25
-    &FIREFLY3,                                      // 26
-    &BUTTERFLY2,                                    // 27
-    &BUTTERFLY3,                                    // 28
-    &BLANK,                                         // 29
-    &BLANK, //UNCOVER0,                          // 30
-    &BLANK, //UNCOVER1,                          // 31
-    &EXPLODETODOGE0,                 // 32
-    &EXPLODETODOGE1,                 // 33
-    &EXPLODETODOGE2,                 // 34
-    &EXPLODETODOGE3,                 // 35
-    &EXPLODETODOGE4,                 // 36
-    &BLANK, //ROCKYa,                            // 37
-    &BLANK, //ROCKYb,                            // 38
-    &BLANK, //ROCKYc,                            // 39
-
-
-    &BLANK, //ROCKYd,                            // 40
-    &BLANK,                             // 41
-    &BLANK,                             // 42
-    &BLANK,                             // 43
-    &MAGIC1,                            // 44
-    &MAGIC2,                            // 45
-    &MAGIC3,                            // 46
-// #if ENABLE_PARALLAX
-//     (const unsigned char (*)[])&charDogeCoin1, //1,                     // 47 pulse diamond
-// #else
-    &DOGE1,                             // 47
-// #endif
-    &BUTTERFLY0,                        // 48
-    &BUTTERFLY0,                        // 49
-
-    &BUTTERFLY0,                        // 50
-    &BUTTERFLY0,                        // 51
-    &BUTTERFLY0,                        // 52
-    &BUTTERFLY0,                        // 53
-    &BUTTERFLY0,                        // 54
-    &BUTTERFLY0,                        // 55
-    &BLANK,                             // 56
-    &BLANK,                             // 57
-    &AMOEBA0,                           // 58
-    &AMOEBA1,                           // 59
-
-
-    &AMOEBA2,                           // 60
-    &AMOEBA3,                           // 61
-    &CHAR_ZZAP,                         // 62  CH_ZZAP
-    &CHAR_STEELWALL,                    // 63
-
-    &BLANK, //UNCOVER0,                          // 64
-    &BLANK, //UNCOVER1,                          // 65
-    &BLANK, //UNCOVER2,                          // 66
-    &BLANK, //UNCOVER3,                          // 67
-    &BLANK, //UNCOVER4,                          // 68
-    &BLANK, //UNCOVER5,                          // 69
-
-    &DOGE1,                             // 70
-    &DOGE2,                             // 71
-    &DOGE3,                             // 72
-    &DOGE4,                             // 73
-    &DOGE5,                             // 74
-    &DOGE6,                             // 75
-    &BLANK,                             // 76     /delete
-    &BLANK,                             // 77
-    &BLANK,                             // 78
-    &BLANK,                             // 79
-
-    &DOGEA,                             // 80
+    (const unsigned char (*)[])&parallaxBlank,      // 000
     
-    &BLANK,                             // 81  AMOEBA THIS
-    &EXPLODETODOGE0,                    // 82  EXPLODE THIS!
-
-    &BLANK_EXTRA1,                      // 83
-    &BLANK_EXTRA2,                      // 84
-    &BLANK_EXTRA3,                      // 85
-    &BLANK_EXTRA4,                      // 86
-    &BLANK_EXTRA5,                      // 87
-    &BLANK_EXTRA6,                      // 88
-    &BLANK_EXTRA7,                      // 89
-    &BLANK_EXTRA8,                      // 90
-
-    &BLANK,                             // 91
-
-    &EXPLODETODOGE0,                 // 92       // explode to BLANK!
-    &EXPLODETODOGE1,                 // 93
-    &EXPLODETODOGE2,                 // 94
-    &EXPLODETODOGE3,                 // 95
-    &EXPLODETODOGE4,                 // 96
-
-    &DOGE_GRABBED,                   // 97       grabbed diamond
-    &DIRT_GRABBED,                      // 98       grabbed dirt
-
-    &DUST,                              // 99       post-dirt dust
-    &DUST2,                                         // 100      post-dirt dust frame 2
-
-#if ENABLE_PARALLAX
-    (const unsigned char (*)[])&charDust3,         // 13
-#else
-
-    &DUST3,                                         // 101      post-dirt dust frame 3
-#endif
-
-    
-    &CHAR_BOULDER_SHAKE,                // 102
-
-    &BLANK,                                         // 103      DUST_LEFT
-    &DUST_LEFT,                                     // 104      DUST2_LEFT
-    &DUST2_LEFT,                                    // 105      DUST3_LEFT
-
-    &BLANK,                                         // 106      DUST_RIGHT
-    &DUST_RIGHT,                                    // 107      DUST2_RIGHT
-    &DUST2_RIGHT,                                   // 108      DUST3_RIGHT
-
-    &CHAR_LAVA,                                     // 109      LAVA
-    &CHAR_LAVA1,                                    // 110      LAVA
-    &CHAR_LAVA2,                                    // 111      LAVA
-    &CHAR_LAVA3,                                    // 112      LAVA
-    
-    &CHAR_WATER,                                    // 113     WATER
-    &CHAR_WATER1,                                   // 114     WATER
-    &CHAR_WATER2,                                   // 115     WATER
-    &CHAR_WATER3,                                   // 116     WATER
-    &CHAR_EGG2,                                     // 117     EGG2
-
-#if ENABLE_PARALLAX
-
-    (const unsigned char (*)[])&parallaxBlank,      // 118
-    (const unsigned char (*)[])&parallaxBlank,      // 118
-#else
-
-    &BLANK,                                         // 118     CH_ROCKFORD
-    &BLANK,                                         // 119     CH_ROCKFORD_THIS
-#endif
-
-
-// #if ENABLE_PARALLAX
-//     (const unsigned char (*)[])&charDrip,           // 120
-//     (const unsigned char (*)[])&charDrip1,          // 121
-//     (const unsigned char (*)[])&charDrip2,          // 122
-//     (const unsigned char (*)[])&charDrip3,          // 123
-//     (const unsigned char (*)[])&charDripSplash,     // 124
-// #else
-    &CHAR_DRIP,                          // 120     CH_DRIP0
-    &CHAR_DRIP1,                         // 121     CH_DRIP1
-    &CHAR_DRIP2,                         // 122     CH_DRIP2
-    &CHAR_DRIP3,                         // 123     CH_DRIP3
-    &CHAR_DRIPX,                         // 124     CH_DRIPX
-//#endif
-
-    &DIRTY,                            // 125 CH_DIRT
-    &DIRT1,                            // 126 CH_DIRT1
-    &DIRT2,                            // 127 CH_DIRT2
-    &DIRT3,                            // 128 CH_DIRT3
-    &DIRT4,                            // 129 CH_DIRT4
-    &DIRT5,                            // 130 CH_DIRT5
-    &DIRT6,                            // 131 CH_DIRT6
-    &DIRT7,                            // 132 CH_DIRT7
-    &DIRT8,                            // 133 CH_DIRT8
-    &DIRT9,                            // 134 CH_DIRT9
-    &DIRTA,                            // 135 CH_DIRTA
-    &DIRTB,                            // 136 CH_DIRTB
-    &DIRTC,                            // 137 CH_DIRTC
-    &DIRTD,                            // 138 CH_DIRTD
-    &DIRTE,                            // 139 CH_DIRTE
-    &DIRTF,                            // 140 CH_DIRTF
-
-    &CHAR_ZZAP2,                       // 141  CH_ZZAP2
-
-
-    &CHAR_ROCK0,                       // 142 CH_ROCK0
-    &CHAR_ROCK1,                       // 143 CH_ROCK1
-    &CHAR_ROCK2,                       // 144 CH_ROCK2
-    &CHAR_ROCK3,                       // 145 CH_ROCK3
-    &CHAR_ROCK4,                       // 146 CH_ROCK4
-    &CHAR_ROCK5,                       // 147 CH_ROCK5
-    &CHAR_ROCK6,                       // 148 CH_ROCK6
-    &CHAR_ROCK7,                       // 149 CH_ROCK7
-    &CHAR_ROCK8,                       // 150 CH_ROCK8
-    &CHAR_ROCK9,                       // 151 CH_ROCK9
-    &CHAR_ROCKA,                       // 152 CH_ROCKA
-    &CHAR_ROCKB,                       // 153 CH_ROCKB
-    &CHAR_ROCKC,                       // 154 CH_ROCKC
-    &CHAR_ROCKD,                       // 155 CH_ROCKD
-    &CHAR_ROCKE,                       // 156 CH_ROCKE
-    &CHAR_ROCKF,                       // 157 CH_ROCKF
-
-    &CHAR_DRILL,                       // 159  CH_DRILL
-    &CHAR_DRILL1,                      // 160  CH_DRILL1
-    &CHAR_DRILL2,                      // 161  CH_DRILL2
+    &DIRTY,                                         // 001
+    &CHAR_BRICKWALL,                                // 002
+    &CHAR_STEEL,                                    // 003  exit door (closed)
+    &CHAR_STEEL,                                    // 004  exit door (open)
+    &BLANK,                                         // 005  exit door (open)
+    &CHAR_STEEL,                                    // 006
+    &DIRTY3,                                        // 007
+    &DIRTY2,                                        // 008
+    &CHAR_EGG,                                      // 009
+    &CHAR_BOULDER,                                  // 010
+    &CHAR_ZZAP1,                                    // 011
+    &CHAR_BOULDER,                                  // 012
+    &CHAR_ROCK0,                                    // 013  ROCKSEED
+    &DOGEA,                                         // 014
+    &BLANK,                                         // 015
+    &BLANK,                                         // 016
+    &BLANK,                                         // 017
+    &BLANK, //UNCOVER0,                             // 018
+    &BLANK, //UNCOVER1,                             // 019
+    &EXPLODETODOGE0,                                // 020
+    &EXPLODETODOGE1,                                // 021
+    &EXPLODETODOGE2,                                // 022
+    &EXPLODETODOGE3,                                // 023
+    &EXPLODETODOGE4,                                // 024
+    &BLANK, //ROCKYa,                               // 025
+    &BLANK, //ROCKYb,                               // 026
+    &BLANK, //ROCKYc,                               // 027
+    &BLANK, //ROCKYd,                               // 028
+    &BLANK,                                         // 029
+    &BLANK,                                         // 030
+    &BLANK,                                         // 031
+    &DOGE1,                                         // 032
+    &BLANK,                                         // 033
+    &BLANK,                                         // 034
+    &AMOEBA0,                                       // 035
+    &AMOEBA1,                                       // 036
+    &AMOEBA2,                                       // 037
+    &AMOEBA3,                                       // 038
+    &CHAR_ZZAP,                                     // 039 CH_ZZAP
+    &CHAR_STEEL,                                    // 040
+    &DOGE1,                                         // 041
+    &DOGE2,                                         // 042
+    &DOGE3,                                         // 043
+    &DOGE4,                                         // 044
+    &DOGE5,                                         // 045
+    &DOGE6,                                         // 046
+    &BLANK,                                         // 047 /delete
+    &BLANK,                                         // 048
+    &BLANK,                                         // 049
+    &BLANK,                                         // 050
+    &DOGEA,                                         // 051
+    &BLANK,                                         // 052 AMOEBA THIS
+    &EXPLODETODOGE0,                                // 053 EXPLODE THIS!
+    &BLANK_EXTRA1,                                  // 054
+    &BLANK_EXTRA2,                                  // 055
+    &BLANK_EXTRA3,                                  // 056
+    &BLANK_EXTRA4,                                  // 057
+    &BLANK_EXTRA5,                                  // 058
+    &BLANK_EXTRA6,                                  // 059
+    &BLANK_EXTRA7,                                  // 060
+    &BLANK_EXTRA8,                                  // 061
+    &BLANK,                                         // 062
+    &EXPLODETODOGE0,                                // 063 // explode to BLANK!
+    &EXPLODETODOGE1,                                // 064
+    &EXPLODETODOGE2,                                // 065
+    &EXPLODETODOGE3,                                // 066
+    &EXPLODETODOGE4,                                // 067
+    &DOGE_GRABBED,                                  // 068 grabbed diamond
+    &DIRT_GRABBED,                                  // 069 grabbed dirt
+    &DUST,                                          // 070 post-dirt dust
+    &DUST2,                                         // 071 post-dirt dust frame 2
+    (const unsigned char (*)[])&charDust3,          // 072
+    &CHAR_BOULDER_SHAKE,                            // 073
+    &BLANK,                                         // 074 DUST_LEFT
+    &DUST_LEFT,                                     // 075 DUST2_LEFT
+    &DUST2_LEFT,                                    // 076 DUST3_LEFT
+    &BLANK,                                         // 077 DUST_RIGHT
+    &DUST_RIGHT,                                    // 078 DUST2_RIGHT
+    &DUST2_RIGHT,                                   // 079 DUST3_RIGHT
+    &CHAR_LAVA,                                     // 080 LAVA
+    &CHAR_LAVA1,                                    // 081 LAVA
+    &CHAR_LAVA2,                                    // 082 LAVA
+    &CHAR_LAVA3,                                    // 083 LAVA    
+    &CHAR_WATER,                                    // 084 WATER
+    &CHAR_WATER1,                                   // 085 WATER
+    &CHAR_WATER2,                                   // 086 WATER
+    &CHAR_WATER3,                                   // 087 WATER
+    &CHAR_EGG2,                                     // 088 EGG2
+    &BLANK,                                         // 089 CH_ROCKFORD
+    &BLANK,                                         // 090 CH_ROCKFORD_THIS
+    &CHAR_DRIP,                                     // 091 CH_DRIP0
+    &CHAR_DRIP1,                                    // 092 CH_DRIP1
+    &CHAR_DRIP2,                                    // 093 CH_DRIP2
+    &CHAR_DRIP3,                                    // 094 CH_DRIP3
+    &CHAR_DRIPX,                                    // 095 CH_DRIPX
+    &DIRTY,                                         // 096 CH_DIRT
+    &DIRT1,                                         // 097 CH_DIRT1
+    &DIRT2,                                         // 098 CH_DIRT2
+    &DIRT3,                                         // 099 CH_DIRT3
+    &DIRT4,                                         // 100 CH_DIRT4
+    &DIRT5,                                         // 101 CH_DIRT5
+    &DIRT6,                                         // 102 CH_DIRT6
+    &DIRT7,                                         // 103 CH_DIRT7
+    &DIRT8,                                         // 104 CH_DIRT8
+    &DIRT9,                                         // 105 CH_DIRT9
+    &DIRTA,                                         // 106 CH_DIRTA
+    &DIRTB,                                         // 107 CH_DIRTB
+    &DIRTC,                                         // 108 CH_DIRTC
+    &DIRTD,                                         // 109 CH_DIRTD
+    &DIRTE,                                         // 110 CH_DIRTE
+    &DIRTF,                                         // 111 CH_DIRTF
+    &CHAR_ZZAP2,                                    // 112 CH_ZZAP2
+    &CHAR_ROCK0,                                    // 113 CH_ROCK0
+    &CHAR_ROCK1,                                    // 114 CH_ROCK1
+    &CHAR_ROCK2,                                    // 115 CH_ROCK2
+    &CHAR_ROCK3,                                    // 116 CH_ROCK3
+    &CHAR_ROCK4,                                    // 117 CH_ROCK4
+    &CHAR_ROCK5,                                    // 118 CH_ROCK5
+    &CHAR_ROCK6,                                    // 119 CH_ROCK6
+    &CHAR_ROCK7,                                    // 120 CH_ROCK7
+    &CHAR_ROCK8,                                    // 121 CH_ROCK8
+    &CHAR_ROCK9,                                    // 122 CH_ROCK9
+    &CHAR_ROCKA,                                    // 123 CH_ROCKA
+    &CHAR_ROCKB,                                    // 124 CH_ROCKB
+    &CHAR_ROCKC,                                    // 125 CH_ROCKC
+    &CHAR_ROCKD,                                    // 126 CH_ROCKD
+    &CHAR_ROCKE,                                    // 127 CH_ROCKE
+    &CHAR_ROCKF,                                    // 128 CH_ROCKF
+    &CHAR_DRILL,                                    // 129 CH_DRILL
+    &CHAR_DRILL1,                                   // 130 CH_DRILL1
+    &CHAR_DRILL2,                                   // 131 CH_DRILL2
+    &CHAR_DRILLBODY,                                // 132 CH_DRILLBODY
+    &CHAR_DRILLBODY1,                               // 133 CH_DRILLBODY
 
     // +--> CharToType[]
 

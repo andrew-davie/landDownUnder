@@ -135,7 +135,7 @@ extern int millingTime;
 //        DrawFilledRect(CH_DIRTY,0,0,40,22,CH_DIRTY);         // legacy
 //    else
 
-        DrawRect(CH_STEELWALL_0, 0, -1, 40, 24);
+        DrawRect(CH_STEEL, 0, -1, 40, 24);
         DrawFilledRect(acaveData[22], 0, 0, 40, 22, acaveData[23]); 
 //        StoreObject(39,1, 7);
 
@@ -211,7 +211,7 @@ bool DecodeExplicitData() {
     caveDataIndex++;
 
     if (decodingCave[caveDataIndex] == 0xFF) {
-        //DrawRect(CH_STEELWALL_0, 0, 2, 40, 22);
+        //DrawRect(CH_STEEL, 0, 2, 40, 22);
         return true;
     }
 
@@ -224,8 +224,8 @@ bool DecodeExplicitData() {
 /* **************************************** */
 void StoreObject(int x, int y, objectType anObject) {
 
-    if (anObject == CH_DIRT && (getRandom32() & 0xFF) < 10)
-        anObject = CH_DIRT + (getRandom32() & 0xF);
+//    if (anObject == CH_DIRT && (getRandom32() & 0xFF) < 10)
+//        anObject = CH_DIRT + (getRandom32() & 0xF);
         
     if (x >=0 && x < 40 && y >= -1 && y <= 22)
         RAM[_BOARD + x + (y+1)*40] = anObject;
