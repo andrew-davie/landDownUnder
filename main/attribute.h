@@ -5,8 +5,7 @@ extern const unsigned char CharToType[];
 
 enum ObjectType {
 
-    // update  ] if changing this
-    // update Attribute[] if changing this
+    // +--> modify Attribute[]
 
     TYPE_SPACE,              // 0
     TYPE_DIRT,               // 1
@@ -35,17 +34,17 @@ enum ObjectType {
     TYPE_AMOEBA,             // 24
     TYPE_DRIP,               // 25
     TYPE_DRIP_SPLASH,        // 26
-    TYPE_DIAMOND_PULSE_0,    // 27
-    TYPE_DIAMOND_PULSE_1,    // 28
-    TYPE_DIAMOND_PULSE_2,    // 29
-    TYPE_DIAMOND_PULSE_3,    // 30
-    TYPE_DIAMOND_PULSE_4,    // 31
-    TYPE_DIAMOND_PULSE_5,    // 32
-    TYPE_DIAMOND_PULSE_6,    // 33
-    TYPE_DIAMOND_PULSE_7,    // 34
-    TYPE_DIAMOND_PULSE_8,    // 35
-    TYPE_DIAMOND_PULSE_9,    // 36
-    TYPE_DIAMOND_PULSE_10,   // 37
+    TYPE_DIAMOND_PULSE_0,    // 27  /delete
+    TYPE_DIAMOND_PULSE_1,    // 28  /delete
+    TYPE_DIAMOND_PULSE_2,    // 29  /delete
+    TYPE_DIAMOND_PULSE_3,    // 30  /delete
+    TYPE_DIAMOND_PULSE_4,    // 31  /delete
+    TYPE_DIAMOND_PULSE_5,    // 32  /delete
+    TYPE_DIAMOND_PULSE_6,    // 33  /delete
+    TYPE_DIAMOND_PULSE_7,    // 34  /delete
+    TYPE_DIAMOND_PULSE_8,    // 35  /delete
+    TYPE_DIAMOND_PULSE_9,    // 36  /delete
+    TYPE_DIAMOND_PULSE_10,   // 37  /delete
     TYPE___NOTHING,          // 38
     TYPE___THISFRAME,        // 39
     TYPE_EXPLODE_THIS,       // 40
@@ -79,6 +78,10 @@ enum ObjectType {
     TYPE_ZZAP1,              // 65          DOWN SPIRAL
     TYPE_ROCK,               // 66          CONGLOMERATE
 
+    TYPE_DRILL,              // 67          DRILL
+
+// +--> modify Attribute[]
+
     TYPE_MAX
 };
 
@@ -109,7 +112,7 @@ enum ChName {
     CH_BOULDER,                 // 16
     CH_ZZAP1,                   // 17       TYPE_ZZAP1
     CH_BOULDER_FALLING,         // 18       [+2]
-    CH_BOULDER_THIS,            // 19
+    CH_ROCKSEED,                // 19
     CH_DIAMOND,                 // 20
     CH_DIAMOND_FALLING_THIS,    // 21       [+1]    scanned this frame
     CH_DIAMOND_FALLING,         // 22       [+2]
@@ -167,9 +170,9 @@ enum ChName {
     CH_DIAMOND_PULSE_4,         // 74
     CH_DIAMOND_PULSE_5,         // 75
     CH_DIAMOND_PULSE_6,         // 76
-    CH_DIAMOND_PULSE_7,         // 77
-    CH_DIAMOND_PULSE_8,         // 78
-    CH_DIAMOND_PULSE_9,         // 79
+    CH_DIAMOND_PULSE_7,         // 77     /delete
+    CH_DIAMOND_PULSE_8,         // 78     /delete
+    CH_DIAMOND_PULSE_9,         // 79     /delete
     CH_DIAMOND_STATIC,          // 80  (CAN SWITCH ANIMATIONS ON THIS!)
     CH_AMOEBA_BLANK,            // 81   ???
     CH_EXPLODE_THIS,            // 82   OBJECT EXPLODES NEXT FRAME
@@ -254,9 +257,13 @@ enum ChName {
     CH_ROCKA,                // 152
     CH_ROCKB,                // 153
     CH_ROCKC,                // 154
-    CH_ROCKD,                // 154
-    CH_ROCKE,                // 155
-    CH_ROCKF,                // 156
+    CH_ROCKD,                // 155
+    CH_ROCKE,                // 156
+    CH_ROCKF,                // 157
+
+    CH_DRILL,                // 158
+    CH_DRILL1,               // 159
+    CH_DRILL2                // 160
 
 };
 

@@ -577,7 +577,7 @@ VerticalSync:
     IF 1
         ; ARM VB routines send back the initial positions of the 5 objects      
 ;vbSetInitialX:        
-;        lda #DSCOMM         ; will get _BALL_X, _M1_X, _M0_X, _P1_X, and _P0_X
+;        lda #DSCOMM         ; will get _BALL_X,  _M1_X,  _M0_X,  _P1_X,  and _P0_X
  
     lda #DSCOMM     ; discard _BALL_X
     lda #DSCOMM     ; and _M1_X
@@ -593,7 +593,7 @@ VerticalSync:
 
 ;        jsr PosObject
 ;        inx
-;        lda #DSCOMM         ; will get _BALL_X, _M1_X, _M0_X, _P1_X, and _P0_X
+;        lda #DSCOMM         ; will get _BALL_X,  _M1_X,  _M0_X,  _P1_X,  and _P0_X
 ;        jsr PosObject
 ;        dex        
 ;        bpl vbSetInitialX

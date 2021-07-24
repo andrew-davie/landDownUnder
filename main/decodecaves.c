@@ -169,11 +169,11 @@ bool DecodeExplicitData() {
     // Decode the explicit cave data */
 
     int theWidth, theHeight, theFill, theLength, theDirection;
-    int theCode = decodingCave[caveDataIndex];
-    int theObject = theCode & 0x3F;
+    int theCommand = decodingCave[caveDataIndex];
+    int theObject = decodingCave[++caveDataIndex];
     int x,y;
 
-    switch(0b11000000 & theCode) {
+    switch(theCommand) {
     case 0b00000000: /* PLOT */
         x = decodingCave[++caveDataIndex];
         y = decodingCave[++caveDataIndex];
@@ -181,6 +181,7 @@ bool DecodeExplicitData() {
         break;
 
     case 0b01000000: /* LINE */
+
         x = decodingCave[++caveDataIndex];
         y = decodingCave[++caveDataIndex];
         theLength = decodingCave[++caveDataIndex];

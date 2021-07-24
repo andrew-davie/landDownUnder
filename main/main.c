@@ -1094,396 +1094,396 @@ void clear(unsigned char *p, unsigned char v, int len) {
 }
 
 #define DIGIT_GAP \
-        ________, \
-        ________, \
-        ________, \
-        ________, \
-        ________, \
-        ________,
+        ________   \
+        ________   \
+        ________   \
+        ________   \
+        ________   \
+        ________  
 
 
 
 static unsigned char digitShape[] = {
 
-        _X___X__,
-        XXX_XXX_,
-        XXX_XXX_,
-        XXX_XXX_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        XXX_XXX_,
-        XXX_XXX_,
-        XXX_XXX_,
-        _X___X__,
+        _X___X__  
+        XXX_XXX_  
+        XXX_XXX_  
+        XXX_XXX_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        XXX_XXX_  
+        XXX_XXX_  
+        XXX_XXX_  
+        _X___X__  
 
         DIGIT_GAP
 
-        __X___X_,
-        __X___X_,
-        __X___X_,
-        _XX__XX_,
-        _XX__XX_,
-        _XX__XX_,
-        _XX__XX_,
-        __X___X_,
-        __X___X_,
-        __X___X_,
-        __X___X_,
-        __X___X_,
-        __X___X_,
-        __X___X_,
-        __X___X_,
-        __X___X_,
-        __X___X_,
-        __X___X_,
+        __X___X_
+        __X___X_
+        __X___X_
+        _XX__XX_  
+        _XX__XX_  
+        _XX__XX_  
+        _XX__XX_  
+        __X___X_
+        __X___X_
+        __X___X_
+        __X___X_
+        __X___X_
+        __X___X_
+        __X___X_
+        __X___X_
+        __X___X_
+        __X___X_
+        __X___X_
 
         DIGIT_GAP
 
-        _X___X__,
-        XXX_XXX_,
-        XXX_XXX_,
-        XXX_XXX_,
-        X_X_X_X_,
-        __X___X_,
-        __X___X_,
-        __X___X_,
-        _XX__XX_,
-        XXX_XXX_,
-        XXX_XXX_,
-        XX__XX__,
-        X___X___,
-        X_X_X_X_,
-        XXX_XXX_,
-        XXX_XXX_,
-        XXX_XXX_,
-        XXX_XXX_,
+        _X___X__  
+        XXX_XXX_  
+        XXX_XXX_  
+        XXX_XXX_  
+        X_X_X_X_  
+        __X___X_
+        __X___X_
+        __X___X_
+        _XX__XX_  
+        XXX_XXX_  
+        XXX_XXX_  
+        XX__XX__  
+        X___X___  
+        X_X_X_X_  
+        XXX_XXX_  
+        XXX_XXX_  
+        XXX_XXX_  
+        XXX_XXX_  
 
         DIGIT_GAP
 
-        _X___X__,
-        XXX_XXX_,
-        XXX_XXX_,
-        XXX_XXX_,
-        X_X_X_X_,
-        __X___X_,
-        __X___X_,
-        _XX__XX_,
-        _X___X__,
-        _XX__XX_,
-        _XX__XX_,
-        __X___X_,
-        __X___X_,
-        X_X_X_X_,
-        XXX_XXX_,
-        XXX_XXX_,
-        XXX_XXX_,
-        _X___X__,
+        _X___X__  
+        XXX_XXX_  
+        XXX_XXX_  
+        XXX_XXX_  
+        X_X_X_X_  
+        __X___X_
+        __X___X_
+        _XX__XX_  
+        _X___X__  
+        _XX__XX_  
+        _XX__XX_  
+        __X___X_
+        __X___X_
+        X_X_X_X_  
+        XXX_XXX_  
+        XXX_XXX_  
+        XXX_XXX_  
+        _X___X__  
 
         DIGIT_GAP
 
-        X___X___,
-        X___X___,
-        X___X___,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        XXX_XXX_,
-        XXX_XXX_,
-        XXX_XXX_,
-        XXX_XXX_,
-        __X___X_,
-        __X___X_,
-        __X___X_,
-        __X___X_,
-        __X___X_,
+        X___X___  
+        X___X___  
+        X___X___  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        XXX_XXX_  
+        XXX_XXX_  
+        XXX_XXX_  
+        XXX_XXX_  
+        __X___X_
+        __X___X_
+        __X___X_
+        __X___X_
+        __X___X_
 
         DIGIT_GAP
 
-        XXX_XXX_,
-        XXX_XXX_,
-        XXX_XXX_,
-        XXX_XXX_,
-        X_X_X_X_,
-        X___X___,
-        XX__XX__,
-        XXX_XXX_,
-        XXX_XXX_,
-        _XX__XX_,
-        __X___X_,
-        __X___X_,
-        __X___X_,
-        X_X_X_X_,
-        XXX_XXX_,
-        XXX_XXX_,
-        XXX_XXX_,
-        _X___X__,
+        XXX_XXX_  
+        XXX_XXX_  
+        XXX_XXX_  
+        XXX_XXX_  
+        X_X_X_X_  
+        X___X___  
+        XX__XX__  
+        XXX_XXX_  
+        XXX_XXX_  
+        _XX__XX_  
+        __X___X_
+        __X___X_
+        __X___X_
+        X_X_X_X_  
+        XXX_XXX_  
+        XXX_XXX_  
+        XXX_XXX_  
+        _X___X__  
 
         DIGIT_GAP
 
-        _X___X__,
-        XXX_XXX_,
-        XXX_XXX_,
-        XXX_XXX_,
-        X_X_X_X_,
-        X___X___,
-        XX__XX__,
-        XXX_XXX_,
-        XXX_XXX_,
-        XXX_XXX_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        XXX_XXX_,
-        XXX_XXX_,
-        XXX_XXX_,
-        _X___X__,
+        _X___X__  
+        XXX_XXX_  
+        XXX_XXX_  
+        XXX_XXX_  
+        X_X_X_X_  
+        X___X___  
+        XX__XX__  
+        XXX_XXX_  
+        XXX_XXX_  
+        XXX_XXX_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        XXX_XXX_  
+        XXX_XXX_  
+        XXX_XXX_  
+        _X___X__  
 
         DIGIT_GAP
 
-        XXX_XXX_,
-        XXX_XXX_,
-        XXX_XXX_,
-        XXX_XXX_,
-        X_X_X_X_,
-        __X___X_,
-        __X___X_,
-        __X___X_,
-        __X___X_,
-        _XX__XX_,
-        _X___X__,
-        _X___X__,
-        _X___X__,
-        _X___X__,
-        _X___X__,
-        _X___X__,
-        _X___X__,
-        _X___X__,
+        XXX_XXX_  
+        XXX_XXX_  
+        XXX_XXX_  
+        XXX_XXX_  
+        X_X_X_X_  
+        __X___X_
+        __X___X_
+        __X___X_
+        __X___X_
+        _XX__XX_  
+        _X___X__  
+        _X___X__  
+        _X___X__  
+        _X___X__  
+        _X___X__  
+        _X___X__  
+        _X___X__  
+        _X___X__  
 
         DIGIT_GAP
 
-        _X___X__,
-        XXX_XXX_,
-        XXX_XXX_,
-        XXX_XXX_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        XXX_XXX_,
-        XXX_XXX_,
-        _X___X__,
-        XXX_XXX_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        XXX_XXX_,
-        XXX_XXX_,
-        XXX_XXX_,
-        _X___X__,
+        _X___X__  
+        XXX_XXX_  
+        XXX_XXX_  
+        XXX_XXX_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        XXX_XXX_  
+        XXX_XXX_  
+        _X___X__  
+        XXX_XXX_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        XXX_XXX_  
+        XXX_XXX_  
+        XXX_XXX_  
+        _X___X__  
 
         DIGIT_GAP
 
-        _X___X__,
-        XXX_XXX_,
-        XXX_XXX_,
-        XXX_XXX_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        XXX_XXX_,
-        XXX_XXX_,
-        XXX_XXX_,
-        _XX__XX_,
-        __X___X_,
-        X_X_X_X_,
-        XXX_XXX_,
-        XXX_XXX_,
-        XXX_XXX_,
-        _X___X__,
-
-        DIGIT_GAP
-
-    // repeat 0
-
-        _X___X__,
-        XXX_XXX_,
-        XXX_XXX_,
-        XXX_XXX_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        X_X_X_X_,
-        XXX_XXX_,
-        XXX_XXX_,
-        XXX_XXX_,
-        _X___X__,
+        _X___X__  
+        XXX_XXX_  
+        XXX_XXX_  
+        XXX_XXX_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        XXX_XXX_  
+        XXX_XXX_  
+        XXX_XXX_  
+        _XX__XX_  
+        __X___X_
+        X_X_X_X_  
+        XXX_XXX_  
+        XXX_XXX_  
+        XXX_XXX_  
+        _X___X__  
 
         DIGIT_GAP
 
     // repeat 0
 
-        XX__XX__,
-        XX__XX__,
-        ________,
-        XXX_XXX_,
-        XXX_XXX_,
-        ________,
-        X_X_X_X_,
-        X_X_X_X_,
-        ________,
-        X_X_X_X_,
-        X_X_X_X_,
-        ________,
-        XXX_XXX_,
-        XXX_XXX_,
-        ________,
-        XX__XX__,
-        XX__XX__,
-        ________,
+        _X___X__  
+        XXX_XXX_  
+        XXX_XXX_  
+        XXX_XXX_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        X_X_X_X_  
+        XXX_XXX_  
+        XXX_XXX_  
+        XXX_XXX_  
+        _X___X__  
 
         DIGIT_GAP
 
-        XXX_XXX_,
-        XXX_XXX_,
-        ________,
-        XXX_XXX_,
-        XXX_XXX_,
-        ________,
-        _X___X__,
-        _X___X__,
-        ________,
-        _X___X__,
-        _X___X__,
-        ________,
-        _X___X__,
-        _X___X__,
-        ________,
-        _X___X__,
-        _X___X__,
-        ________,
+    // repeat 0
+
+        XX__XX__  
+        XX__XX__  
+        ________  
+        XXX_XXX_  
+        XXX_XXX_  
+        ________  
+        X_X_X_X_  
+        X_X_X_X_  
+        ________  
+        X_X_X_X_  
+        X_X_X_X_  
+        ________  
+        XXX_XXX_  
+        XXX_XXX_  
+        ________  
+        XX__XX__  
+        XX__XX__  
+        ________  
 
         DIGIT_GAP
 
-        ________,
-        ________,
-        ________,
-        ________,
-        ________,
-        ________,
-        ________,
-        ________,
-        ________,
-        ________,
-        ________,
-        ________,
-        ________,
-        ________,
-        ________,
-        ________,
-        ________,
-        ________,
+        XXX_XXX_  
+        XXX_XXX_  
+        ________  
+        XXX_XXX_  
+        XXX_XXX_  
+        ________  
+        _X___X__  
+        _X___X__  
+        ________  
+        _X___X__  
+        _X___X__  
+        ________  
+        _X___X__  
+        _X___X__  
+        ________  
+        _X___X__  
+        _X___X__  
+        ________  
 
         DIGIT_GAP
 
-        _X___X__,
-        _X___X__,
-        _X___X__,
-        ________,
-        XXX_XXX_,
-        XXX_XXX_,
-        ________,
-        _X___X__,
-        _X___X__,
-        ________,
-        _X___X__,
-        _X___X__,
-        X_X_X_X_,
-        X_X_X_X_,
-        ________,
-        X_X_X_X_,
-        X_X_X_X_,
-        ________,
+        ________  
+        ________  
+        ________  
+        ________  
+        ________  
+        ________  
+        ________  
+        ________  
+        ________  
+        ________  
+        ________  
+        ________  
+        ________  
+        ________  
+        ________  
+        ________  
+        ________  
+        ________  
+
+        DIGIT_GAP
+
+        _X___X__  
+        _X___X__  
+        _X___X__  
+        ________  
+        XXX_XXX_  
+        XXX_XXX_  
+        ________  
+        _X___X__  
+        _X___X__  
+        ________  
+        _X___X__  
+        _X___X__  
+        X_X_X_X_  
+        X_X_X_X_  
+        ________  
+        X_X_X_X_  
+        X_X_X_X_  
+        ________  
   
         DIGIT_GAP
 
-        XX__XX__,
-        XX__XX__,
-        ________,
-        XXX_XXX_,
-        XXX_XXX_,
-        ________,
-        X_X_X_X_,
-        X_X_X_X_,
-        ________,
-        XX__XX__,
-        XX__XX__,
-        ________,
-        X___X___,
-        X___X___,
-        ________,
-        X___X___,
-        X___X___,
-        ________,
+        XX__XX__  
+        XX__XX__  
+        ________  
+        XXX_XXX_  
+        XXX_XXX_  
+        ________  
+        X_X_X_X_  
+        X_X_X_X_  
+        ________  
+        XX__XX__  
+        XX__XX__  
+        ________  
+        X___X___  
+        X___X___  
+        ________  
+        X___X___  
+        X___X___  
+        ________  
 
         DIGIT_GAP
 
-        X___X___,
-        X___X___,
-        ________,
-        X___X___,
-        X___X___,
-        ________,
-        X___X___,
-        X___X___,
-        ________,
-        X___X___,
-        X___X___,
-        ________,
-        XXX_XXX_,
-        XXX_XXX_,
-        ________,
-        XXX_XXX_,
-        XXX_XXX_,
-        ________,
+        X___X___  
+        X___X___  
+        ________  
+        X___X___  
+        X___X___  
+        ________  
+        X___X___  
+        X___X___  
+        ________  
+        X___X___  
+        X___X___  
+        ________  
+        XXX_XXX_  
+        XXX_XXX_  
+        ________  
+        XXX_XXX_  
+        XXX_XXX_  
+        ________  
 
         DIGIT_GAP
 
-        ___X___X,
-        ___X___X,
-        ________,
-        ___X___X,
-        ___X___X,
-        ________,
-        ________,
-        ________,
-        ________,
-        ________,
-        ________,
-        ________,
-        ___X___X,
-        ___X___X,
-        ________,
-        ___X___X,
-        ___X___X,
-        ________,
+        ___X___X
+        ___X___X
+        ________  
+        ___X___X
+        ___X___X
+        ________  
+        ________  
+        ________  
+        ________  
+        ________  
+        ________  
+        ________  
+        ___X___X
+        ___X___X
+        ________  
+        ___X___X
+        ___X___X
+        ________  
 
         DIGIT_GAP
 
@@ -2844,51 +2844,6 @@ void GameScheduleProcessBoardRow() {
                 case TYPE_EGG: {
 
 
-                    // resurrect (previous) blank if 3 neighbours
-/*
-                    int neighbours = 0;
-                    if (Attribute[CharToType[*(this-1)]] & ATT_BLANK) {
-                        for (int x=-2; x < 1; x++)
-                            for (int y = -1; y < 2; y++)
-                                if (CharToType[*(this + (y*40) + x) & (0x7F|0x80)] == TYPE_EGG)
-                                    neighbours++;
-
-                        if (neighbours == 3)
-                            *(this-1) = CH_EGG ; // | FLAG_THISFRAME;
-                    }
-
-                    neighbours = 0;
-                    if (Attribute[CharToType[*(this+1)]] & ATT_BLANK) {
-                        for (int x=1; x < 3; x++)
-                            for (int y = -1; y < 2; y++)
-                                if (CharToType[*(this + (y*40) + x) & (0x7F|0x80)] == TYPE_EGG)
-                                    neighbours++;
-
-                        if (neighbours == 3)
-                            *(this+1) = CH_EGG ; // | FLAG_THISFRAME;
-                    }
-
-                    if ((getRandom32() & 0xFF) < 35) {
-                        neighbours = 0;
-                        for (int x=-1; x < 2; x++)
-                            for (int y = -1; y < 2; y++) {
-                                if (x && y) {
-                                    if (CharToType[*(this + (y*40) + x) & (0x7F|0x80)] == TYPE_EGG)
-                                        neighbours++;
-                                }
-
-                            if (neighbours > 3 || neighbours < 2)
-                                *this = CH_BLANK ; // | FLAG_THISFRAME;
-                        }
-                    }
-*/
-
-
-                    // if ((rnd & 0x1FF) < 34) {
-                    //     *this = CH_BLANK;
-                    //     break;
-                    // }
-
 
                     if (CharToType[*(this + 40)] == TYPE_SPACE) {
                         *this = CH_BLANK;
@@ -2896,19 +2851,24 @@ void GameScheduleProcessBoardRow() {
                         break;
                     }
 
+                    if (CharToType[*(this+1)] == TYPE_SPACE || CharToType[*(this-1)] == TYPE_SPACE) {
+                        if ((getRandom32() & 0xFF) < 10) {
+                            unsigned char *side = this + (((getRandom32() & 0xFF) * 2) >> 8) - 1;
+                            if (CharToType[*side] == TYPE_SPACE)
+                                *side = CH_EGG;
+                            break;                        
+                        }
+                    }
 
 
-                    for (int i = 0; i < 8; i++) {
+
+
+
+
+                    for (int i = 2; i < 8; i++) {
 
                         int rnd = getRandom32();
                         unsigned char *where = this + dir[i];
-
-
-                        if (CharToType[*where] == TYPE_DIAMOND
-                            || CharToType[*where] == TYPE_DIAMOND_PULSE_0) {
-                             Explode(this, CH_EXPLODETOBLANK0);
-                             break;
-                        }
 
                         if ((CharToType[*where] == TYPE_SPACE) //(Attribute[CharToType[*where]] & ATT_PERMEABLE) 
                             && boardRow > spaceToggleDisplayed[boardCol]) {
@@ -3172,7 +3132,7 @@ void GameScheduleProcessBoardRow() {
                 case CH_EXPLODETODIAMOND4:
                     *this = CH_DIAMOND;
 
-                    __attribute__ ((fallthrough));
+                    __attribute__  ((fallthrough));
 
                 case CH_DIAMOND:
                 case CH_DIAMOND_PULSE_0:
@@ -3186,30 +3146,30 @@ void GameScheduleProcessBoardRow() {
                 case CH_DIAMOND_PULSE_8:
                 case CH_DIAMOND_PULSE_9:{
                     
-                    if (creature == CH_DIAMOND) {
+                    // if (creature == CH_DIAMOND) {
 
 
-                        if ((getRandom32() & 0xFF) < 20) //DIAMOND_PULSE_EDGE)
-                            *this = CH_DIAMOND_PULSE_0;
+                    //     if ((getRandom32() & 0xFF) < 20) //DIAMOND_PULSE_EDGE)
+                    //         *this = CH_DIAMOND_PULSE_0;
 
-                    } else {
+                    // } else {
 
                         
 
-                        if (Animate[type] && (*Animate[type])[AnimIdx[type].index] == CH_DIAMOND) {
-                            unsigned int rnd = getRandom32();
-                            if ((rnd & 0xFF) < 30) //DIAMOND_PULSE_EDGE)
-                                *this = CH_DIAMOND;
-                        }
+                    //     if (Animate[type] && (*Animate[type])[AnimIdx[type].index] == CH_DIAMOND) {
+                    //         unsigned int rnd = getRandom32();
+                    //         if ((rnd & 0xFF) < 30) //DIAMOND_PULSE_EDGE)
+                    //             *this = CH_DIAMOND;
+                    //     }
 
 
 
-                    }
+                    // }
 
-                    creature = *this;
+                    // creature = *this;
 
                 }
-                __attribute__ ((fallthrough));
+                __attribute__  ((fallthrough));
 
 
                 case CH_ROCK0:
@@ -3241,7 +3201,7 @@ void GameScheduleProcessBoardRow() {
                         *this = CH_BOULDER_SHAKE;
 
 
-                    else if (Attribute[_DOWN] & ATT_BLANK) {
+                    else if (Attribute[_DOWN] & (ATT_SEMIBLANK | ATT_BLANK)) {
 
                         if (creature == CH_BOULDER_SHAKE) {
                             creature = CH_ROCK0; //CH_BOULDER;
@@ -3249,7 +3209,18 @@ void GameScheduleProcessBoardRow() {
                         }
 
                         *this = CH_BLANK ; // | FLAG_THISFRAME;
-                        *next = (creature + 2) ; // | FLAG_THISFRAME;       // falling, scanned this frame
+                        
+                        if (CharToType[creature] == TYPE_DIAMOND)
+                            *next = CH_DIAMOND + 2;
+
+                        else
+                        {
+                            *next = CH_BOULDER_FALLING;
+                        }
+                        
+                        
+                        
+//                        *next = (creature + 2) ; // | FLAG_THISFRAME;       // falling, scanned this frame
 
                         int typeDown = CharToType[(*(next+40))&(0x7F|0x80)];
                         int att = Attribute[typeDown];
@@ -3271,7 +3242,7 @@ void GameScheduleProcessBoardRow() {
 
                     AddAudio(SFX_DIAMOND);
 
-                    __attribute__ ((fallthrough));
+                    __attribute__  ((fallthrough));
 
                 case CH_BOULDER_FALLING: {
 
@@ -3283,7 +3254,7 @@ void GameScheduleProcessBoardRow() {
                         *next = creature ; // | FLAG_THISFRAME; // falling scanned this frame
 
 
-                        _DOWN = CharToType[(*(next+40))&(0x7F|0x80)];
+                        _DOWN = CharToType[(*(next+40))];
                         int att = Attribute[_DOWN];
                         if (_DOWN != TYPE_BOULDER_FALLING && !(att & ATT_NOROCKNOISE)) {
                             if (creature == CH_BOULDER_FALLING) {
@@ -3298,10 +3269,10 @@ void GameScheduleProcessBoardRow() {
                                 unsigned char *dL = this + 40 - 1;
                                 unsigned char *dR = dL + 2;
 
-                                if (!CharToType[(*dR)&(0x7F|0x80)])
+                                if (!CharToType[*dR])
                                     *dR = CH_DUST_RIGHT;
 
-                                if (!CharToType[(*dL)&(0x7F|0x80)])
+                                if (!CharToType[*dL])
                                     *dL = CH_DUST_LEFT;
                             }
                         }
@@ -3313,9 +3284,19 @@ void GameScheduleProcessBoardRow() {
                             Explode(next, CH_EXPLODETODIAMOND0);
                     
                         else if (Attribute[_DOWN] & ATT_SQUASHABLE_TO_BLANKS) {
-                            Explode(next, CH_EXPLODETOBLANK0);
-                            if (_DOWN == TYPE_ROCKFORD)
-                                *next = CH_EXPLODETOBLANK3;
+                            
+                            if (_DOWN != TYPE_DIAMOND && _DOWN != TYPE_EGG) {
+
+                                Explode(next, CH_EXPLODETOBLANK0);
+
+                                if (_DOWN == TYPE_ROCKFORD)
+                                    *next = CH_EXPLODETOBLANK1;
+
+                            }
+                            else {
+                                *next = CH_EXPLODETOBLANK0;
+                            }
+
                         }
                     }
 
@@ -3355,7 +3336,17 @@ void GameScheduleProcessBoardRow() {
                     else {
                         
                         // stop falling
-                        *this = creature - 2;  
+
+
+                        if (CharToType[creature] == TYPE_DIAMOND)
+                            *this = CH_DIAMOND;
+                        else
+                        {
+                            *this = CH_ROCK0;
+                        }
+                        
+
+//                        *this = creature - 2;  
                         doRoll(this, *this);    
                         // shakeTime += 1; //tmp
 
@@ -3386,7 +3377,7 @@ void GameScheduleProcessBoardRow() {
                     //if (scrollSpeed == 0 && scrollYSpeed == 0)
                         *this = CH_ROCKYb; //creature + 1;
                     break;
-//                    __attribute__ ((fallthrough));
+//                    __attribute__  ((fallthrough));
                 
                 case CH_ROCKYb:
 
@@ -3470,11 +3461,6 @@ void GameScheduleProcessBoardRow() {
 
 
 
-const char AnimSpace[] = {
-
-    CH_BLANK,255,  
-};
-
 
 const char AnimDirt[] = {
     CH_DIRTY,20,
@@ -3483,14 +3469,6 @@ const char AnimDirt[] = {
     CH_DIRT3,20,
     CH_DIRT3,20,
     255,
-};
-
-const char AnimDirt2[] = {
-    CH_DIRTY2,255
-};
-
-const char AnimDirt3[] = {
-    CH_DIRTY3,255
 };
 
 
@@ -3554,8 +3532,7 @@ const char AnimBoulderFalling[] = {
     CH_ROCK0,255,
 };
 
-
-const char AnimDiamondSpin[] = {
+const char AnimDiamond[] = {
     CH_DIAMOND_PULSE_0,4,
     CH_DIAMOND_PULSE_1,3,
     CH_DIAMOND_PULSE_2,3,
@@ -3570,105 +3547,6 @@ const char AnimDiamondSpin[] = {
     CH_DIAMOND_PULSE_1,3,
     CH_DIAMOND_PULSE_0,4,
     CH_DIAMOND,5,
-
-    255
-};
-
-const char AnimDiamond[] = {
-    CH_DIAMOND,255,
-};
-
-#define FACET \
-\
-    CH_DIAMOND_PULSE_0,3, \
-    CH_DIAMOND_PULSE_1,3, \
-    CH_DIAMOND_PULSE_2,3, \
-    CH_DIAMOND_PULSE_3,3, \
-    CH_DIAMOND_PULSE_4,2, \
-    CH_DIAMOND_STATIC,3,  \
-    CH_DIAMOND_PULSE_4,2, \
-    CH_DIAMOND_STATIC,3,  \
-    CH_DIAMOND_PULSE_3,2, \
-    CH_DIAMOND_STATIC,3,  \
-    CH_DIAMOND_PULSE_3,3, \
-    CH_DIAMOND,20,
-    
-    
-#define CHUNK \
-    CH_DIAMOND_STATIC,4,
-
-
-const char AnimPulseDiamond10[] = {
-    FACET
-    255,
-};
-
-const char AnimPulseDiamond0[] = {
-    CH_DIAMOND_STATIC,1,
-    FACET
-    255
-};
-
-
-const char AnimPulseDiamond1[] = {
-    CH_DIAMOND_STATIC,2,
-    FACET
-    255,
-};
-
-const char AnimPulseDiamond2[] = {
-    CH_DIAMOND_STATIC,3,
-    FACET
-    255,
-};
-
-const char AnimPulseDiamond3[] = {
-    CHUNK
-    FACET
-    255,
-};
-
-const char AnimPulseDiamond4[] = {
-    CHUNK
-    CH_DIAMOND_STATIC,3,
-    FACET
-    255,
-};
-
-const char AnimPulseDiamond5[] = {
-    CHUNK
-    CH_DIAMOND_STATIC,2,
-    FACET
-    255,
-};
-
-const char AnimPulseDiamond6[] = {
-    CHUNK
-    CH_DIAMOND_STATIC,3,
-    FACET
-    255,
-};
-
-const char AnimPulseDiamond7[] = {
-    CHUNK
-    CHUNK
-    FACET
-    255,
-};
-
-const char AnimPulseDiamond8[] = {
-    CHUNK
-    CHUNK
-    CH_DIAMOND_STATIC,1,
-    FACET
-    255,
-};
-
-const char AnimPulseDiamond9[] = {
-    CHUNK
-    CHUNK
-    CH_DIAMOND_STATIC,2,
-    FACET
     255,
 };
 
@@ -3731,42 +3609,7 @@ const char AnimDirtGrab[] = {
     CH_DIRT_GRAB,255,
 };
 
-const char AnimDust[] = {
-    CH_DUST,255,
-};
 
-const char AnimDust2[] = {
-    CH_DUST2,255,
-};
-
-const char AnimDust3[] = {
-    CH_DUST3,255,
-};
-
-
-const char AnimDust2Left[] = {
-    CH_DUST2_LEFT,255,
-};
-
-const char AnimDust3Left[] = {
-    CH_DUST3_LEFT,255,
-};
-
-const char AnimDust2Right[] = {
-    CH_DUST2_RIGHT,255,
-};
-
-const char AnimDust3Right[] = {
-    CH_DUST3_RIGHT,255,
-};
-
-const char AnimLava[] = {
-    CH_LAVA, 255,
-};
-
-const char AnimWater[] = {
-    CH_WATER, 255,
-};
 
 #if ENABLE_EGG
 const char AnimEgg[] = {
@@ -3790,6 +3633,14 @@ const char AnimZzapDOWN[] = {
     CH_ZZAP, 8,
     255,
 };
+
+const char AnimDrill[] = {
+    CH_DRILL2, 8,
+    CH_DRILL1, 8,
+    CH_DRILL, 8,
+    255,
+};
+
 
 const char AnimPreRockford[] = {
 
@@ -3875,7 +3726,7 @@ const char (*Animate[])[] = {
     // indexed by object TYPE
     // 0 if the object does not animate
 
-&AnimSpace,                 // 0
+0,                         // 0    TYPE_SPACE
 &AnimDirt,                  // 1
 &AnimBrickWall,             // 2
 &AnimMagicWall,             // 3
@@ -3902,23 +3753,23 @@ const char (*Animate[])[] = {
 &AnimAmoeba,                // 24
 &AnimDrip,                  // 25
 &AnimDripSplash,            // 26
-&AnimDiamondSpin,           // 27
-&AnimPulseDiamond1,         // 28
-&AnimPulseDiamond2,         // 29
-&AnimPulseDiamond3,         // 30
-&AnimPulseDiamond4,         // 31
-&AnimPulseDiamond5,         // 32
-&AnimPulseDiamond6,         // 33
-&AnimPulseDiamond7,         // 34
-&AnimPulseDiamond8,         // 35
-&AnimPulseDiamond9,         // 36
-&AnimPulseDiamond10,        // 37
-&AnimSpace,                 // 38 nothing
-&AnimSpace ,                // 39 THISFRAME OBJECT
+0,                          // 27   (unused)
+0,         // 28
+0,         // 29
+0,         // 30
+0,         // 31
+0,         // 32
+0,         // 33
+0,         // 34
+0,         // 35
+0,         // 36
+0,        // 37
+0,                 // 38 nothing
+0 ,                // 39 THISFRAME OBJECT
 &AnimExplodeThis,           // 40 EXPLODE THIS OBJECT NOW
-&AnimSpace,                 // 41 BLANK THIS
-&AnimDirt3,                 // 42 boulderlingk
-&AnimDirt2,                 // 43 boulderlingk
+0,                 // 41 BLANK THIS
+0,                 // 42 boulderlingk
+0,                 // 43 boulderlingk
 &AnimExplodeBlank0,         // 44
 &AnimExplodeBlank1,         // 45
 &AnimExplodeBlank2,         // 46
@@ -3926,18 +3777,18 @@ const char (*Animate[])[] = {
 &AnimExplodeBlank4,         // 48
 &AnimDiamondGrab,           // 49
 &AnimDirtGrab,              // 50
-&AnimDust,                  // 51
-&AnimDust2,                 // 52
-&AnimDust3,                 // 53
+0,                          // 51   TYPE_DUST
+0,                          // 52   TYPE_DUST2
+0,                          // 53   TYPE_DUST3
 &AnimBoulderShake,          // 54
-&AnimSpace,                 // 55
-&AnimDust2Left,             // 56
-&AnimDust3Left,             // 57
-&AnimSpace,                 // 58
-&AnimDust2Right,            // 59
-&AnimDust3Right,            // 60
-&AnimLava,                  // 61
-&AnimWater,                 // 62
+0,                          // 55
+0,                          // 56   TYPE_DUST2_LEFT
+0,                          // 57   TYPE_DUST3_LEFT
+0,                          // 58
+0,                          // 59   TYPE_DUST2_RIGHT
+0,                          // 60   TYPE_DUST3_RIGHT
+0,                          // 61   TYPE_LAVA
+0,                          // 62   TYPE_WATER
 
 #if ENABLE_EGG
 &AnimEgg,                   // 63
@@ -3946,6 +3797,8 @@ const char (*Animate[])[] = {
 &AnimZzapUP,                // 64
 &AnimZzapDOWN,              // 65
 0,                          // 66   Conglomerate rock
+
+&AnimDrill,                 // 67   DRILL
 
 };
 

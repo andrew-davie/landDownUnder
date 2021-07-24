@@ -189,11 +189,14 @@ TYPE_ROCK,                   // 155     CH_ROCK0
 TYPE_ROCK,                   // 156     CH_ROCK0
 TYPE_ROCK,                   // 157     CH_ROCK0
 
+TYPE_DRILL,                  // 158     CH_DRILL
+TYPE_DRILL,                  // 159     CH_DRILL1
+TYPE_DRILL,                  // 160     CH_DRILL2
 
-// 158...
 
-TYPE___THISFRAME, TYPE___THISFRAME,
-TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
+// 161...
+
+TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
 TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
 TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
 TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME, TYPE___THISFRAME,
@@ -274,7 +277,7 @@ const int Attribute[] = {
      _ | _ | _ | _ | _ | _ | _ | _ | _ |HRD| _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 7  STEEL WALL
     RND| _ | _ | _ | _ |WTR|LAV| _ | _ | _ |SQB|ACT| _ | _ | _ | _ | _ |XPD| _ | _  , // 8  FIREFLY
     RND| _ | _ |PSH| _ | _ | _ | _ | _ |HRD| _ |ACT| _ | _ | _ | _ | _ |XPD| _ |ROL , // 9  BOULDER
-    RND| _ | _ | _ | _ | _ | _ |QUI| _ | _ | _ |ACT| _ |GRB| _ | _ | _ |XPD| _ |ROL , // 10 DIAMOND
+    RND| _ | _ | _ | _ | _ | _ |QUI| _ | _ |SQB|ACT| _ |GRB| _ | _ | _ |XPD| _ | _  , // 10 DIAMOND
     RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 11 EXPLODE SPACE 0
     RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 12 EXPLODE SPACE 1
     RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 13 EXPLODE SPACE 2
@@ -286,7 +289,7 @@ const int Attribute[] = {
     RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 19 EXPLODE DIAMOND 3
     RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 20 EXPLODE DIAMOND 4
     RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 21 ROCKFORD PRE 
-    RND| _ | _ | _ |WTR| _ |LAV| _ | _ | _ | _ |ACT| _ | _ |SQD| _ | _ |XPD| _ | _  , // 22 BUTERFLY
+    RND| _ | _ | _ | _ |WTR|LAV| _ | _ | _ | _ |ACT| _ | _ |SQD| _ | _ |XPD| _ | _  , // 22 BUTERFLY
     RND| _ |RKF| _ | _ | _ | _ |QUI| _ | _ |SQB|ACT| _ | _ | _ | _ | _ |XPD|FLY| _  , // 23 ROCKFORD
     RND| _ | _ | _ | _ |WTR|LAV| _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ |XPD|FLY| _  , // 24 AMOEBA
     RND| _ |RKF| _ | _ | _ |LAV| _ | _ | _ | _ |ACT| _ | _ | _ |SPC|PER| _ | _ | _  , // 25 DRIP
@@ -328,9 +331,13 @@ const int Attribute[] = {
     RND| _ |RKF| _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ |SPC|PER|XPD| _ | _  , // 61 LAVA
     RND| _ |RKF| _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ |SPC|PER|XPD| _ | _  , // 61 WATER (*)
 #if ENABLE_EGG
-    RND| _ | _ | _ |SSP| _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ |PER| _ | _ | _  , // 63 EGG
+    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ |SQB|ACT| _ | _ | _ | _ |PER| _ | _ | _  , // 63 EGG
 #endif
-    RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT|BNG| _ | _ | _ | _ | _ | _ | _  , // 64 ZZAP
+     _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 64 ZZAP   SCALATOR
+     _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 65 ZZAP1  SCALATOR
+    RND| _ | _ |PSH| _ | _ | _ | _ | _ |HRD| _ |ACT| _ | _ | _ | _ | _ |XPD| _ |ROL , // 66 ROCK
+     _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 64 DRILL
+
 
 //  RND|DRP RKF PSH SSP WTR LAV QUI XIT HRD SQB ACT BNG GRB SQD SPC PER XPD FLY ROL
 //   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |

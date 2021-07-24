@@ -19,8 +19,8 @@
 #define XXX_ 0b01110,
 #define XXXX 0b01111,
 
-#define _ | (0b00000 << 4),
-#define X | (unsigned char)(0b10000 << 4),
+#define _ +(0b00000 << 4),
+#define X +((unsigned char)(0b10000 << 4)),
 
 #define CHAR_ALLOC (PIECE_DEPTH + 9 + 9)
 
