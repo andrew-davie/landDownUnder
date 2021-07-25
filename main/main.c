@@ -2902,11 +2902,16 @@ void GameScheduleProcessBoardRow() {
                             if (Attribute[CharToType[*dest]] & ATT_EXPLODES) {
 
                                 if ((getRandom32() & 0xFF) < 75) {
+                                    addScore(12348);
                                     Explode(dest, CH_EXPLODETODOGE0);
                                     drillHeight = newDrillHeight;
                                 }
-                                else
+                                else {
                                     shakeTime += 60;
+
+                                    if (CharToType[*dest] == TYPE_BOULDER)
+                                        *dest = CH_BOULDER_SHAKE;
+                                }
                             }
 
                             else {
@@ -3417,13 +3422,17 @@ const char AnimDripSplash[] = {
 };
 
 
+const char AnimBlank[] = {
+    CH_BLANK, 255,
+};
+
 
 const char (*Animate[TYPE_MAX])[] = {
 
     // indexed by object TYPE
     // 0 if the object does not animate
 
-    0,                          // 00 SPACE           
+    &AnimBlank,                 // 00 SPACE             required for drawscreen filtering parallax
     &AnimDirt,                  // 01 DIRT            
     0,                          // 02 BRICKWALL       
     &AnimPreOut,                // 03 OUTBOX_PRE      

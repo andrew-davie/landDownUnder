@@ -316,6 +316,8 @@ void looneyTuneFade() {
 }
 
 
+int ascrollX;
+int ascrollY;
 
 // unsigned int bgDriftX, bgDriftY;
 
@@ -340,6 +342,7 @@ void drawScreen(){
     extern unsigned char charDust3[];
 
     unsigned char dirtBG[] = {
+    
         0b00000000,
         0b00000000,
         0b00000000,
@@ -372,6 +375,7 @@ void drawScreen(){
 
     if (parallax) {
 
+
 #if ENABLE_SHAKE
     extern int shakeX, shakeY;
         int yOffset = ((scrollY + shakeY/* + bgDriftY*/) >> 17) * 3;
@@ -380,6 +384,7 @@ void drawScreen(){
         int yOffset = ((scrollY/* + bgDriftY*/) >> 17) * 3;
         int offset = ((scrollX /* + bgDriftX*/) >> 15) & 3;
 #endif
+
         while (yOffset >= PIECE_DEPTH)
             yOffset -= PIECE_DEPTH;
         yOffset = PIECE_DEPTH - yOffset + 1;
@@ -511,7 +516,7 @@ extern const unsigned char DUST3[];
                                 piece = (*Animate[type])[AnimIdx[type].index];
                             else
                             {
-                                piece = CH_BLANK;      // anything blank
+                                piece = CH_DOOROPEN_1;      // anything blank but NOT CH_BLANK!
                             }
                             
                         }
@@ -647,7 +652,7 @@ void drawOverviewScreen() {
                 }
             // }
 
-            int offset = PIECE_DEPTH + 10 * ((row + i) & 1);
+            int offset = PIECE_DEPTH + 9 * ((row + i) & 1);
             img[i] = *charSet[p2] + offset;
 
             p++;
