@@ -10,7 +10,7 @@
 #include "attribute.h"
 #include "bitshapes.h"
 #include "movePlayer.h"
-
+#include "bitpatterns.h"
 
 // duplicate from defines_cdfj.h
 // Raw queue pointers
@@ -39,6 +39,18 @@ void removeSprite() {
 extern int scrollX;
 extern int scrollY;
 //extern int attractCounter;
+
+// const unsigned char plusOne[] = {
+//     _______X
+//     __X___XX
+//     __X____X
+//     XXXXX__X
+//     __X____X
+//     __X____X
+//     _______X
+// };
+
+
 
 
 void drawPlayerSprite() {
@@ -72,13 +84,21 @@ void drawPlayerSprite() {
         unsigned char *p1 = RAM + _BUF_GRP1A + lastPlayerSpriteY;
 
 
-        if (rockfordDirection == RIGHT)
+        if (rockfordDirection == RIGHT) {
             for (int line = 0; line < SPRITE_DEPTH; line++) {
                 *p0++ = *spr++;
                 *p1++ = *spr++;
                 *p0Colour++ = *spr++;
                 *p1Colour++ = *spr++;
             }
+
+            // if (true ||sparkleTimer)
+            //     for (int line = 0; line < 7; line++) {
+            //         *(p0 - SPRITE_DEPTH -10 + line - (20 - sparkleTimer)) = plusOne[line];
+            //         *(p0Colour - SPRITE_DEPTH - 30 + line) = 0xA;
+            // }
+
+        }
         else {
             for (int line = 0; line < SPRITE_DEPTH; line++) {
                 *p0++ = BitRev[(unsigned char)*spr++];
@@ -86,6 +106,13 @@ void drawPlayerSprite() {
                 *p0Colour++ = *spr++;
                 *p1Colour++ = *spr++;
             }
+
+            // if (true || sparkleTimer)
+            //     for (int line = 0; line < 7; line++) {
+            //         *(p0 - SPRITE_DEPTH -30 + line - (20-sparkleTimer)) = BitRev[plusOne[line]];
+            //         *(p0Colour - SPRITE_DEPTH - 10 + line) = 0xA;
+            // }
+
         }
         
         P0_X = absRockfordX+ (rockfordDirection * (frameOffset + frameAdjustX));

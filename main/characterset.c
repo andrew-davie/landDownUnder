@@ -4,70 +4,47 @@
 
 
 
-static const unsigned char BLANK[] = {
-    ____      //  0
-    ____      //  1
-    ____      //  2
-    ____      //  3
-    ____      //  4
-    ____      //  5
-    ____      //  6
-    ____      //  7
-    ____      //  8
-    ____      //  9
-    ____      // 10
-    ____      // 11
-    ____      // 12
-    ____      // 13
-    ____      // 14
-    ____      // 15
-    ____      // 16
-    ____      // 17
-    ____      // 18
-    ____      // 19
-    ____      // 20
+static const unsigned char CHAR_BLANK[] = {
 
-    // small
-    ____      //  0
-    ____      //  1
-    ____      //  2
-    ____      //  3
-    ____      //  4
-    ____      //  5
-    ____      //  6
-    ____      //  7
-    ____      //  8
- 
-    ____      //  0
-    ____      //  1
-    ____      //  2
-    ____      //  3
-    ____      //  4
-    ____      //  5
-    ____      //  6
-    ____      //  7
-    ____      //  8
- 
+__  ____     // 00
+__  ____     // 01
+__  ____     // 02
+__  ____     // 03
+__  ____     // 04
+__  ____     // 05
+__  ____     // 06
+__  ____     // 07
+__  ____     // 08
+    ____     // 09
+    ____     // 10
+    ____     // 11
+    ____     // 12
+    ____     // 13
+    ____     // 14
+    ____     // 15
+    ____     // 16
+    ____     // 17
+    ____     // 18
+    ____     // 19
+    ____     // 20
 };
 
 
+static const unsigned char CHAR_BLANK_EXTRA1[] = {
 
-
-
-static const unsigned char BLANK_EXTRA1[] = {
-    ____      //  0
-    ____      //  1
-    X___      //  2
-    X___      //  3
-    X___      //  4
-    ____      //  5
-    ____      //  6
-    ____      //  7
-    ____      //  8
-    ____      //  9
-    __X_     // 10
-    __X_     // 11
-    __X_     // 12
+__  ____      // 00
+_X  ____      // 01
+_X  X___      // 02
+__  X___      // 03
+__  X___      // 04
+__  ____      // 05
+__  ____      // 06
+__  ____      // 07
+__  ____      // 08
+    ____      // 09
+    __X_      // 10
+    __X_      // 11
+    __X_      // 12
     ____      // 13
     ____      // 14
     ____      // 15
@@ -76,79 +53,36 @@ static const unsigned char BLANK_EXTRA1[] = {
     _X__      // 18
     _X__      // 19
     _X__      // 20
-
-    // small
-    ____      //  0
-    ____      //  1
-    ____      //  2
-    ____      //  3
-    ____      //  4
-    ____      //  5
-    ____      //  6
-    ____      //  7
-    ____      //  8
- 
-    ____      //  0
-    ___X     //  1
-    ___X     //  2
-    ____      //  3
-    ____      //  4
-    ____      //  5
-    ____      //  6
-    ____      //  7
-    ____      //  8
- 
 };
 
 
-static const unsigned char BLANK_EXTRA2[] = {
-    ____      //  0
-    ____      //  1
-    ____      //  2
-    ____      //  3
-    ____      //  4
-    ____      //  5
-    ____      //  6
-    ___X     //  7
-    ___X     //  8
-    ___X     //  9
+static const unsigned char CHAR_BLANK_EXTRA2[] = {
+
+__  ____      // 00
+__  ____      // 01
+_X  ____      // 02
+_X  ____      // 03
+__  ____      // 04
+__  ____      // 05
+__  ____      // 06
+__  ___X      // 07
+__  ___X      // 08
+    ___X      // 09
     ____      // 10
     ____      // 11
     ____      // 12
     ____      // 13
     ____      // 14
     ____      // 15
-    __X_     // 16
-    __X_     // 17
-    __X_     // 18
+    __X_      // 16
+    __X_      // 17
+    __X_      // 18
     ____      // 19
     ____      // 20
-
-    // small
-    ____      //  0
-    ____      //  1
-    ____      //  2
-    ____      //  3
-    ____      //  4
-    ____      //  5
-    ____      //  6
-    ____      //  7
-    ____      //  8
- 
-    ____      //  0
-    ____      //  1
-    ___X     //  2
-    ___X     //  3
-    ____      //  4
-    ____      //  5
-    ____      //  6
-    ____      //  7
-    ____      //  8
- 
 };
 
 
-static const unsigned char BLANK_EXTRA3[] = {
+static const unsigned char CHAR_BLANK_EXTRA3[] = {
     ____      //  0
     ____      //  1
     ____      //  2
@@ -194,7 +128,7 @@ static const unsigned char BLANK_EXTRA3[] = {
  
 };
 
-static const unsigned char BLANK_EXTRA4[] = {
+static const unsigned char CHAR_BLANK_EXTRA4[] = {
     ____      //  0
     ____      //  1
     _X__      //  2
@@ -241,7 +175,7 @@ static const unsigned char BLANK_EXTRA4[] = {
 };
 
 
-static const unsigned char BLANK_EXTRA5[] = {
+static const unsigned char CHAR_BLANK_EXTRA5[] = {
     ____      //  0
     ___X     //  1
     ___X     //  2
@@ -288,7 +222,7 @@ static const unsigned char BLANK_EXTRA5[] = {
 };
 
 
-static const unsigned char BLANK_EXTRA6[] = {
+static const unsigned char CHAR_BLANK_EXTRA6[] = {
     ____      //  0
     ____      //  1
     ____      //  2
@@ -334,7 +268,7 @@ static const unsigned char BLANK_EXTRA6[] = {
  
 };
 
-static const unsigned char BLANK_EXTRA7[] = {
+static const unsigned char CHAR_BLANK_EXTRA7[] = {
     __X_     //  0
     __X_     //  1
     __X_     //  2
@@ -380,7 +314,7 @@ static const unsigned char BLANK_EXTRA7[] = {
  
 };
 
-static const unsigned char BLANK_EXTRA8[] = {
+static const unsigned char CHAR_BLANK_EXTRA8[] = {
     ___X     //  0
     ___X     //  1
     ___X     //  2
@@ -905,58 +839,6 @@ const unsigned char CHAR_BRICKWALL[] = {
     ___X     //  8
 };
 
-
-
-
-
-const unsigned char CHAR_BOULDER[] = {
-    _XX_  
-    _XX_  
-    __X_
-    __X_
-    XX_X  
-    ___X
-    ___X
-    XXXX  
-    ___X
-    ___X
-    XXXX  
-    ____  
-    ___X
-    XXXX  
-    ____  
-    __XX  
-    _XX_  
-    ____  
-    ____  
-    ____  
-    ____  
-
-
-
-    ___X     //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ____      //  3
-    ___X     //  7
-    ____      //  8
-
-    ____      //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ___X     //  3
-    ___X     //  7
-    ____      //  8
-
-
-
-};
 
 
 const unsigned char CHAR_BOULDER_SHAKE[] = {
@@ -2087,7 +1969,7 @@ const unsigned char DIRTY_0001[] = {
 
 
 
-const unsigned char DIRTY2[] = {
+const unsigned char CHAR_RUBBLE[] = {
     X_XX      //  1
     ____      //  2
     ____      //  3
@@ -2134,7 +2016,7 @@ const unsigned char DIRTY2[] = {
 };
 
 
-const unsigned char DIRTY3[] = {
+const unsigned char CHAR_RUBBLE1[] = {
     X_XX      //  1
     ____      //  2
     X___      //  3
@@ -3226,162 +3108,93 @@ const unsigned char CHAR_DRILL2[] = {
 
 
 const unsigned char CHAR_ROCK0[] = {
-    _XX_  
-    _XX_  
-    __X_
-    __X_
-    XX_X  
-    ___X
-    ___X
-    XXXX  
-    ___X
-    ___X
-    XXXX  
-    ____  
-    ___X
-    XXXX  
-    ____  
-    __XX  
-    _XX_  
-    ____  
-    ____  
-    ____  
-    ____  
 
-
-
-    ___X     //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ____      //  3
-    ___X     //  7
-    ____      //  8
-
-    ____      //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ___X     //  3
-    ___X     //  7
-    ____      //  8
-
-
-
+    X_  _XX_      
+    XX  _XX_      
+    XX  __X_    
+    __  __X_    
+    XX  XX_X      
+    __  ___X    
+    _X  ___X    
+    XX  XXXX      
+    __  ___X    
+        ___X
+        XXXX  
+        ____  
+        ___X
+        XXXX  
+        ____  
+        __XX  
+        _XX_  
+        ____  
+        ____  
+        ____  
+        ____  
 };
 
 const unsigned char CHAR_ROCK1[] = {
 
-    _XX_  
-    _XX_  
-    __X_
-    __X_
-    XX_X  
-    ___X  
-    ___X  
-    XXXX  
-    ____  
-    ____  
-    XXXX  
-    ____  
-    ____  
-    XXXX  
-    ____  
-    __X_
-    _XXX  
-    ____  
-    ____  
-    ____  
-    ____  
-
-
-    ___X     //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ____      //  3
-    ___X     //  7
-    ____      //  8
-
-    ____      //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ___X     //  3
-    ___X     //  7
-    ____      //  8
-
-
+    X_  _XX_    // 00 < A
+    XX  _XX_    // 01   B
+    XX  __X_    // 02   C
+    __  __X_    // 03 < A
+    XX  XX_X    // 04   B
+    __  ___X    // 05   C
+    _X  ___X    // 06 < A
+    XX  XXXX    // 07   B
+    __  ____    // 08   C
+        ____    // 09 < A
+        XXXX    // 10   B
+        ____    // 11   C
+        ____    // 12 < A
+        XXXX    // 13   B
+        ____    // 14   C
+        __X_    // 15 < A
+        _XXX    // 16   B
+        ____    // 17   C
+        ____    // 18 < A
+        ____    // 19   B
+        ____    // 20   C
 
 };
 
 const unsigned char CHAR_ROCK2[] = {
 
+X_  ____  
+XX  ____  
+XX  ____  
+__  _XX_  
+XX  _XX_  
+__  __X_
+_X  __X_
+XX  XX_X  
+__  ___X
+    ___X
+    XXXX  
+    ___X
+    ___X
+    XXXX  
     ____  
+    ___X
+    XXXX  
     ____  
-    ____  
-    _XX_  
-    _XX_  
     __X_
-    __X_
-    XX_X  
-    ___X
-    ___X
-    XXXX  
-    ___X
-    ___X
     XXXX  
     ____  
-    ___X
-    XXXX  
-    ____  
-    __X_
-    XXXX  
-    ____  
-
-    ___X     //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ____      //  3
-    ___X     //  7
-    ____      //  8
-
-    ____      //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ___X     //  3
-    ___X     //  7
-    ____      //  8
-
-
 
 };
 
 const unsigned char CHAR_ROCK3[] = {
 
-    ____  
-    ____  
-    ____  
-    _XX_  
-    _XXX  
-    ____  
-    __X_
-    XX_X  
-    ____  
+X_  ____  
+XX  ____  
+XX  ____  
+__  _XX_  
+XX  _XXX  
+__  ____  
+_X  __X_
+XX  XX_X  
+__  ____  
     ____  
     XXXX  
     ____  
@@ -3395,41 +3208,19 @@ const unsigned char CHAR_ROCK3[] = {
     XXXX  
     ___X  
 
-    ___X     //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ____      //  3
-    ___X     //  7
-    ____      //  8
-
-    ____      //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ___X     //  3
-    ___X     //  7
-    ____      //  8
-
-
-
 };
 
 const unsigned char CHAR_ROCK4[] = {
 
-    _XX_  
-    XXX_  
-    __X_
-    __X_
-    XX_X  
-    ___X
-    ___X
-    XXXX  
-    ___X
+X_  _XX_  
+XX  XXX_  
+XX  __X_
+__  __X_
+XX  XX_X  
+__  ___X
+_X  ___X
+XX  XXXX  
+__  ___X
     ___X
     XXXX  
     ____  
@@ -3442,43 +3233,19 @@ const unsigned char CHAR_ROCK4[] = {
     ____  
     ____  
     ____  
-
-
-    ___X     //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ____      //  3
-    ___X     //  7
-    ____      //  8
-
-    ____      //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ___X     //  3
-    ___X     //  7
-    ____      //  8
-
-
-
 };
 
 const unsigned char CHAR_ROCK5[] = {
 
-    _XX_  
-    XXXX  
-    ____  
-    ____  
-    XX_X  
-    ____  
-    ____  
-    XXXX  
-    ____  
+X_  _XX_  
+XX  XXXX  
+XX  ____  
+__  ____  
+XX  XX_X  
+__  ____  
+_X  ____  
+XX  XXXX  
+__  ____  
     ____  
     XXXX  
     ____  
@@ -3492,44 +3259,21 @@ const unsigned char CHAR_ROCK5[] = {
     ____  
     ____  
 
-
-    ___X     //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ____      //  3
-    ___X     //  7
-    ____      //  8
-
-    ____      //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ___X     //  3
-    ___X     //  7
-    ____      //  8
-
-
-
 };
 
 
 
 const unsigned char CHAR_ROCK6[] = {
 
-    _XX_  
-    _XX_  
-    __X_
-    __X_
-    XX_X  
-    ___X
-    ___X
-    XXXX  
-    ___X
+X_  _XX_  
+XX  _XX_  
+XX  __X_
+__  __X_
+XX  XX_X  
+__  ___X
+_X  ___X
+XX  XXXX  
+__  ___X
     ___X
     XXXX  
     ____  
@@ -3543,43 +3287,20 @@ const unsigned char CHAR_ROCK6[] = {
     XXXX  
     ____  
 
-
-    ___X     //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ____      //  3
-    ___X     //  7
-    ____      //  8
-
-    ____      //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ___X     //  3
-    ___X     //  7
-    ____      //  8
-
-
-
 };
 
 
 const unsigned char CHAR_ROCK7[] = {
 
-    ___X  
-    _XXX  
-    ___X  
-    X___  
-    XX_X  
-    X___  
-    ____  
-    XXXX  
-    ____  
+X_  ___X  
+XX  _XXX  
+XX  ___X  
+__  X___  
+XX  XX_X  
+__  X___  
+_X  ____  
+XX  XXXX  
+__  ____  
     ____  
     XXXX  
     ____  
@@ -3592,44 +3313,20 @@ const unsigned char CHAR_ROCK7[] = {
     __X_
     XXXX  
     __X_  
-
-
-    ___X     //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ____      //  3
-    ___X     //  7
-    ____      //  8
-
-    ____      //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ___X     //  3
-    ___X     //  7
-    ____      //  8
-
-
-
 };
 
 
 const unsigned char CHAR_ROCK8[] = {
 
-    ____  
-    _XXX  
-    ____  
-    __X_
-    XX_X  
-    ___X
-    ___X
-    X_XX  
-    ___X
+X_  ____  
+XX  _XXX  
+XX  ____  
+__  __X_
+XX  XX_X  
+__  ___X
+_X  ___X
+XX  X_XX  
+__  ___X
     ___X
     XXXX  
     ____  
@@ -3642,42 +3339,19 @@ const unsigned char CHAR_ROCK8[] = {
     ____  
     ____  
     ____  
-
-    ___X     //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ____      //  3
-    ___X     //  7
-    ____      //  8
-
-    ____      //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ___X     //  3
-    ___X     //  7
-    ____      //  8
-
-
-
 };
 
 const unsigned char CHAR_ROCK9[] = {
 
-    _X__  
-    XXXX  
-    ____  
-    ____  
-    XX_X  
-    ____  
-    ____  
-    XXXX  
-    ____  
+X_  _X__  
+XX  XXXX  
+XX  ____  
+__  ____  
+XX  XX_X  
+__  ____  
+_X  ____  
+XX  XXXX  
+__  ____  
     X___  
     XXXX  
     X___  
@@ -3690,43 +3364,20 @@ const unsigned char CHAR_ROCK9[] = {
     ____  
     _XX_  
     ____  
-
-    ___X     //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ____      //  3
-    ___X     //  7
-    ____      //  8
-
-    ____      //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ___X     //  3
-    ___X     //  7
-    ____      //  8
-
-
-
 };
 
 
 const unsigned char CHAR_ROCKA[] = {
 
-    ____  
-    _XXX  
-    ____
-    __X_
-    XX_X  
-    __X_
-    ____
-    XXXX  
-    ____
+X_  ____  
+XX  _XXX  
+XX  ____
+__  __X_
+XX  XX_X  
+__  __X_
+_X  ____
+XX  XXXX  
+__  ____
     ____
     XXXX  
     ____  
@@ -3739,43 +3390,20 @@ const unsigned char CHAR_ROCKA[] = {
     ____  
     _XX_  
     ____  
-
-    ___X     //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ____      //  3
-    ___X     //  7
-    ____      //  8
-
-    ____      //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ___X     //  3
-    ___X     //  7
-    ____      //  8
-
-
-
 };
 
 
 const unsigned char CHAR_ROCKB[] = {
 
-    ____  
-    _XXX  
-    ____  
-    ____
-    XX_X  
-    ____  
-    ____  
-    XXXX  
-    ____  
+X_  ____  
+XX  _XXX  
+XX  ____  
+__  ____
+XX  XX_X  
+__  ____  
+_X  ____  
+XX  XXXX  
+__  ____  
     ____  
     XXXX  
     ____  
@@ -3788,43 +3416,20 @@ const unsigned char CHAR_ROCKB[] = {
     __X_  
     XXXX  
     ____
-
-    ___X     //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ____      //  3
-    ___X     //  7
-    ____      //  8
-
-    ____      //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ___X     //  3
-    ___X     //  7
-    ____      //  8
-
-
-
 };
 
 
 const unsigned char CHAR_ROCKC[] = {
 
-    ____
-    XXX_
-    _X__
-    ____
-    X_X_
-    __X_
-    __X_
-    XXX_
-    __X_
+X_  ____ 
+XX  XXX_ 
+XX  _X__ 
+__  ____ 
+XX  X_X_ 
+__  __X_ 
+_X  __X_ 
+XX  XXX_ 
+__  __X_ 
     __X_
     XXX_     
     ____     
@@ -3838,39 +3443,20 @@ const unsigned char CHAR_ROCKC[] = {
     ____
     ____
 
-X
-X
-X
-_
-X
-_
-_
-X
-
-_
-X
-X
-_
-X
-_
-X
-X
-_
-_    
 };
 
 
 const unsigned char CHAR_ROCKD[] = {
 
-    _X__  
-    _XXX  
-    ____  
-    ____  
-    XXXX  
-    ____  
-    ____  
-    XXXX  
-    ____  
+X_  _X__  
+XX  _XXX  
+XX  ____  
+__  ____  
+XX  XXXX  
+__  ____  
+_X  ____  
+XX  XXXX  
+__  ____  
     ____  
     XXX_  
     ____  
@@ -3884,42 +3470,19 @@ const unsigned char CHAR_ROCKD[] = {
     XXXX  
     __X_
 
-
-    ___X     //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ____      //  3
-    ___X     //  7
-    ____      //  8
-
-    ____      //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ___X     //  3
-    ___X     //  7
-    ____      //  8
-
-
-
 };
 
 const unsigned char CHAR_ROCKE[] = {
 
-    ____  
-    _XXX  
-    __X_
-    X___  
-    XXXX  
-    ___X
-    ___X
-    XX__  
-    ___X
+X_  ____  
+XX  _XXX  
+XX  __X_
+__  X___  
+XX  XXXX  
+__  ___X
+_X  ___X
+XX  XX__  
+__  ___X
     ___X
     XXXX  
     ____  
@@ -3933,42 +3496,19 @@ const unsigned char CHAR_ROCKE[] = {
     XXX_  
     ____  
 
-
-    ___X     //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ____      //  3
-    ___X     //  7
-    ____      //  8
-
-    ____      //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ___X     //  3
-    ___X     //  7
-    ____      //  8
-
-
-
 };
 
 const unsigned char CHAR_ROCKF[] = {
 
-    _X__  
-    XXXX  
-    _X__  
-    XX__  
-    XXXX  
-    X___  
-    __X_
-    XX_X  
-    ____  
+X_  _X__  
+XX  XXXX  
+XX  _X__  
+__  XX__  
+XX  XXXX  
+__  X___  
+_X  __X_
+XX  XX_X  
+__  ____  
     ___X
     XXXX  
     ____  
@@ -3981,29 +3521,6 @@ const unsigned char CHAR_ROCKF[] = {
     ____  
     XXXX  
     ____  
-
-
-    ___X     //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ____      //  3
-    ___X     //  7
-    ____      //  8
-
-    ____      //  5
-    ___X     //  0
-    ___X     //  2
-    ____      //  4
-    ___X     //  6
-    ____      //  3
-    ___X     //  3
-    ___X     //  7
-    ____      //  8
-
-
 
 };
 
@@ -4114,141 +3631,130 @@ const unsigned char (*charSet[])[] = {
     // +--> ChName
     // +--> CharToType[]
 
-    (const unsigned char (*)[])&parallaxBlank,      // 000
-    
-    &DIRTY,                                         // 001
-    &CHAR_BRICKWALL,                                // 002
-    &CHAR_STEEL,                                    // 003  exit door (closed)
-    &CHAR_STEEL,                                    // 004  exit door (open)
-    &BLANK,                                         // 005  exit door (open)
-    &CHAR_STEEL,                                    // 006
-    &DIRTY3,                                        // 007
-    &DIRTY2,                                        // 008
-    &CHAR_EGG,                                      // 009
-    &CHAR_BOULDER,                                  // 010
-    &CHAR_ZZAP1,                                    // 011
-    &CHAR_BOULDER,                                  // 012
-    &CHAR_ROCK0,                                    // 013  ROCKSEED
-    &DOGEA,                                         // 014
-    &BLANK,                                         // 015
-    &BLANK,                                         // 016
-    &BLANK,                                         // 017
-    &BLANK, //UNCOVER0,                             // 018
-    &BLANK, //UNCOVER1,                             // 019
-    &EXPLODETODOGE0,                                // 020
-    &EXPLODETODOGE1,                                // 021
-    &EXPLODETODOGE2,                                // 022
-    &EXPLODETODOGE3,                                // 023
-    &EXPLODETODOGE4,                                // 024
-    &BLANK, //ROCKYa,                               // 025
-    &BLANK, //ROCKYb,                               // 026
-    &BLANK, //ROCKYc,                               // 027
-    &BLANK, //ROCKYd,                               // 028
-    &BLANK,                                         // 029
-    &BLANK,                                         // 030
-    &BLANK,                                         // 031
-    &DOGE1,                                         // 032
-    &BLANK,                                         // 033
-    &BLANK,                                         // 034
-    &AMOEBA0,                                       // 035
-    &AMOEBA1,                                       // 036
-    &AMOEBA2,                                       // 037
-    &AMOEBA3,                                       // 038
-    &CHAR_ZZAP,                                     // 039 CH_ZZAP
-    &CHAR_STEEL,                                    // 040
-    &DOGE1,                                         // 041
-    &DOGE2,                                         // 042
-    &DOGE3,                                         // 043
-    &DOGE4,                                         // 044
-    &DOGE5,                                         // 045
-    &DOGE6,                                         // 046
-    &BLANK,                                         // 047 /delete
-    &BLANK,                                         // 048
-    &BLANK,                                         // 049
-    &BLANK,                                         // 050
-    &DOGEA,                                         // 051
-    &BLANK,                                         // 052 AMOEBA THIS
-    &EXPLODETODOGE0,                                // 053 EXPLODE THIS!
-    &BLANK_EXTRA1,                                  // 054
-    &BLANK_EXTRA2,                                  // 055
-    &BLANK_EXTRA3,                                  // 056
-    &BLANK_EXTRA4,                                  // 057
-    &BLANK_EXTRA5,                                  // 058
-    &BLANK_EXTRA6,                                  // 059
-    &BLANK_EXTRA7,                                  // 060
-    &BLANK_EXTRA8,                                  // 061
-    &BLANK,                                         // 062
-    &EXPLODETODOGE0,                                // 063 // explode to BLANK!
-    &EXPLODETODOGE1,                                // 064
-    &EXPLODETODOGE2,                                // 065
-    &EXPLODETODOGE3,                                // 066
-    &EXPLODETODOGE4,                                // 067
-    &DOGE_GRABBED,                                  // 068 grabbed diamond
-    &DIRT_GRABBED,                                  // 069 grabbed dirt
-    &DUST,                                          // 070 post-dirt dust
-    &DUST2,                                         // 071 post-dirt dust frame 2
-    (const unsigned char (*)[])&charDust3,          // 072
-    &CHAR_BOULDER_SHAKE,                            // 073
-    &BLANK,                                         // 074 DUST_LEFT
-    &DUST_LEFT,                                     // 075 DUST2_LEFT
-    &DUST2_LEFT,                                    // 076 DUST3_LEFT
-    &BLANK,                                         // 077 DUST_RIGHT
-    &DUST_RIGHT,                                    // 078 DUST2_RIGHT
-    &DUST2_RIGHT,                                   // 079 DUST3_RIGHT
-    &CHAR_LAVA,                                     // 080 LAVA
-    &CHAR_LAVA1,                                    // 081 LAVA
-    &CHAR_LAVA2,                                    // 082 LAVA
-    &CHAR_LAVA3,                                    // 083 LAVA    
-    &CHAR_WATER,                                    // 084 WATER
-    &CHAR_WATER1,                                   // 085 WATER
-    &CHAR_WATER2,                                   // 086 WATER
-    &CHAR_WATER3,                                   // 087 WATER
-    &CHAR_EGG2,                                     // 088 EGG2
-    &BLANK,                                         // 089 CH_ROCKFORD
-    &BLANK,                                         // 090 CH_ROCKFORD_THIS
-    &CHAR_DRIP,                                     // 091 CH_DRIP0
-    &CHAR_DRIP1,                                    // 092 CH_DRIP1
-    &CHAR_DRIP2,                                    // 093 CH_DRIP2
-    &CHAR_DRIP3,                                    // 094 CH_DRIP3
-    &CHAR_DRIPX,                                    // 095 CH_DRIPX
-    &DIRTY,                                         // 096 CH_DIRT
-    &DIRT1,                                         // 097 CH_DIRT1
-    &DIRT2,                                         // 098 CH_DIRT2
-    &DIRT3,                                         // 099 CH_DIRT3
-    &DIRT4,                                         // 100 CH_DIRT4
-    &DIRT5,                                         // 101 CH_DIRT5
-    &DIRT6,                                         // 102 CH_DIRT6
-    &DIRT7,                                         // 103 CH_DIRT7
-    &DIRT8,                                         // 104 CH_DIRT8
-    &DIRT9,                                         // 105 CH_DIRT9
-    &DIRTA,                                         // 106 CH_DIRTA
-    &DIRTB,                                         // 107 CH_DIRTB
-    &DIRTC,                                         // 108 CH_DIRTC
-    &DIRTD,                                         // 109 CH_DIRTD
-    &DIRTE,                                         // 110 CH_DIRTE
-    &DIRTF,                                         // 111 CH_DIRTF
-    &CHAR_ZZAP2,                                    // 112 CH_ZZAP2
-    &CHAR_ROCK0,                                    // 113 CH_ROCK0
-    &CHAR_ROCK1,                                    // 114 CH_ROCK1
-    &CHAR_ROCK2,                                    // 115 CH_ROCK2
-    &CHAR_ROCK3,                                    // 116 CH_ROCK3
-    &CHAR_ROCK4,                                    // 117 CH_ROCK4
-    &CHAR_ROCK5,                                    // 118 CH_ROCK5
-    &CHAR_ROCK6,                                    // 119 CH_ROCK6
-    &CHAR_ROCK7,                                    // 120 CH_ROCK7
-    &CHAR_ROCK8,                                    // 121 CH_ROCK8
-    &CHAR_ROCK9,                                    // 122 CH_ROCK9
-    &CHAR_ROCKA,                                    // 123 CH_ROCKA
-    &CHAR_ROCKB,                                    // 124 CH_ROCKB
-    &CHAR_ROCKC,                                    // 125 CH_ROCKC
-    &CHAR_ROCKD,                                    // 126 CH_ROCKD
-    &CHAR_ROCKE,                                    // 127 CH_ROCKE
-    &CHAR_ROCKF,                                    // 128 CH_ROCKF
-    &CHAR_DRILL,                                    // 129 CH_DRILL
-    &CHAR_DRILL1,                                   // 130 CH_DRILL1
-    &CHAR_DRILL2,                                   // 131 CH_DRILL2
-    &CHAR_DRILLBODY,                                // 132 CH_DRILLBODY
-    &CHAR_DRILLBODY1,                               // 133 CH_DRILLBODY
+    (const unsigned char (*)[])&parallaxBlank,      // 000    
+    &CHAR_BRICKWALL,                                // 001
+    &CHAR_STEEL,                                    // 002  exit door (closed)
+    &CHAR_STEEL,                                    // 003  exit door (open)
+    &CHAR_BLANK,                                    // 004  exit door (open)
+    &CHAR_STEEL,                                    // 005
+    &CHAR_EGG,                                      // 006
+    &CHAR_ZZAP1,                                    // 008
+    &CHAR_ROCK0,                                    // 009
+    &DOGEA,                                         // 010
+    &CHAR_BLANK,                                    // 011
+    &CHAR_BLANK,                                    // 012
+    &CHAR_BLANK,                                    // 013
+    &EXPLODETODOGE0,                                // 014
+    &EXPLODETODOGE1,                                // 015
+    &EXPLODETODOGE2,                                // 016
+    &EXPLODETODOGE3,                                // 017
+    &EXPLODETODOGE4,                                // 018
+    &CHAR_BLANK, //ROCKYa,                          // 019
+    &CHAR_BLANK, //ROCKYb,                          // 020
+    &CHAR_BLANK, //ROCKYc,                          // 021
+    &CHAR_BLANK, //ROCKYd,                          // 022
+    &CHAR_BLANK,                                    // 023
+    &CHAR_BLANK,                                    // 024
+    &AMOEBA0,                                       // 025
+    &AMOEBA1,                                       // 026
+    &AMOEBA2,                                       // 027
+    &AMOEBA3,                                       // 028
+    &CHAR_ZZAP,                                     // 029 CH_ZZAP
+    &CHAR_STEEL,                                    // 030
+    &DOGE1,                                         // 031
+    &DOGE2,                                         // 032
+    &DOGE3,                                         // 033
+    &DOGE4,                                         // 034
+    &DOGE5,                                         // 035
+    &DOGE6,                                         // 036
+    &CHAR_BLANK,                                    // 037 /delete
+    &CHAR_BLANK,                                    // 038
+    &CHAR_BLANK,                                    // 039
+    &CHAR_BLANK,                                    // 040
+    &DOGEA,                                         // 041
+    &CHAR_BLANK,                                    // 042 AMOEBA THIS
+    &EXPLODETODOGE0,                                // 043 EXPLODE THIS!
+    &CHAR_BLANK_EXTRA1,                             // 044
+    &CHAR_BLANK_EXTRA2,                             // 045
+    &CHAR_BLANK_EXTRA3,                             // 046
+    &CHAR_BLANK_EXTRA4,                             // 047
+    &CHAR_BLANK_EXTRA5,                             // 048
+    &CHAR_BLANK_EXTRA6,                             // 049
+    &CHAR_BLANK_EXTRA7,                             // 050
+    &CHAR_BLANK_EXTRA8,                             // 051
+    &EXPLODETODOGE0,                                // 052 // explode to CHAR_BLANK!
+    &EXPLODETODOGE1,                                // 053
+    &EXPLODETODOGE2,                                // 054
+    &EXPLODETODOGE3,                                // 055
+    &EXPLODETODOGE4,                                // 056
+    &DOGE_GRABBED,                                  // 057 grabbed diamond
+    &DIRT_GRABBED,                                  // 058 grabbed dirt
+    &DUST,                                          // 059 post-dirt dust
+    &DUST2,                                         // 060 post-dirt dust frame 2
+    (const unsigned char (*)[])&charDust3,          // 061
+    &CHAR_BOULDER_SHAKE,                            // 062
+    &CHAR_BLANK,                                    // 063 DUST_LEFT
+    &DUST_LEFT,                                     // 064 DUST2_LEFT
+    &DUST2_LEFT,                                    // 065 DUST3_LEFT
+    &CHAR_BLANK,                                    // 066 DUST_RIGHT
+    &DUST_RIGHT,                                    // 067 DUST2_RIGHT
+    &DUST2_RIGHT,                                   // 068 DUST3_RIGHT
+    &CHAR_LAVA,                                     // 069 LAVA
+    &CHAR_LAVA1,                                    // 070 LAVA
+    &CHAR_LAVA2,                                    // 071 LAVA
+    &CHAR_LAVA3,                                    // 072 LAVA    
+    &CHAR_WATER,                                    // 073 WATER
+    &CHAR_WATER1,                                   // 074 WATER
+    &CHAR_WATER2,                                   // 075 WATER
+    &CHAR_WATER3,                                   // 076 WATER
+    &CHAR_EGG2,                                     // 077 EGG2
+    &CHAR_BLANK,                                    // 078 CH_ROCKFORD
+    &CHAR_BLANK,                                    // 079 CH_ROCKFORD_THIS
+    &CHAR_DRIP,                                     // 080 CH_DRIP0
+    &CHAR_DRIP1,                                    // 081 CH_DRIP1
+    &CHAR_DRIP2,                                    // 082 CH_DRIP2
+    &CHAR_DRIP3,                                    // 083 CH_DRIP3
+    &CHAR_DRIPX,                                    // 084 CH_DRIPX
+    &CHAR_DIRT,                                     // 085 CH_DIRT
+    &CHAR_DIRT,                                     // 086 CH_DIRT1
+    &CHAR_DIRT,                                     // 087 CH_DIRT2
+    &CHAR_DIRT,                                     // 088 CH_DIRT3
+    &CHAR_DIRT,                                     // 089 CH_DIRT4
+    &CHAR_DIRT,                                     // 090 CH_DIRT5
+    &CHAR_DIRT,                                     // 091 CH_DIRT6
+    &CHAR_DIRT,                                     // 092 CH_DIRT7
+    &CHAR_DIRT,                                     // 093 CH_DIRT8
+    &CHAR_DIRT,                                     // 094 CH_DIRT9
+    &CHAR_DIRT,                                     // 095 CH_DIRTA
+    &CHAR_DIRT,                                     // 096 CH_DIRTB
+    &CHAR_DIRT,                                     // 097 CH_DIRTC
+    &CHAR_DIRT,                                     // 098 CH_DIRTD
+    &CHAR_DIRT,                                     // 099 CH_DIRTE
+    &CHAR_DIRT,                                     // 100 CH_DIRTF
+    &CHAR_RUBBLE,                                   // 101 CH_RUBBLE
+    &CHAR_RUBBLE1,                                  // 102 CH_RUBBLE1
+    &CHAR_ZZAP2,                                    // 103 CH_ZZAP2
+    &CHAR_ROCK0,                                    // 104 CH_ROCK0
+    &CHAR_ROCK1,                                    // 105 CH_ROCK1
+    &CHAR_ROCK2,                                    // 106 CH_ROCK2
+    &CHAR_ROCK3,                                    // 107 CH_ROCK3
+    &CHAR_ROCK4,                                    // 108 CH_ROCK4
+    &CHAR_ROCK5,                                    // 109 CH_ROCK5
+    &CHAR_ROCK6,                                    // 110 CH_ROCK6
+    &CHAR_ROCK7,                                    // 111 CH_ROCK7
+    &CHAR_ROCK8,                                    // 112 CH_ROCK8
+    &CHAR_ROCK9,                                    // 113 CH_ROCK9
+    &CHAR_ROCKA,                                    // 114 CH_ROCKA
+    &CHAR_ROCKB,                                    // 115 CH_ROCKB
+    &CHAR_ROCKC,                                    // 116 CH_ROCKC
+    &CHAR_ROCKD,                                    // 117 CH_ROCKD
+    &CHAR_ROCKE,                                    // 118 CH_ROCKE
+    &CHAR_ROCKF,                                    // 119 CH_ROCKF
+    &CHAR_DRILL,                                    // 120 CH_DRILL
+    &CHAR_DRILL1,                                   // 121 CH_DRILL1
+    &CHAR_DRILL2,                                   // 122 CH_DRILL2
+    &CHAR_DRILLBODY,                                // 123 CH_DRILLBODY
+    &CHAR_DRILLBODY1,                               // 124 CH_DRILLBODY
 
     // +--> CharToType[]
 

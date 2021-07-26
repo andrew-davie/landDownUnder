@@ -36,7 +36,7 @@
 #include "cavedata.h"
 #include "sound.h"
 #include "movePlayer.h"
-
+#include "drawBitmap.h"
 
 
 #define DIGIT_SIZE 18           /* displayed lines */
@@ -84,6 +84,14 @@ int scoreLineNew[10];
 int water, lava;
 unsigned char *lastWater;
 unsigned char bgPalette[24];
+
+#define SPACESHIPS 1
+int spaceshipY[SPACESHIPS];
+int spaceshipAccel[SPACESHIPS];
+int spaceshipWait[SPACESHIPS];
+int spaceshipMode[SPACESHIPS];
+int spaceshipX[SPACESHIPS];
+int spaceshipTargetX[SPACESHIPS];
 
 int tuneIndex;
 int millingTime;                // negative = expired
@@ -558,6 +566,16 @@ void setColours() {
 
 void InitGameX() {
 
+    for (int sno = 0; sno < SPACESHIPS; sno++) {
+        spaceshipY[sno] = -(150+(getRandom32() & 0x20)<<16); //16 << 16;
+        spaceshipAccel[sno] = 0;
+        spaceshipWait[sno] = 0;
+        spaceshipMode[sno] = 0;
+
+        spaceshipX[sno] = 10 << 16;
+        spaceshipTargetX[sno] = 10 << 16;
+    }
+
     for (int i = 0; i < 40; i++) {
         spaceToggle[i] = 99;
         spaceToggleDisplayed[i] = 99;
@@ -820,8 +838,8 @@ void Scheduler() {
             for (int pebble = 0; pebble < MAX_PEBBLES; pebble++) {
                 int rnd = getRandom32();
                 int idx = _BOARD + (((rnd & 0xFFFF) * 880) >> 16);
-                if (RAM[idx] == CH_DIRTY)
-                    RAM[idx] = CH_DIRTY3 + (rnd & 1);
+                if (RAM[idx] == CH_DIRT)
+                    RAM[idx] = CH_DIRT2 + (rnd & 1);
             }
 
             if (lava) {
@@ -931,6 +949,7 @@ void GameOverscan() {
         if (lava > 1) {
             lava--;
             shakeTime += 20;
+
         }
 
         if (water > 1)
@@ -1645,7 +1664,60 @@ void GameVerticalBlank() {
 
     if (gameSchedule != SCHEDULE_UNPACK_CAVE) {
 
+//        drawBitmap(&rocketShip[0], 30, lava-(scrollY>>16), false);
 
+
+        for (int sno = 0; sno < SPACESHIPS; sno++) {    
+
+                drawBitmap(&rocketShip[0], spaceshipX[sno] >> 16, 105 + (spaceshipY[sno] >> 16) * 3, false);
+                if (!(spaceshipMode[sno] == 1 && spaceshipWait[sno]) && !(getRandom32() & 3))
+                    drawBitmap(&rocketShipFlame[0], spaceshipX[sno] >> 16, 105 + (spaceshipY[sno] >> 16) * 3 - 3, false);
+
+            if (spaceshipMode[sno] == 0) {
+
+            if (!spaceshipWait[sno]) {
+                if (spaceshipX[sno] < spaceshipTargetX[sno])
+                    spaceshipX[sno] += 0x03000+sno*0x300;
+                if (spaceshipX[sno] > spaceshipTargetX[sno])
+                    spaceshipX[sno] -= 0x03000+sno*0x300;
+            }
+
+
+                spaceshipAccel[sno] += 900 + 10*sno;
+                if (spaceshipY[sno] >= 0xF8000) {
+                    spaceshipAccel[sno] = 0;
+                    spaceshipY[sno] = 16 << 16;
+                    spaceshipWait[sno] = 100 + (getRandom32() & 0x20);
+                    spaceshipMode[sno]++;
+                        spaceshipTargetX[sno] = (((getRandom32() & 0xFF) * 40) >> 8) << 16;
+                        shakeTime += 100;
+                }
+                else
+                {
+                    shakeTime += 120;
+                }
+                
+            }
+
+            if (spaceshipMode[sno] == 1) {
+
+                if (spaceshipWait[sno])
+                    spaceshipWait[sno]--;
+
+                else {
+                    shakeTime += 120;
+                    spaceshipAccel[sno] -= 750 + 10*sno;
+
+
+                    if (spaceshipY[sno] < (1 << 16)) {
+                        spaceshipMode[sno] = 0;
+                    }
+
+                }
+            }
+
+            spaceshipY[sno] += spaceshipAccel[sno];
+        }
 //        GameScheduleAnimate();
 #if ENABLE_OVERLAY
         GameScheduleDrawOverlay();
@@ -2907,7 +2979,7 @@ void GameScheduleProcessBoardRow() {
                                     drillHeight = newDrillHeight;
                                 }
                                 else {
-                                    shakeTime += 60;
+                                    //shakeTime += 60;
 
                                     if (CharToType[*dest] == TYPE_BOULDER)
                                         *dest = CH_BOULDER_SHAKE;
@@ -3051,7 +3123,8 @@ void GameScheduleProcessBoardRow() {
                 case CH_ROCKF:
 
                 case CH_BOULDER_SHAKE:
-                case CH_BOULDER: {
+//                case CH_BOULDER: 
+                {
                     
 
                     block += 1;
@@ -3295,14 +3368,14 @@ void GameScheduleProcessBoardRow() {
 
 
 
-const char AnimDirt[] = {
-    CH_DIRTY,20,
-    CH_DIRT1,20,
-    CH_DIRT2,20,
-    CH_DIRT3,20,
-    CH_DIRT3,20,
-    255,
-};
+// const char AnimDirt[] = {       // ?
+//     CH_DIRT,20,
+//     CH_DIRT1,20,
+//     CH_DIRT2,20,
+//     CH_DIRT3,20,
+//     CH_DIRT3,20,
+//     255,
+// };
 
 
 
@@ -3339,16 +3412,13 @@ const char AnimDogeCoin[] = {
     CH_DOGE_PULSE_3,3,
     CH_DOGE_PULSE_4,3,
     CH_DOGE_PULSE_5,4,
-//    CH_DOGE_PULSE_6,8,
     CH_DOGE_PULSE_0,8,
-//    CH_DOGE_PULSE_6,10,
     CH_DOGE_PULSE_5,4,
     CH_DOGE_PULSE_4,3,
     CH_DOGE_PULSE_3,3,
     CH_DOGE_PULSE_2,4,
     CH_DOGE_PULSE_1,6,
     CH_DOGE_PULSE_0,8,
-//    CH_DOGE_STATIC,15,
     255,
 };
 
@@ -3433,7 +3503,7 @@ const char (*Animate[TYPE_MAX])[] = {
     // 0 if the object does not animate
 
     &AnimBlank,                 // 00 SPACE             required for drawscreen filtering parallax
-    &AnimDirt,                  // 01 DIRT            
+    0,                          // 01 DIRT            
     0,                          // 02 BRICKWALL       
     &AnimPreOut,                // 03 OUTBOX_PRE      
     &AnimFlashOut,              // 04 OUTBOX          

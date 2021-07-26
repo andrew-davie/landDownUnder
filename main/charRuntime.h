@@ -3,7 +3,7 @@
 
     #include "characterset.h"
 
-extern const unsigned char DIRTY[];
+extern const unsigned char CHAR_DIRT[];
 extern const unsigned char DIRT1[];
 extern const unsigned char DIRT2[];
 extern const unsigned char DIRT3[];

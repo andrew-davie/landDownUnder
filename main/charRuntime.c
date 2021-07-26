@@ -4,7 +4,7 @@
     #include "attribute.h"
     
 
-const unsigned char DIRTY[] = {
+const unsigned char CHAR_DIRT[] = {
 
   0b1011,         //0b0
     0b0000,          //0b1

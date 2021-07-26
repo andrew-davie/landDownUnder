@@ -66,6 +66,7 @@ extern bool rockfordDead;
 extern int scrollX;
 extern int scrollY;
 extern int doge;
+extern unsigned int sparkleTimer;
 
 enum DisplayMode {
     NORMAL,
@@ -94,5 +95,8 @@ extern void* DDR;
 
 extern unsigned char spaceToggle[40];
 extern unsigned char spaceToggleDisplayed[40];
+
+extern void setFlash(int colour, int time);
+
 
 #endif
