@@ -332,7 +332,7 @@ void drawScreen(){
             screenMask[c] = 0;
 
 
-    Scroll();
+//    Scroll();
 
 #if ENABLE_PARALLAX
 
@@ -377,12 +377,18 @@ void drawScreen(){
 
 #if ENABLE_SHAKE
     extern int shakeX, shakeY;
-        int yOffset = ((scrollY + shakeY/* + bgDriftY*/) >> 17) * 3;
+        int yOffset = ((scrollY + shakeY/* + bgDriftY*/) >> 17) * 3;        // 1/2 for parallax
         int offset = ((scrollX + shakeX/* + bgDriftX*/) >> 15) & 3;
 #else
-        int yOffset = ((scrollY/* + bgDriftY*/) >> 17) * 3;
+        int yOffset = ((scrollY/* + bgDriftY*/) >> 17) * 3;                 // 1/2 for parallax
         int offset = ((scrollX /* + bgDriftX*/) >> 15) & 3;
 #endif
+
+    //tmp...
+        yOffset = ((scrollY/* + bgDriftY*/) >> 17) * 3;                 // 1/2 for parallax
+        offset = ((scrollX /* + bgDriftX*/) >> 15) & 3;
+
+
 
         while (yOffset >= PIECE_DEPTH)
             yOffset -= PIECE_DEPTH;
@@ -504,21 +510,25 @@ extern const unsigned char DUST3[];
 
                     switch (type) {
                     case TYPE_SPACE:
-                        if (sparkleTimer) {
-                            if (rnd < 8)
-                                rnd = getRandom32();
-                            piece = ( 7 & (rnd >>= 3)) + CH_BLANK_EXTRA1;
-                        }
-                        else {
+                        // if (sparkleTimer) {
+                        //     if (rnd < 8)
+                        //         rnd = getRandom32();
+                        //     piece = ( 7 & (rnd >>= 3)) + CH_BLANK_EXTRA1;
+                        // }
+                        // else {
 
-                            if (Animate[type] && spaceToggleDisplayed[xOffset + ch] > row)
+                            if (Animate[type]
+#if ENABLE_PARALLAX
+                             && spaceToggleDisplayed[xOffset + ch] > row
+#endif
+                            )
                                 piece = (*Animate[type])[AnimIdx[type].index];
                             else
                             {
                                 piece = CH_DOOROPEN_1;      // anything blank but NOT CH_BLANK!
                             }
-                            
-                        }
+                            // 
+//                        }
                         break;
                     case TYPE_AMOEBA:
                         if (rnd < 256)

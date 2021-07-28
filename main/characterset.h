@@ -165,6 +165,11 @@ enum ChName {
     CH_DRILL2,                      // 121
     CH_DRILLBODY,                   // 122
     CH_DRILLBODY1,                  // 123
+    CH_BELT,                        // 124
+    CH_BELT1,                       // 125
+    CH_BELT2,                       // 126
+    CH_BELT3,                       // 127
+
     CH_MAX,
 };
 
@@ -296,6 +301,10 @@ static const unsigned char CharToType[CH_MAX]= {
     TYPE_DRILL,                     // 121 CH_DRILL2
     TYPE_DRILLBODY,                 // 122 CH_DRILLBODY
     TYPE_DRILLBODY,                 // 123 CH_DRILLBODY1
+    TYPE_BELT,                      // 124 CG_BELT
+    TYPE_BELT2,                     // 125 CH_BELT1
+    TYPE_BELT,                      // 126 CH_BELT2
+    TYPE_BELT,                      // 127 CH_BELT3
 
 };
 

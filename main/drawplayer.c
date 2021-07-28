@@ -1,6 +1,8 @@
 
 #include <stdbool.h>
 
+#include "main.h"
+
 //#include "defines_cdfj.h"
 #include "defines_from_dasm_for_c.h"
 #include "defines.h"
@@ -88,8 +90,8 @@ void drawPlayerSprite() {
             for (int line = 0; line < SPRITE_DEPTH; line++) {
                 *p0++ = *spr++;
                 *p1++ = *spr++;
-                *p0Colour++ = *spr++;
-                *p1Colour++ = *spr++;
+                *p0Colour++ = ColourConvert(*spr++);
+                *p1Colour++ = ColourConvert(*spr++);
             }
 
             // if (true ||sparkleTimer)
@@ -103,8 +105,8 @@ void drawPlayerSprite() {
             for (int line = 0; line < SPRITE_DEPTH; line++) {
                 *p0++ = BitRev[(unsigned char)*spr++];
                 *p1++ = BitRev[(unsigned char)*spr++];
-                *p0Colour++ = *spr++;
-                *p1Colour++ = *spr++;
+                *p0Colour++ = ColourConvert(*spr++);
+                *p1Colour++ = ColourConvert(*spr++);
             }
 
             // if (true || sparkleTimer)
@@ -164,7 +166,7 @@ void drawPlayerSmallSprite() {
 
         for (int line = 0; line < 9; line++) {
             *p0++ = rockfordDirection == RIGHT ? *spr++ : BitRev[(unsigned char)*spr++];
-            *p0Colour++ = *spr++;
+            *p0Colour++ = ColourConvert(*spr++);
         }
         
         P0_X = (rockfordX << 2) + (rockfordDirection * (frameOffset + frameAdjustSmallX)) + 2;

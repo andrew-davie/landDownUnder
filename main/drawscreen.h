@@ -1,2 +1,7 @@
+#ifndef __DRAWSCREEN_H
+#define __DRAWSCREEN_H
 
-void drawScreen();
+extern void drawScreen();
+extern void Scroll();
+
+#endif

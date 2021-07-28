@@ -7,7 +7,7 @@
 #define ENABLE_OVERLAY 0
 #define ENABLE_SOUND 1
 #define ENABLE_DRIP 0
-#define ENABLE_PARALLAX 1
+#define ENABLE_PARALLAX 0
 #define ENABLE_TOGGLE_DISPLAY_ON_DEATH 0
 #define ENABLE_SHAKE 1
 
@@ -93,10 +93,17 @@ extern void setAnimation(int animID);
 
 extern void* DDR;
 
+#if ENABLE_PARALLAX
 extern unsigned char spaceToggle[40];
 extern unsigned char spaceToggleDisplayed[40];
+#endif
 
 extern void setFlash(int colour, int time);
+extern unsigned char ColourConvert(unsigned char color);
 
+#if ENABLE_SHAKE
+extern int shakeX;
+extern int shakeY;
+#endif
 
 #endif

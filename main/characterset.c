@@ -2624,25 +2624,25 @@ const unsigned char CHAR_WATER3[] = {
 };
 
 const unsigned char CHAR_EGG[] = {
-    ____      // 20
+    X_XX      // 20
     _X__      // 20
     _X__      // 20
-    XX__      // 20
+    XX_X      // 20
     XX__      // 20
     X___      // 20
-    ____      // 20
+    _XX_      // 20
     ___X     //  0
     __XX      // 20
     __XX      // 20
     __XX      // 20
     ____      // 20
-    ____      // 20
+    X_XX      // 20
     _X__      // 20
     _X__      // 20
     _XX_      // 20
     _XX_      // 20
     __X_     // 20
-    ____      // 20
+    XX_X      // 20
     ____      // 20
     ____      // 20
 
@@ -2671,25 +2671,25 @@ const unsigned char CHAR_EGG[] = {
 };
 
 const unsigned char CHAR_EGG2[] = {
-    ____      // 20
+    X_XX      // 20
     _X__      // 20
     XX__      // 20
-    XX__      // 20
+    XX_X      // 20
     XX__      // 20
     ____      // 20
-    ____      // 20
+    XXX_      // 20
     ___X     //  0
     ___X     // 20
-    __XX      // 20
+    X_XX      // 20
     __XX      // 20
     __X_     // 20
-    ____      // 20
+    X_XX      // 20
     _X__      // 20
     _XX_      // 20
     _XX_      // 20
     _XX_      // 20
     ____      // 20
-    ____      // 20
+    XXXX      // 20
     ____      // 20
     ____      // 20
 
@@ -3481,7 +3481,7 @@ __  X___
 XX  XXXX  
 __  ___X
 _X  ___X
-XX  XX__  
+XX  XXX_  
 __  ___X
     ___X
     XXXX  
@@ -3621,6 +3621,107 @@ const unsigned char CHAR_DRILLBODY1[] = {
     ____      //  8
 };
 
+
+const unsigned char CHAR_BELT[] = {
+
+    ____  
+    X___  
+    XXXX  
+    XXXX  
+    ____  
+    X__X  
+    X__X  
+    ____  
+    XX__  
+    XX__  
+    ____
+    _XX_  
+    _XX_  
+    ____
+    __XX  
+    __XX  
+    ____  
+    XXXX  
+    XXXX  
+    ___X  
+    ____
+};
+
+const unsigned char CHAR_BELT1[] = {
+    _X__  
+    _X__  
+    XXXX  
+    XXXX  
+    ____  
+    X___  
+    X___  
+    ____  
+    _X_X  
+    _X_X  
+    ____
+    __X_  
+    __X_  
+    ____
+    ____  
+    ____  
+    ____  
+    XXXX  
+    XXXX  
+    __X_  
+    __X_
+};
+
+const unsigned char CHAR_BELT2[] = {
+    __X_  
+    __X_  
+    XXXX  
+    XXXX  
+    ____  
+    X___  
+    X___  
+    ____  
+    _X_X  
+    _X_X  
+    ____
+    __X_  
+    __X_  
+    ____
+    ____  
+    ____  
+    ____  
+    XXXX  
+    XXXX  
+    _X__  
+    _X__
+};
+
+const unsigned char CHAR_BELT3[] = {
+    ___X  
+    ___X  
+    XXXX  
+    XXXX  
+    ____  
+    X___  
+    X___  
+    ____  
+    _X_X  
+    _X_X  
+    ____
+    __X_  
+    __X_  
+    ____
+    ____  
+    ____  
+    ____  
+    XXXX  
+    XXXX  
+    X___  
+    X___
+};
+
+
+
+
 #if ENABLE_PARALLAX
 extern unsigned char *parallaxBlank[];
 extern unsigned char *charDust3[];
@@ -3628,10 +3729,21 @@ extern unsigned char *charDust3[];
 
 const unsigned char (*charSet[])[] = {
 
+
+//todo
+// staircase
+// conveyor belt
+// lift platforms
+
+
     // +--> ChName
     // +--> CharToType[]
 
-    (const unsigned char (*)[])&parallaxBlank,      // 000    
+#if ENABLE_PARALLAX
+    (const unsigned char (*)[])&parallaxBlank,      // 000
+#else
+    &CHAR_BLANK,
+#endif    
     &CHAR_BRICKWALL,                                // 001
     &CHAR_STEEL,                                    // 002  exit door (closed)
     &CHAR_STEEL,                                    // 003  exit door (open)
@@ -3691,7 +3803,11 @@ const unsigned char (*charSet[])[] = {
     &DIRT_GRABBED,                                  // 058 grabbed dirt
     &DUST,                                          // 059 post-dirt dust
     &DUST2,                                         // 060 post-dirt dust frame 2
+#if ENABLE_PARALLAX
     (const unsigned char (*)[])&charDust3,          // 061
+#else
+    &DUST3,
+#endif    
     &CHAR_BOULDER_SHAKE,                            // 062
     &CHAR_BLANK,                                    // 063 DUST_LEFT
     &DUST_LEFT,                                     // 064 DUST2_LEFT
@@ -3755,6 +3871,11 @@ const unsigned char (*charSet[])[] = {
     &CHAR_DRILL2,                                   // 122 CH_DRILL2
     &CHAR_DRILLBODY,                                // 123 CH_DRILLBODY
     &CHAR_DRILLBODY1,                               // 124 CH_DRILLBODY
+    &CHAR_BELT,                                     // 125 CH_BELT
+    &CHAR_BELT1,                                    // 125 CH_BELT1
+    &CHAR_BELT2,                                    // 125 CH_BELT2
+    &CHAR_BELT3,                                    // 125 CH_BELT3
+
 
     // +--> CharToType[]
 

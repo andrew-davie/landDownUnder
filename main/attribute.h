@@ -64,6 +64,8 @@ enum ObjectType {
     TYPE_ROCK,               // 51
     TYPE_DRILL,              // 52
     TYPE_DRILLBODY,          // 53
+    TYPE_BELT,               // 54
+    TYPE_BELT2,              // 55
 
     // +--> modify Attribute[] @ attribute.c
     // +--> modify Animate[] @ main.c

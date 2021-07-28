@@ -56,7 +56,7 @@ const int Attribute[] = {
     RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ |XPD| _ | _  , // 05 BOULDER_FALLING  
      _ | _ | _ | _ | _ | _ | _ | _ | _ |HRD| _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 06 STEEL  
     RND| _ | _ |PSH| _ | _ | _ | _ | _ |HRD| _ |ACT|BNG| _ | _ | _ | _ |XPD| _ |ROL , // 07 BOULDER 
-    RND| _ | _ | _ | _ | _ | _ |QUI| _ | _ |SQB|ACT| _ |GRB| _ | _ | _ |XPD| _ | _  , // 08 DOGE  
+    RND| _ | _ | _ | _ | _ | _ |QUI| _ | _ | _ |ACT| _ |GRB| _ |SPC| _ |XPD| _ | _  , // 08 DOGE  
     RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 09 EXPLODE_SPACE_0  
     RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 10 EXPLODE_SPACE_1
     RND| _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 11 EXPLODE_SPACE_2
@@ -102,6 +102,8 @@ const int Attribute[] = {
     RND| _ | _ |PSH| _ | _ | _ | _ | _ |HRD| _ |ACT|BNG| _ | _ | _ | _ |XPD| _ |ROL , // 51 ROCK  
      _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 52 DRILL
      _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ |ACT| _ | _ | _ | _ | _ | _ | _ | _  , // 53 DRILLBODY
+     _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 54 BELT
+     _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 54 BELT2
 
 //  RND|DRP RKF PSH SSP WTR LAV QUI XIT HRD SQB ACT BNG GRB SQD SPC PER XPD FLY ROL
 //   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |

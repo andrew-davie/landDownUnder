@@ -80,7 +80,19 @@ void doPlayer() {
 
     playerX += joy.x * playerSpeedX;
     playerY += joy.y * playerSpeedY;
-    
+
+        if (playerY < 10)
+            playerY = 10;
+        // if (playerX < (3<<14))
+        //     playerX = (3<< 14);
+
+        // // if (playerY > _ARENA_SCANLINES * 3 - 10)
+        // //     playerY = _ARENA_SCANLINES * 3- 10;
+
+        // if (playerX > (37<<14))
+        //     playerX = (37<<14);
+
+
     if (joy.face && rockfordDirection != joy.face)
         rockfordDirection = joy.face;
 

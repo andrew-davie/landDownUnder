@@ -20,7 +20,7 @@ const unsigned char rocketShip[] = {
 
     1,                  // width in BYTES (=8 pix/byte) (MAX =4)
     105,                 // height in SCANLINES (pref multiples of 3 -- TRIPIXs)
-    3,105,               // center point (PIXELS) from 0,0 top left
+    3,105,               // center point (PIXELS) from 0,0 top left MULT OF 3
 
     ________ //________   // 000    // colour 0
     ________ //________   // 001    // colour 1
@@ -117,7 +117,7 @@ const unsigned char rocketShip[] = {
     XXXXXXX_ //XXXXXXX_   // 092 
     __XXX___ //__XXX___   // 093 
     __XXX___ //XXXXXXX_   // 094 
-    X_XXX_X_ //XXXXXXX_   // 095 
+    X_XXXXX_ //XXXXXXX_   // 095 
     __XXX___ //_XXXX___   // 096 
     ________ //XXXXXXX_   // 097 
     X_XXX_X_ //X_XXX_X_   // 098 
@@ -129,6 +129,119 @@ const unsigned char rocketShip[] = {
     X_____X_ //X_____X_   // 104 
 };
 
+
+const unsigned char eroShip[] = {
+
+    2,                  // width in BYTES (=8 pix/byte) (MAX =4)
+    105,                 // height in SCANLINES (pref multiples of 3 -- TRIPIXs)
+    8,105,               // center point (PIXELS) from 0,0 top left
+
+    ________ ________ //________   // 000    // colour 0
+    ________ ________ //________   // 001    // colour 1
+    ________ ________ //________   // 002    // colour 2 etc...
+    ______XX XX______ //___X____   // 003 
+    ______XX XX______ //________   // 004 
+    ______XX XX______ //________   // 005 
+    _____XXX XXX_____ //________   // 006 
+    _____XXX XXX_____ //___X____   // 007 
+    _____XXX XXX_____ //___X____   // 008 
+    _____XXX XXX_____ //___X____   // 009 
+    _____XXX XXX_____ //___X____   // 010 
+    _____XXX XXX_____ //___X____   // 011 
+    ____XXXX XXXX____ //__XXX___   // 012 
+    ____XXXX XXXX____ //__XXX___   // 013 
+    ____XXXX XXXX____ //__XXX___   // 014 
+    ____XXXX XXXX____ //__XXX___   // 015 
+    ____XXXX XXXX____ //__XXX___   // 016 
+    ____XXXX XXXX____ //__XXX___   // 017 
+    ____XXXX XXXX____ //__XXX___   // 018
+    ____XXXX XXXX____ //__XXX___   // 019 
+    ____XXXX XXXX____ //__XXX___   // 020 
+    ____XXXX XXXX____ //__XXX___   // 021  // 00
+    _____XXX XXXX____ //__XXX___   // 022  // 01
+    _____XXX XXXX____ //__XXX___   // 023  // 02
+    _____XXX XXX_____ //__XXX___   // 024  // 03
+    _____XXX XXX_____ //_XXXXX__   // 025  // 04
+    ________ ________ //__XXX___   // 026  // 05
+    _____XXX XXX_____ //_XXXXX__   // 027  // 06
+    _____XXX XXX_____ //_XXXXX__   // 028  // 07
+    ______XX XXX_____ //_XXXXX__   // 029  // 08
+    _____X_X XXX_____ //_XXXXX__   // 030  // 09
+    _____X_X XXX_____ //_XXXXX__   // 031  // 10
+    ______XX XXX_____ //_XXXXX__   // 032  // 11
+    _____XXX XXX_____ //_XXXXX__   // 033  // 12
+    _____XXX XXX_____ //_XXXXX__   // 034  // 13
+    ______XX XXX_____ //_XXXXX__   // 035  // 14
+    _____X_X XXX_____ //_XXXXX__   // 036  // 15
+    _____X_X XXX_____ //_XXXXX__   // 037  // 16
+    ______XX XXX_____ //_XXXXX__   // 038  // 17
+    ____XXXX XXXX____ //XXXXXXX_   // 039  // 18
+    ____XXXX XXXX____ //XXXXXXX_   // 040  // 19
+    _____XXX XXXX____ //XXXXXXX_   // 041  // 20
+    ____X_XX XXXX____ //XXXXXXX_   // 042  // 00
+    ____X_XX XXXX____ //XXXXXXX_   // 043  // 01
+    _____XXX XXXX____ //XXXXXXX_   // 044  // 02
+    ____XXXX XXXX____ //XXXXXXX_   // 045  // 03
+    ____XXXX XXXX____ //XXXXXXX_   // 046  // 04
+    _____XXX XXXX____ //XXXXXXX_   // 047  // 05
+    ____X_XX XXXX____ //XXXXXXX_   // 048  // 06
+    ____X_XX XXXX____ //XXXXXXX_   // 049  // 07
+    _____XXX XXXX____ //XXXXXXX_   // 050  // 08
+    ____XXXX XXXX____ //XXXXXXX_   // 051  // 09
+    ____XXXX XXXX____ //XXXXXXX_   // 052  // 10
+    _____XXX XXXX____ //XXXXXXX_   // 053  // 11
+    ____X_XX XXXX____ //XXXXXXX_   // 054  // 12
+    ____X_XX XXXX____ //XXXXXXX_   // 055  // 13
+    _____XXX XXXX____ //XXXXXXX_   // 056  // 14
+    ____XXXX XXXX____ //XXXXXXX_   // 057  // 15
+    ____XXXX XXXX____ //XXXXXXX_   // 058  // 16
+    _____XXX XXXX____ //XXXXXXX_   // 059  // 17
+    ____X_XX XXXX____ //XXXXXXX_   // 060  // 18
+    ____X_XX XXXX____ //XXXXXXX_   // 061  // 19
+    _____XXX XXXX____ //XXXXXXX_   // 062  // 20
+    ____XXXX XXXX____ //XXXXXXX_   // 063  // 00
+    ____XXXX XXXX____ //XXXXXXX_   // 064  // 01
+    _____XXX XXXX____ //XXXXXXX_   // 065  // 02
+    ____X_XX XXXX____ //XXXXXXX_   // 066  // 12
+    ____X_XX XXXX____ //XXXXXXX_   // 067  // 13
+    _____XXX XXXX____ //XXXXXXX_   // 068  // 14
+    ____XXXX XXXX____ //XXXXXXX_   // 069  // 15
+    ____XXXX XXXX____ //XXXXXXX_   // 070  // 16
+    _____XXX XXXX____ //XXXXXXX_   // 071  // 17
+    ______XX XXX_____ //XXXXXXX_   // 072  // 18
+    ______XX XXX_____ //XXXXXXX_   // 073  // 10
+    ______XX XXX_____ //XXXXXXX_   // 074  // 11
+    ______XX XXX_____ //_XXXXX__   // 075  // 12
+    ______XX XXX_____ //_XXXXX__   // 076  // 13
+    ________ ________ //_XXXXX__   // 077  // 14
+    ______XX XX______ //_XXXXX__   // 078  // 15
+    ______XX XX______ //_XXXXX__   // 079  // 16
+    _______X XX______ //_XXXXX__   // 080  // 17
+    ______XX XX______ //__XXX___   // 081  // 18
+    ______X_ XX______ //_XXXXX__   // 082  // 19
+    _______X XX______ //_XXXXX__   // 083  // 20
+    ______XX XX______ //__XXX___   // 084 
+    ______XX XX______ //__XXX___   // 085 
+    _______X XX______ //__XXX___   // 086 
+    ______XX XX______ //__XXX___   // 087 
+    ______X_ XX______ //_XXXXX__   // 088 
+    _______X XX______ //_XXXXX__   // 089 
+    _______X XX______ //__XXX___   // 090 
+    ______XX XX______  //XXXXXXX_   // 091 
+    ______XX XX______ //XXXXXXX_   // 092 
+    _______X XX______ //__XXX___   // 093 
+    _______X XX______ //XXXXXXX_   // 094 
+    ____X_XX XX_X____ //XXXXXXX_   // 095 
+    ______XX XXX_____ //_XXXX___   // 096 
+    ________ ________ //XXXXXXX_   // 097 
+    ______XX XXX_____ //X_XXX_X_   // 098 
+    _______X XX______ //X_XXX_X_   // 099 
+    ________ ________ //X__X__X_   // 100 
+    _______X XX______ //X_XXX_X_   // 101 
+    ________ ________ //X_XXX_X_   // 102 
+    ______XX XXX_____ //X_____X_   // 103 
+    ________ ________ //X_____X_   // 104 
+};
 
 const unsigned char rocketShipLeg[] = {
 
@@ -145,6 +258,59 @@ const unsigned char rocketShipLeg[] = {
     ________ //X_____X_ 
     ________ //X_____X_ 
     X_____X_ //X_____X_ 
+};
+
+
+// const unsigned char wenhop[] = {
+
+//     1,                  // width in BYTES (=8 pix/byte) (MAX =4)
+//     9,                 // height in SCANLINES (pref multiples of 3 -- TRIPIXs)
+//     0,0,               // center point (PIXELS) from 0,0 top left
+
+//     X_XXX___ //_XXXX___ 
+//     X_______ //XXXXXXX_ 
+//     X_XXX_X_ //X_XXX_X_ 
+//     X_______ //X_____X_ 
+//     X___X___ //X_____X_ 
+//     X_X_X_X_ //X_____X_ 
+//     X_X_X___ //X_____X_ 
+//     X_X_X___ //X_____X_ 
+//     XXXXX_X_ //X_____X_ 
+// };
+
+
+
+const unsigned char shipFuelTank[] = {
+
+    1, 24,
+    2, 12,
+
+_XXX____
+_XXX____
+________
+_XXX____
+_XXX____
+________
+___XX___
+XXXXX___
+________
+___XX___
+XXXXX___
+________
+____X___
+XXXXX___
+________
+________
+XXXXX___
+________
+________
+_XXX____
+________
+________
+_XXX____
+________
+
+
 };
 
 
@@ -178,76 +344,11 @@ const unsigned char rocketShipFlame[] = {
 };
 
 
-const unsigned char spriteOne[] = {
-    1, 27,
-    0,4,
-
-    ________
-    ____XXX_
-    ________
-    ________
-    XX_XXXXX
-    ________
-    ________
-    ___X___X
-    ________
-    ________
-    ___XXX_X
-    ________
-    ________
-    ___XX__X
-    ________
-    ________
-    ___XXX_X
-    ________
-    ________
-    ___X___X
-    ________
-    ________
-    ___XXXXX
-    ________
-    ________
-    ____XXX_
-    ________
-
-};
-
-
-const unsigned char rocketShipFlame2[] = {
-
-    1,                  // width in BYTES (=8 pix/byte) (MAX =4)
-    21,                 // height in SCANLINES (pref multiples of 3 -- TRIPIXs)
-    3,0,               // center point (PIXELS) from 0,0 top left
-
-    ________ //__XXX___ 
-    ________ //__XXX___ 
-    __XXX___ //__XXX___ 
-    ________ //__XXX___ 
-    ________ //__XXX___ 
-    __XXX___ //__XXX___ 
-    ________ //__XXX___ 
-    ________ //__XXX___ 
-    ___X____ //___X____ 
-    ________ //___X____ 
-    ________ //___X____ 
-    ___X____ //___X____ 
-    ________ //___X____ 
-    ________ //___X____ 
-    ___X____ //___X____ 
-    ________ //___X____ 
-    ________ //___X____ 
-    ___X____ //___X____ 
-    ________ //________ 
-    ________ //________ 
-    ________ //________ 
-};
 
 const unsigned char flagUSA[] = {
 
-    1,15,0,0,
+    1,12,0,0,
 
-    X_______
-    X_______
     _XX_____
     X_______
     X_______
@@ -260,29 +361,9 @@ const unsigned char flagUSA[] = {
     XXX_____
     ________
     ________
-    ________
 };
 
-const unsigned char flagUSSR[] = {
 
-    1,15,0,0,
-
-    ________
-    X_______
-    XXX_____
-    X_______
-    X_______
-    XXX_____
-    ________
-    ________
-    XXX_____
-    ________
-    ________
-    XXX_____
-    ________
-    ________
-    ________
-};
 
 
 void drawBitmap(const unsigned char *bmp, int x, int y, bool relativeToScreen) {
@@ -291,14 +372,31 @@ void drawBitmap(const unsigned char *bmp, int x, int y, bool relativeToScreen) {
     unsigned char pf[3][6];
     unsigned char masker[6];
 
-    int screenStart = relativeToScreen ? 0 : SCORE_SCANLINES;
+    int screenStart = SCORE_SCANLINES; //relativeToScreen ? 0 : SCORE_SCANLINES;
 
     for (int i = 0; i < 40; i++)
         pix[i] = 0;
 
+
+    //trivial off-screen checks
+
+    int pixL = (x - scrollX - (bmp[BMP_CENTER_X] << 14)) & 0xFFFFC000;
+    int pixR = pixL + (bmp[BMP_WIDTH] << (14 + 3));
+    if (pixR < 0 || pixL >= (40 << 14)) {
+        return;
+
+    }
+    int pixT = (y - (scrollY * 3)) - (bmp[BMP_CENTER_Y] << 16);
+    int pixB = pixT + (bmp[BMP_HEIGHT] << 16);
+    if (pixB < 0 || pixT >= (_ARENA_SCANLINES << 16)) {
+        return;
+    }
+
+
+
     for (int line = 0; line < bmp[BMP_HEIGHT]; line += 3) {
-        int scanline = y + line + screenStart - bmp[BMP_CENTER_Y];
-        if (scanline >= screenStart && scanline < _ARENA_SCANLINES - screenStart) {
+        int scanline = line + screenStart - bmp[BMP_CENTER_Y] + ((y - (scrollY * 3)) >> 16);
+        if (scanline >= screenStart && scanline < _ARENA_SCANLINES-2) {
 
             for (int ssl = 0; ssl < 3; ssl++) {
 
@@ -309,7 +407,7 @@ void drawBitmap(const unsigned char *bmp, int x, int y, bool relativeToScreen) {
                 
                 int bitRange = (bmp[BMP_WIDTH] << 3) - 1;
                 for (int bit = 0; bit <= bitRange; bit++) {
-                    int absBit = x - bmp[BMP_CENTER_X] + bit;
+                    int absBit = ((x - scrollX) >> 14) - bmp[BMP_CENTER_X] + bit;
                     if (absBit >= 0 && absBit < 40)
                         pix[absBit] = (bits >> (bitRange - bit)) & 1;
                 }
@@ -369,7 +467,7 @@ void drawBitmap(const unsigned char *bmp, int x, int y, bool relativeToScreen) {
             for (int ssl = 0; ssl < 3; ssl++)
                 for (int i = 0; i < 6; i++) {
                     unsigned char *screen = RAM + _BUF_PF0_LEFT + i * _ARENA_SCANLINES + scanline + ssl;
-                    *screen = *screen & masker[i] | pf[ssl][i];
+                    *screen = ((*screen) & masker[i]) | pf[ssl][i];
                 }
 
         }

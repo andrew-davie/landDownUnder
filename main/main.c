@@ -92,6 +92,8 @@ int spaceshipWait[SPACESHIPS];
 int spaceshipMode[SPACESHIPS];
 int spaceshipX[SPACESHIPS];
 int spaceshipTargetX[SPACESHIPS];
+int spaceshipVar[SPACESHIPS];
+unsigned const char *spaceShipShape[SPACESHIPS];
 
 int tuneIndex;
 int millingTime;                // negative = expired
@@ -124,17 +126,13 @@ unsigned char charDust3[CHAR_SIZE];
 unsigned char spaceToggle[40];
 unsigned char spaceToggleDisplayed[40];
 
-
 #endif
 
-//test
+
+bool thisFrame[2][40];
 
 
-//int fSpeed;
-//int rotateOffset;
-//int fIndex;
 
-//int attractCounter;
 
 void setAnimation(int animID);
 
@@ -232,6 +230,7 @@ bool exitMode;
 unsigned char ScorePtr[6];
 
 unsigned int frameCounter;
+unsigned int frameToggler;
 unsigned int gameSpeed;
 unsigned int toggler;
 
@@ -405,7 +404,7 @@ const int yInc[] = {
 
 // Function Prototypes
 
-unsigned char ColorConvert(unsigned char);
+unsigned char ColourConvert(unsigned char);
 void GameOverscan();
 void GameVerticalBlank();
 void InitGameBuffers();
@@ -442,6 +441,24 @@ void setFlash(int colour, int time) {
     ARENA_COLOR = colour;
     flashTime = time;
 }
+
+
+
+unsigned char ColourConvert(unsigned char color) {
+
+    if (mm_tv_type == PAL) {
+        return NTSCtoPAL[color>>4] +    // convert chroma value
+               (color & 0x0f);          // retain luma value
+    }
+
+    else if (mm_tv_type == SECAM) {
+        return color < 2 ? 0 : NTSCtoSECAM[color>>4];
+    }
+
+    else
+        return color;
+}
+
 
 
 enum SCHEDULE {
@@ -529,7 +546,7 @@ void setColours() {
     unsigned char colour[3];
 
     for (i = 0; i < 3; i++)
-        colour[i] = ColorConvert(caveList[cave].caveColour[0][i]);
+        colour[i] = ColourConvert(caveList[cave].caveColour[0][i]);
 
 /*    if (attractCounter > ATTRACT_TRIGGER) {
         unsigned char colbase = getRandom32();
@@ -545,7 +562,7 @@ void setColours() {
     i = 0;
     if (displayMode == DISPLAY_NORMAL)
         while (i < SCORE_SCANLINES) {
-            RAM[_BUF_COLUPF + i] = ColorConvert(scorecol);
+            RAM[_BUF_COLUPF + i] = ColourConvert(scorecol);
             RAM[_BUF_COLUBK + i] = bgCol;
             
             scorecol -= (i + (i>>1))>>4;
@@ -554,7 +571,7 @@ void setColours() {
 
     unsigned char cno = 0;
     while (i < _ARENA_SCANLINES) {
-        RAM[_BUF_COLUPF + i] = ColorConvert(colour[cno]);
+        RAM[_BUF_COLUPF + i] = ColourConvert(colour[cno]);
         RAM[_BUF_COLUBK + i] = bgCol;
         cno = cnoNext[cno];
         i++;
@@ -566,25 +583,36 @@ void setColours() {
 
 void InitGameX() {
 
+    for (int i = 0; i < 2; i++)
+        thisFrame[0][i] = thisFrame[1][i] = false;
+
     for (int sno = 0; sno < SPACESHIPS; sno++) {
-        spaceshipY[sno] = -(150+(getRandom32() & 0x20)<<16); //16 << 16;
+        spaceshipY[sno] = -((120 + (getRandom32() & 0x20)) <<16); //16 << 16;
         spaceshipAccel[sno] = 0;
         spaceshipWait[sno] = 0;
         spaceshipMode[sno] = 0;
+        spaceshipVar[sno] = 0;
+        spaceshipX[sno] = 5 << 14; //(((getRandom32() & 0xFF) >> 8) * 160) << 14;
+        spaceshipTargetX[sno] = 5 << 16;
 
-        spaceshipX[sno] = 10 << 16;
-        spaceshipTargetX[sno] = 10 << 16;
-    }
+        if (true || getRandom32() & 1)
+            spaceShipShape[sno] = &eroShip[0];
+        else
+            spaceShipShape[sno] = &rocketShip[0];
 
-    for (int i = 0; i < 40; i++) {
-        spaceToggle[i] = 99;
-        spaceToggleDisplayed[i] = 99;
+
     }
 
     drillHeight = 1;
 
 
+
 #if ENABLE_PARALLAX
+
+    for (int i = 0; i < 40; i++) {
+        spaceToggle[i] = 99;
+        spaceToggleDisplayed[i] = 99;
+    }
 
     // setup RAM chars to contain correct overview-mode char defs
     for (int i = 0; i < CHAR_SIZE; i++) {
@@ -716,7 +744,7 @@ extern int rinc;
         AnimIdx[i].count = 0;
     }
 
-    AnimIdx[TYPE_BOULDER_SHAKE].count = -1;
+//    AnimIdx[TYPE_BOULDER_SHAKE].count = -1;
 
 
 
@@ -839,7 +867,7 @@ void Scheduler() {
                 int rnd = getRandom32();
                 int idx = _BOARD + (((rnd & 0xFFFF) * 880) >> 16);
                 if (RAM[idx] == CH_DIRT)
-                    RAM[idx] = CH_DIRT2 + (rnd & 1);
+                    RAM[idx] = CH_RUBBLE + (rnd & 1);
             }
 
             if (lava) {
@@ -909,6 +937,7 @@ void InitGameDatastreams() {
 
 void GameOverscan() {
 
+    Scroll();
     parallax = (caveFlags & DEF_PARALLAX) && (~SWCHB & 0b10000000);
 
 
@@ -948,8 +977,9 @@ void GameOverscan() {
 
         if (lava > 1) {
             lava--;
+#if ENABLE_SHAKE
             shakeTime += 20;
-
+#endif
         }
 
         if (water > 1)
@@ -1040,8 +1070,8 @@ void GameOverscan() {
     else {
 
         if (triggerPressCounter && triggerPressCounter < DEAD_RESTART) {
-            displayMode ^= (DISPLAY_NORMAL ^ DISPLAY_OVERVIEW);
-            AddAudio(SFX_BLIP);
+//            displayMode ^= (DISPLAY_NORMAL ^ DISPLAY_OVERVIEW);
+//            AddAudio(SFX_BLIP);
         }
 
         triggerPressCounter = 0;
@@ -1645,6 +1675,7 @@ void drawScore() {
 void GameVerticalBlank() {
  
     frameCounter++;
+    frameToggler++;
 
     if (time && /*!uncoverCount &&*/ !rockfordDead) {
 
@@ -1667,57 +1698,6 @@ void GameVerticalBlank() {
 //        drawBitmap(&rocketShip[0], 30, lava-(scrollY>>16), false);
 
 
-        for (int sno = 0; sno < SPACESHIPS; sno++) {    
-
-                drawBitmap(&rocketShip[0], spaceshipX[sno] >> 16, 105 + (spaceshipY[sno] >> 16) * 3, false);
-                if (!(spaceshipMode[sno] == 1 && spaceshipWait[sno]) && !(getRandom32() & 3))
-                    drawBitmap(&rocketShipFlame[0], spaceshipX[sno] >> 16, 105 + (spaceshipY[sno] >> 16) * 3 - 3, false);
-
-            if (spaceshipMode[sno] == 0) {
-
-            if (!spaceshipWait[sno]) {
-                if (spaceshipX[sno] < spaceshipTargetX[sno])
-                    spaceshipX[sno] += 0x03000+sno*0x300;
-                if (spaceshipX[sno] > spaceshipTargetX[sno])
-                    spaceshipX[sno] -= 0x03000+sno*0x300;
-            }
-
-
-                spaceshipAccel[sno] += 900 + 10*sno;
-                if (spaceshipY[sno] >= 0xF8000) {
-                    spaceshipAccel[sno] = 0;
-                    spaceshipY[sno] = 16 << 16;
-                    spaceshipWait[sno] = 100 + (getRandom32() & 0x20);
-                    spaceshipMode[sno]++;
-                        spaceshipTargetX[sno] = (((getRandom32() & 0xFF) * 40) >> 8) << 16;
-                        shakeTime += 100;
-                }
-                else
-                {
-                    shakeTime += 120;
-                }
-                
-            }
-
-            if (spaceshipMode[sno] == 1) {
-
-                if (spaceshipWait[sno])
-                    spaceshipWait[sno]--;
-
-                else {
-                    shakeTime += 120;
-                    spaceshipAccel[sno] -= 750 + 10*sno;
-
-
-                    if (spaceshipY[sno] < (1 << 16)) {
-                        spaceshipMode[sno] = 0;
-                    }
-
-                }
-            }
-
-            spaceshipY[sno] += spaceshipAccel[sno];
-        }
 //        GameScheduleAnimate();
 #if ENABLE_OVERLAY
         GameScheduleDrawOverlay();
@@ -1727,7 +1707,6 @@ void GameVerticalBlank() {
 extern void     looneyTuneFade();
 
         looneyTuneFade();
-
     }
 }
 
@@ -1779,12 +1758,12 @@ void setPalette(int start, int size, int step, int tweak) {
             //if (!flashTime) {
                 RAM[_BUF_COLUBK + i ] = 
                 RAM[_BUF_COLUBK + i + 1 ] =
-                RAM[_BUF_COLUBK + i + 2] = lavaCol;
+                RAM[_BUF_COLUBK + i + 2] = ColourConvert(lavaCol);
             //}
 
-            RAM[_BUF_COLUPF + i] = 0x48;
-            RAM[_BUF_COLUPF + i + 1 ] = 0x28;
-            RAM[_BUF_COLUPF + i + 2 ] = 0x3c;
+            RAM[_BUF_COLUPF + i] = ColourConvert(0x48);
+            RAM[_BUF_COLUPF + i + 1 ] = ColourConvert(0x28);
+            RAM[_BUF_COLUPF + i + 2 ] = ColourConvert(0x3c);
 
         }
         
@@ -1799,19 +1778,19 @@ void setPalette(int start, int size, int step, int tweak) {
 
             //if (!flashTime) {
 
-                RAM[_BUF_COLUBK + i ] = waterCol;
-                RAM[_BUF_COLUBK + i + 1 ] = waterCol;
-                RAM[_BUF_COLUBK + i + 2 ] = waterCol;
+                RAM[_BUF_COLUBK + i ] = ColourConvert(waterCol);
+                RAM[_BUF_COLUBK + i + 1 ] = ColourConvert(waterCol);
+                RAM[_BUF_COLUBK + i + 2 ] = ColourConvert(waterCol);
 
             //}
 
-            RAM[_BUF_COLUPF + i ] = 0xA4;
-            RAM[_BUF_COLUPF + i + 1] = 0x84;     // boulder body
-            RAM[_BUF_COLUPF + i + 2] = 0x94;     // flow + inside stream colour
+            RAM[_BUF_COLUPF + i ] = ColourConvert(0xA4);
+            RAM[_BUF_COLUPF + i + 1] = ColourConvert(0x84);     // boulder body
+            RAM[_BUF_COLUPF + i + 2] = ColourConvert(0x94);     // flow + inside stream colour
 
         }
         else {
-            RAM[_BUF_COLUPF + i] = bgPalette[pfCharLine];
+            RAM[_BUF_COLUPF + i] = ColourConvert(bgPalette[pfCharLine]);
         }
         
             
@@ -1970,6 +1949,122 @@ void setDisplayPalette() {
 */
 }
 
+void drawSoftwareSprites() {
+
+
+
+    for (int sno = 0; sno < SPACESHIPS; sno++) {    
+
+//        if (spaceshipVar[sno] > 0)
+//            spaceshipVar[sno]--;
+
+
+        int animBalls = spaceshipWait[sno] ? 4 : 1;
+        animBalls = (frameToggler >> animBalls);
+
+            drawBitmap(&shipFuelTank[0],
+                (spaceshipX[sno] + (3<<14)) & 0xFFFFC000,
+                    
+//                    ((spaceshipVar[sno] << 16) & 0xFFFF0000) * 3
+                    + (90 << 16)
+                    - ((  ((animBalls + 2) & 3) * 3) << 16)
+                    + (spaceshipY[sno] & 0xFFFF0000) * 3, 
+
+                true);
+            
+            drawBitmap(spaceShipShape[sno],
+                (spaceshipX[sno] & 0xFFFFC000),
+                (((35 << 16) + spaceshipY[sno]) & 0xFFFF0000)  * 3,
+                true);
+            
+            drawBitmap(&flagUSA[0],
+                (spaceshipX[sno] & 0xFFFFC000),
+                (((20 << 16) + spaceshipY[sno]) & 0xFFFF0000) * 3,
+                true);
+
+            drawBitmap(&shipFuelTank[0],
+                ((spaceshipX[sno] & 0xFFFFC000) - (4<<14)) & 0xFFFFC000,
+                //(spaceshipVar[sno] << 16) * 3 +
+                 + (90 << 16)
+                 - (((animBalls & 3) * 3) << 16)
+                 + (spaceshipY[sno] & 0xFFFF0000) * 3,
+                 true);
+
+
+            if (!(spaceshipMode[sno] == 1 && spaceshipWait[sno]) && (getRandom32() & 3))
+                drawBitmap(&rocketShipFlame[0],
+                    (spaceshipX[sno] & 0xFFFFC000),
+                    (((35 << 16) + spaceshipY[sno]) & 0xFFFF0000) * 3,
+                    true);
+
+
+        if (spaceshipMode[sno] == 0) {
+
+        if (!spaceshipWait[sno]) {
+
+            if (spaceshipVar[sno] <20)
+                spaceshipVar[sno] +=2;
+
+
+            if (spaceshipX[sno] < spaceshipTargetX[sno])
+                spaceshipX[sno] += 0x01000;
+            if (spaceshipX[sno] > spaceshipTargetX[sno])
+                spaceshipX[sno] -= 0x01000;
+        }
+
+
+            spaceshipAccel[sno] += 0x400;
+
+            if (spaceshipY[sno] >= (24<<16) * 3 - 0x8000) {
+                spaceshipAccel[sno] = 0;
+                spaceshipY[sno] = (24 << 16) * 3; // + (getRandom32() & 0x0F0000);
+                spaceshipWait[sno] = 10 + (getRandom32() & 0x1F) * 10;
+                spaceshipMode[sno]++;
+                    spaceshipTargetX[sno] = ((((getRandom32() & 0xFF) * 160) >> 8)) << 14;
+#if ENABLE_SHAKE
+//                    shakeTime += 10;
+#endif
+            }
+#if ENABLE_SHAKE
+            else
+
+            {
+//                shakeTime += 10;
+            }
+#endif                
+        }
+
+        if (spaceshipMode[sno] == 1) {
+
+            if (spaceshipWait[sno])
+                // spaceshipY[sno] -= 0x100;
+                spaceshipWait[sno]--;
+               else {
+#if ENABLE_SHAKE
+                    // shakeTime += 120;
+#endif
+                    spaceshipAccel[sno] -= 0x200;
+
+
+                    if (spaceshipY[sno] < (10 << 16)*3) {
+                        spaceshipMode[sno] = 0;
+                    }
+
+               }
+        }
+
+        spaceshipY[sno] += spaceshipAccel[sno];
+
+
+
+    }
+
+
+
+
+}
+
+
 
 
 void GameScheduleDrawSprites() {
@@ -2022,6 +2117,9 @@ void GameScheduleDrawSprites() {
         setDisplayPalette();
         drawScore();
         drawScreen();
+        drawSoftwareSprites();
+
+
 
         doPlayer();
 
@@ -2131,12 +2229,12 @@ void SetupBoard() {
         lastAmoebaGrew = amoebaGrew;
         amoebaGrew = 0;
 
-
+#if ENABLE_PARALLAX
         for (int i = 0; i < 40; i++) {
             spaceToggleDisplayed[i] = spaceToggle[i];
             spaceToggle[i] = 99;
         }
-
+#endif
 
         gameSchedule = SCHEDULE_PROCESSBOARD;
 
@@ -2232,7 +2330,7 @@ void Explode(unsigned char *where, unsigned char explosionShape) {
 
 
 #if ENABLE_SHAKE
-    shakeTime += 30;
+    shakeTime += 130;
 #endif
 
 //    KillAudio(SFX_SHAKE);
@@ -2533,10 +2631,12 @@ void doRoll(unsigned char *this, unsigned int creature) {
     unsigned char c = creature == CH_DOGE ? CH_DOGE : CH_ROCK0;
 
 
+#if ENABLE_SHAKE
     if (Attribute[_DOWN] & ATT_ROLL
         || (shakeTime && (getRandom32() & 0xFF) < 10)) {
-
-
+#else
+    if (Attribute[_DOWN] & ATT_ROLL) {
+#endif
 
         if (boardCol > 0 && (Attribute[CharToType[(*LEFTWARDS)&(0x7F|0x80)]] & ATT_ROCKFORDYBLANK)) {
 
@@ -2552,8 +2652,9 @@ void doRoll(unsigned char *this, unsigned int creature) {
             else if (Attribute[typeL] & Attribute[typeLL] & ATT_BLANK) {
 //                KillAudio(SFX_SHAKE);
                 AddAudio(SFX_PUSH);    
-                *LEFTWARDS = (c + 2) ; // | FLAG_THISFRAME;
+                *LEFTWARDS = CH_BOULDER_FALLING; // | FLAG_THISFRAME;
                 *this = CH_BLANK ; // | FLAG_THISFRAME;
+                thisFrame[1][boardCol-1] = true;
                 return;
             }
         }
@@ -2576,8 +2677,10 @@ void doRoll(unsigned char *this, unsigned int creature) {
 //                KillAudio(SFX_SHAKE);
                 AddAudio(SFX_PUSH);    
 
-                *RIGHTWARDS = (c + 2) ; // | FLAG_THISFRAME;
+                *RIGHTWARDS = CH_BOULDER_FALLING; // | FLAG_THISFRAME;
                 *this = CH_BLANK ; // | FLAG_THISFRAME;
+                thisFrame[0][boardCol+1] = true;
+
                 return;
             }
         }
@@ -2605,13 +2708,15 @@ void GameScheduleProcessBoardRow() {
         if (boardCol > 39) {
             boardCol = 0;
             boardRow++;
+
+
+            for (int i = 0; i < 40; i++) {
+                thisFrame[0][i] = thisFrame[1][i];
+                thisFrame[1][i] = false;
+            }
+
+
             if (boardRow > 21) {
-
-
-                // // clear the 'thisframe' flag on the very last row
-                // for (int i=0; i < 40; i++)
-                //     RAM[_BOARD + 21 * 40 + i] &= ~FLAG_THISFRAME;
-
 
                 gameSchedule = SCHEDULE_START;
 
@@ -2660,12 +2765,18 @@ void GameScheduleProcessBoardRow() {
         }
 
 
+        if (thisFrame[0][boardCol])
+            break;
+
 
         unsigned char *this = &RAM[_BOARD + (boardRow * 40) + boardCol];
 
         if (CharToType[*this] == TYPE_DIRT) {
+
+#if ENABLE_PARALLAX
             if (spaceToggle[boardCol] > boardRow)
                 spaceToggle[boardCol] = boardRow;
+#endif
             roundDirtCorner(this);
         }
         
@@ -2687,6 +2798,7 @@ void GameScheduleProcessBoardRow() {
 
         if (water && boardRow * 21 + 6  > water && boardRow > 2 && boardRow < 21 && (Attribute[CharToType[creature& (0x7F|0x80)]] & ATT_WATER)) {
             *this = (CH_WATER + (getRandom32() & 3)) ; // | FLAG_THISFRAME;
+            thisFrame[1][boardCol] = true;
         }
 
         unsigned char cType = CharToType[creature & (0x7F|0x80)];
@@ -2708,8 +2820,10 @@ void GameScheduleProcessBoardRow() {
 //                shakeTime += 100;
             }
 
-            else if (Attribute[cType] & ATT_LAVA)
+            else if (Attribute[cType] & ATT_LAVA) {
                 *this = CH_LAVA ; // | FLAG_THISFRAME;
+//                thisFrame[1][boardCol] = true;
+            }
 
 /*            else if ((Attribute[cType] & ATT_LAVA)
                 || ((getRandom32() & 0x1FF) < 3
@@ -2752,6 +2866,7 @@ void GameScheduleProcessBoardRow() {
             {
 
                 *(this + 40) = CH_DRIP; // ; // | FLAG_THISFRAME;
+                thisFrame[1][boardCol] = true;
 
                 AnimIdx[TYPE_DRIP].index = -2;
                 AnimIdx[TYPE_DRIP].count = 0;
@@ -2774,44 +2889,59 @@ void GameScheduleProcessBoardRow() {
                 case TYPE_EGG: {
 
 
+                        if (!(frameToggler & 7))
+                            break;
 
-                    if (CharToType[*(this + 40)] == TYPE_SPACE) {
-                        *this = CH_BLANK;
-                        *(this + 40) = CH_EGG;
-                        break;
-                    }
-
-                    if (CharToType[*(this+1)] == TYPE_SPACE || CharToType[*(this-1)] == TYPE_SPACE) {
                         if ((getRandom32() & 0xFF) < 10) {
-                            unsigned char *side = this + (((getRandom32() & 0xFF) * 2) >> 8) - 1;
-                            if (CharToType[*side] == TYPE_SPACE)
-                                *side = CH_EGG;
-                            break;                        
+                            *this = CH_EXPLODETOBLANK3;
+                            break;
                         }
-                    }
+
+                        int dirtNeighbours = 0;
+                        for (int i = 0; i < 8; i++)
+                            if (CharToType[*(this + dir[i])] == TYPE_DIRT)
+                                dirtNeighbours++;
+
+                        if (!dirtNeighbours) {
+                            *this = CH_EXPLODETOBLANK3;
+                            break;
+                        }
+
+                        int crowded = 0;
+                        for (int i = 0; i < 8; i++)
+                            if (CharToType[*(this + dir[i])] == TYPE_EGG)
+                                crowded++;
+
+                        if (crowded > 2) {
+                            *this = CH_EXPLODETOBLANK3;
+                            break;
+                        }
 
 
+                        // for (int i = 0; i < 8; i++) {
+                        //     if (CharToType[*(this + dir[i])] == TYPE_ROCK)
+                        //         *(this + dir[i]) = CH_DOGE;
+                        // }
 
 
+                        if ((getRandom32() & 0xFF) < 200) {
 
+                            int moveTo = getRandom32() & 3;
+                            if (CharToType[*(this + dir[moveTo])] == TYPE_DIRT) {
+                                *(this + dir[moveTo]) = CH_EGG;
 
-                    for (int i = 2; i < 8; i++) {
-
-                        int rnd = getRandom32();
-                        unsigned char *where = this + dir[i];
-
-                        if ((CharToType[*where] == TYPE_SPACE) //(Attribute[CharToType[*where]] & ATT_PERMEABLE) 
-                            && boardRow > spaceToggleDisplayed[boardCol]) {
-                            if ((rnd & 0x3FF) < 20) {
-                                *where = CH_EGG ; // | FLAG_THISFRAME;
+                                switch (moveTo) {
+                                    case 1:
+                                        thisFrame[0][boardCol+1] = true;
+                                        break;
+                                    case 3:
+                                        thisFrame[1][boardCol] = true;
+                                        break;
+                                }
                                 break;
                             }
                         }
                     }
-
-
-
-                }
                 break;
 
 
@@ -2904,9 +3034,9 @@ void GameScheduleProcessBoardRow() {
                 break;
 
 
-                case TYPE_ROCK: {
+                case TYPE_ROCK:
+                    if (!thisFrame[0][boardCol])
                         fixRock(this);
-                    }
                     break;
 
 
@@ -2960,7 +3090,7 @@ void GameScheduleProcessBoardRow() {
                         if (drillDir) {
 
                             for (int i = 1; i <= drillHeight; i++) {
-                                *(this + i * 40) = CH_BLANK;
+                                *(this + i * 40) = CH_BLANK_ALTERNATE_3;
                             }
 
                             int newDrillHeight = drillHeight + drillDir;
@@ -2974,7 +3104,7 @@ void GameScheduleProcessBoardRow() {
                             if (Attribute[CharToType[*dest]] & ATT_EXPLODES) {
 
                                 if ((getRandom32() & 0xFF) < 75) {
-                                    addScore(12348);
+                                    addScore(1234);
                                     Explode(dest, CH_EXPLODETODOGE0);
                                     drillHeight = newDrillHeight;
                                 }
@@ -2987,7 +3117,9 @@ void GameScheduleProcessBoardRow() {
                             }
 
                             else {
+#if ENABLE_SHAKE
                                 shakeTime = 0;
+#endif
                                 drillHeight = newDrillHeight;
 
                             }
@@ -3070,6 +3202,16 @@ void GameScheduleProcessBoardRow() {
 
                     break;
 
+
+
+                case CH_BOULDER_SHAKE:
+
+                    if ((getRandom32() & 0xFF) < 50) {
+                        *this = CH_BOULDER_FALLING;
+                    }
+                    break;
+
+
                 // DogeCoin explosions
                 // Cycle through explosion frames (0-3) and then become a diamond
 
@@ -3090,9 +3232,10 @@ void GameScheduleProcessBoardRow() {
 
                 case CH_EXPLODETODOGE4:
                     *this = CH_DOGE;
+                    break;
 
-                    __attribute__  ((fallthrough));
-
+//                    __attribute__  ((fallthrough));
+/*
                 case CH_DOGE:
                 case CH_DOGE_PULSE_0:
                 case CH_DOGE_PULSE_1:
@@ -3104,8 +3247,7 @@ void GameScheduleProcessBoardRow() {
                 case CH_DOGE_PULSE_7:
                 case CH_DOGE_PULSE_8:
                 case CH_DOGE_PULSE_9:
-
-                case CH_ROCK0:
+*/
                 case CH_ROCK1:
                 case CH_ROCK2:
                 case CH_ROCK3:
@@ -3122,30 +3264,47 @@ void GameScheduleProcessBoardRow() {
                 case CH_ROCKE:
                 case CH_ROCKF:
 
-                case CH_BOULDER_SHAKE:
-//                case CH_BOULDER: 
+                    if ((getRandom32() & 0x7FF) > 10)
+                        break;
+
+                    __attribute__  ((fallthrough));
+
+                case CH_ROCK0:
+
                 {
-                    
 
                     block += 1;
-                    unsigned char _DOWN = CharToType[(*next)&(0x7F|0x80)];
+                    unsigned char _DOWN = CharToType[*next];
 
 
-                    if (_DOWN == TYPE_ROCKFORD && CharToType[creature] == TYPE_ROCK)
+                    if (_DOWN == TYPE_ROCKFORD && CharToType[creature] == TYPE_ROCK) {
                         *this = CH_BOULDER_SHAKE;
+                        break;
+                    }
 
 
-                    else if (Attribute[_DOWN] & (ATT_SEMIBLANK | ATT_BLANK)) {
+                    else if (CharToType[creature] == TYPE_ROCK
+                        && Attribute[_DOWN] & (ATT_SEMIBLANK | ATT_BLANK)) {
 
-                        if (creature == CH_BOULDER_SHAKE) {
-                            creature = CH_ROCK0; //CH_BOULDER;
-                            AnimIdx[TYPE_BOULDER_SHAKE].count = -1; // turn off
+                        if (CharToType[*(this-1)] == TYPE_ROCK 
+                            || CharToType[*(this+1)] == TYPE_ROCK
+                            || CharToType[*(this-40)] == TYPE_ROCK) {
+                            // attached!
+                            *this = CH_BOULDER_SHAKE;
+                            break;
                         }
+
+
+
+                        // if (creature == CH_BOULDER_SHAKE) {
+                        //     creature = CH_ROCK0; //CH_BOULDER;
+                        //     AnimIdx[TYPE_BOULDER_SHAKE].count = -1; // turn off
+                        // }
 
                         *this = CH_BLANK ; // | FLAG_THISFRAME;
                         
                         if (CharToType[creature] == TYPE_DOGE)
-                            *next = CH_DOGE + 2;
+                            *next = CH_DOGE;
 
                         else
                         {
@@ -3189,6 +3348,9 @@ void GameScheduleProcessBoardRow() {
                         
                         *this = blanker ; // | FLAG_THISFRAME;
                         *next = creature ; // | FLAG_THISFRAME; // falling scanned this frame
+
+                        thisFrame[1][boardCol] = true;
+
 
 
                         _DOWN = CharToType[(*(next+40))];
@@ -3393,13 +3555,8 @@ const char AnimFlashOut[] = {
 
 
 const char AnimBoulderShake[] = {
-//    254, SFX_SHAKE,
-    CH_BOULDER_SHAKE,10,
-    // CH_BOULDER,3,
-    // CH_BOULDER_SHAKE,3,
-    // CH_BOULDER,3,
-    // CH_BOULDER_SHAKE,3,
-    // CH_BOULDER,40,
+    CH_BOULDER_SHAKE,3,
+    CH_ROCK0,3,
     255
 };
 
@@ -3468,9 +3625,9 @@ const char AnimRockford[] = {
 
 const char AnimDrip[] = {
     CH_DRIP, 3,
-    CH_BLANK, 3,
+    CH_BLANK_ALTERNATE_3, 3,
     CH_DRIP, 3,
-    CH_BLANK, 3,
+    CH_BLANK_ALTERNATE_3, 3,
     CH_DRIP, 22,
 
     CH_DRIP1, 6,
@@ -3486,15 +3643,34 @@ const char AnimDrip[] = {
 
 const char AnimDripSplash[] = {
     CH_DRIPX, 4,
-    CH_BLANK, 2,
+    CH_BLANK_ALTERNATE_3, 2,
     CH_DRIPX, 1,
-    CH_BLANK, 255,
+    CH_BLANK_ALTERNATE_3, 255,
 };
 
 
 const char AnimBlank[] = {
     CH_BLANK, 255,
 };
+
+const char AnimBelt[] = {
+
+    CH_BELT, 5,
+    CH_BELT1, 5,
+    CH_BELT2, 5,
+    CH_BELT3, 5,
+    255,
+};
+
+const char AnimBelt2[] = {
+
+    CH_BELT3, 9,
+    CH_BELT2, 9,
+    CH_BELT1, 9,
+    CH_BELT, 9,
+    255,
+};
+
 
 
 const char (*Animate[TYPE_MAX])[] = {
@@ -3556,6 +3732,8 @@ const char (*Animate[TYPE_MAX])[] = {
     0,                          // 51 ROCK            
     &AnimDrill,                 // 52 DRILL
     0,                          // 53 DRILLBODY           
+    &AnimBelt,                  // 54 BELT
+    &AnimBelt2,                 // 55 BELT2
 };
 
 
@@ -3630,21 +3808,5 @@ void setAnimation(int animID) {
 }
 
 
-
-
-unsigned char ColorConvert(unsigned char color) {
-
-    if (mm_tv_type == PAL) {
-        return NTSCtoPAL[color>>4] +    // convert chroma value
-               (color & 0x0f);          // retain luma value
-    }
-
-    else if (mm_tv_type == SECAM) {
-        return color < 2 ? 0 : NTSCtoSECAM[color>>4];
-    }
-
-    else
-        return color;
-}
 
 // EOF
