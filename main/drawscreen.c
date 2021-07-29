@@ -19,7 +19,7 @@ extern int scrollYSpeed;
 extern int targetScrollSpeed;
 extern int targetYScrollSpeed;
 
-int accel = 1536, accelY = 200*256;
+int accel = 1536, accelY = 160*256;
 int decel = 200, decelY =200*16;
 
 
@@ -33,16 +33,17 @@ extern int getRandom32();
 
 #define SCROLLSPEED_MAXIMUM_X (30 << 8)
 #define SCROLL_MAXIMUM_X (30 << 16)
-#define SCROLL_MAXIMUM_Y (200 << 8)
+#define SCROLL_MAXIMUM_Y (160 << 8)
 #define SCROLL_MINIMUM 0
 
-#define SCROLLEDGER 8
+#define SCROLLEDGER 6
 #define SCROLLEDGERY 11
 
 
 void Scroll() {
 
     int rocky = rockfordX * PIXELS_PER_CHAR + (PIXELS_PER_CHAR >> 1);
+    doge = rocky;
     int halfway = (scrollX >> 14) + HALFWAYX;
 
     if ((halfway - SCROLLEDGER)- rocky > 0)
@@ -301,7 +302,7 @@ void looneyTuneFade() {
             bit[i] = 0;
 
         radius += (rinc >> 4);
-        rinc = (((rinc << 4) + (rinc << 1)) >> 4) + 1;
+        rinc += 75; // = (((rinc << 4) + (rinc << 1)) >> 4) + 1;
 
         circle(centerX-1, centerX, (radius>>5) * (radius>>5));
     }
@@ -340,36 +341,35 @@ void drawScreen(){
     extern unsigned char charDust2[];
     extern unsigned char charDust3[];
 
-    unsigned char dirtBG[] = {
-    
-        0b00000000,
-        0b00000000,
-        0b00000000,
-        0b00000000,
-        0b00000000,
-        0b00010001,
-        0b00000000,
-        0b00000000,
-        0b00100010,
-        0b00000000,
-        0b00000000,
-        0b00000000,
-        0b00000000,
-        0b00000000,
-        0b10001000,
-        0b00000000,
-        0b00000000,
-        0b00000000,
-        0b00000000,
-        0b00000000,
-        0b01000100,
+    const unsigned char dirtBG[] = {
+
+        0b00000000, // 00 <
+        0b00000000, // 01  
+        0b00000000, // 02  
+        0b00000000, // 03 <
+        0b00000000, // 04  
+        0b00010001, // 05  
+        0b00000000, // 06 <
+        0b00000000, // 07  
+        0b00100010, // 08  
+        0b00000000, // 09 <
+        0b00000000, // 10  
+        0b00000000, // 11  
+        0b00000000, // 12 <
+        0b00000000, // 13  
+        0b10001000, // 14  
+        0b00000000, // 15 <
+        0b00000000, // 16  
+        0b00000000, // 17  
+        0b00000000, // 18 <
+        0b00000000, // 19  
+        0b01000100, // 20  
     };
 
     extern int parallax;
 
-    for (int i = 0; i < PIECE_DEPTH + 9 + 9; i++) {     /// todo on char format switch!
+    for (int i = 0; i < PIECE_DEPTH; i++)
         parallaxBlank[i] = 0;
-    }
 
 
     if (parallax) {
@@ -384,12 +384,6 @@ void drawScreen(){
         int offset = ((scrollX /* + bgDriftX*/) >> 15) & 3;
 #endif
 
-    //tmp...
-        yOffset = ((scrollY/* + bgDriftY*/) >> 17) * 3;                 // 1/2 for parallax
-        offset = ((scrollX /* + bgDriftX*/) >> 15) & 3;
-
-
-
         while (yOffset >= PIECE_DEPTH)
             yOffset -= PIECE_DEPTH;
         yOffset = PIECE_DEPTH - yOffset + 1;
@@ -398,8 +392,41 @@ void drawScreen(){
             int cidx = yOffset + i;
             while (cidx >= PIECE_DEPTH)
                 cidx -= PIECE_DEPTH;
-            parallaxBlank[i] = (dirtBG[cidx] >> offset) & 0b1111; //getRandom32(); //0
+            parallaxBlank[i] = (dirtBG[cidx] >> offset) & 0b1111;
         }
+
+        parallaxBlank[1] |= 0xC0;
+        parallaxBlank[7] |= 0x80;
+        parallaxBlank[4] |= 0x40;
+
+
+#if ENABLE_EXTRA_SHIMMER
+// not implemented: overview part
+#define DOTS 5
+        
+        static int shift[DOTS], ppos[DOTS];
+
+        if ((frameToggler & 1) == 0) {
+
+
+
+            for (int i = 0; i < DOTS; i++) {
+                ppos[i] = (((getRandom32() & 0xFF) * PIECE_DEPTH) >> 8);
+                shift[i] = getRandom32() & 3;
+            }
+        }
+
+        for (int i = 0; i < DOTS; i++) {
+            unsigned char colr = 0b0001 << shift[i];
+            unsigned char npos = ppos[i];
+            for (int j = 0; j < 3; j++) {
+                parallaxBlank[npos++] |= colr;
+                if (npos >= PIECE_DEPTH)
+                    npos -= PIECE_DEPTH;
+            }
+        }
+#endif
+
     }
 
 
@@ -509,27 +536,28 @@ extern const unsigned char DUST3[];
                     unsigned char type = CharToType[piece];
 
                     switch (type) {
-                    case TYPE_SPACE:
-                        // if (sparkleTimer) {
-                        //     if (rnd < 8)
-                        //         rnd = getRandom32();
-                        //     piece = ( 7 & (rnd >>= 3)) + CH_BLANK_EXTRA1;
-                        // }
-                        // else {
+//                     case TYPE_BLANK:
 
-                            if (Animate[type]
-#if ENABLE_PARALLAX
-                             && spaceToggleDisplayed[xOffset + ch] > row
-#endif
-                            )
-                                piece = (*Animate[type])[AnimIdx[type].index];
-                            else
-                            {
-                                piece = CH_DOOROPEN_1;      // anything blank but NOT CH_BLANK!
-                            }
-                            // 
-//                        }
-                        break;
+//                         // if (sparkleTimer) {
+//                         //     if (rnd < 8)
+//                         //         rnd = getRandom32();
+//                         //     piece = ( 7 & (rnd >>= 3)) + CH_BLANK_EXTRA1;
+//                         // }
+//                         // else {
+
+//                             if (Animate[type]
+// #if ENABLE_PARALLAX
+//                              && spaceToggleDisplayed[xOffset + ch] > row
+// #endif
+//                             )
+//                                 piece = (*Animate[type])[AnimIdx[type].index];
+//                             else
+//                             {
+//                                 piece = CH_BLANK;
+//                             }
+//                             // 
+// //                        }
+//                         break;
                     case TYPE_AMOEBA:
                         if (rnd < 256)
                             rnd = getRandom32();
@@ -594,7 +622,6 @@ extern const unsigned char DUST3[];
 }
 
 
-
 void drawOverviewScreen() {
 
     static const unsigned char partStart[] = { 0, 11, 22 };
@@ -615,54 +642,51 @@ void drawOverviewScreen() {
     for (int row = partStart[part]; row < partStart[part+1]; row++) {
         for (int i=0; i< 40; i++) {
 
-            unsigned char p2;
-            
-            // if (uncoverCount && RAM[_UNCOVER + row * 5 + (i >> 3)] & (1 << (7- (i & 7))))
-            //     p2 = CH_UNCOVER0;
+            unsigned char p2 = *p;
 
-            // else {
+            unsigned char type = CharToType[p2];
 
-                p2 = *p;
+            switch (type) {
+//             case TYPE_BLANK:
+//                 if (Animate[type]
+// #if ENABLE_PARALLAX
+//                     && spaceToggleDisplayed[i] > row
+// #endif
+//                 )
+//                     p2 = CH_BLANK;
+//                 else
+//                     p2 = CH_BLANK; //CH_DOOROPEN_1;      // anything blank but NOT CH_BLANK!
+//                 break;
 
-                unsigned char type = CharToType[p2];
+            case TYPE_AMOEBA: {
+                    unsigned int rnd = getRandom32();
+                    if ((rnd & 0xFF) > (255-BUBBLE_SPEED))
+                        p2 = *p = (rnd & 3) + CH_AMOEBA0;
+                }
+                break;
 
-                switch (type) {
-                case TYPE_SPACE:
-                    if (sparkleTimer)
-                        p2 = (getRandom32() & 7) + CH_BLANK_EXTRA1;
-                    break;
+            case TYPE_LAVA: {
+                    unsigned int rnd = getRandom32();
+                    if ((rnd & 0xFF) > (255-LAVA_SPEED))
+                        p2 = *p = (rnd & 3) + CH_LAVA;
+                }
+                break;
 
-                case TYPE_AMOEBA: {
-                        unsigned int rnd = getRandom32();
-                        if ((rnd & 0xFF) > (255-BUBBLE_SPEED))
-                            p2 = *p = (rnd & 3) + CH_AMOEBA0;
-                    }
-                    break;
-
-                case TYPE_LAVA: {
-                        unsigned int rnd = getRandom32();
-                        if ((rnd & 0xFF) > (255-LAVA_SPEED))
-                            p2 = *p = (rnd & 3) + CH_LAVA;
-                    }
-                    break;
-
-                case TYPE_WATER: {
+            case TYPE_WATER: {
 //                    unsigned int rnd = getRandom32();
 //                    if (((rnd >>= 8) & 0xFF) > 252) //5 - WATER_SPEED)
 //                        p2 = *p = (rnd & 3) + CH_WATER;
-                }
-                    break;
+            }
+                break;
 
-                default:
+            default:
 
-                    if (Animate[type])
-                        p2 = (*Animate[type])[AnimIdx[type].index];
-                    break;
-                }
-            // }
+                if (Animate[type])
+                    p2 = (*Animate[type])[AnimIdx[type].index];
+                break;
+            }
 
             img[i] = *charSet[p2];
-
             p++;
         }
 
@@ -671,10 +695,10 @@ void drawOverviewScreen() {
 
         for (int iccLine=0; iccLine < 9; iccLine++) {
 
-            *ppf = (((*img[0]++ >> 7) & 1) << 4)
-                | (((*img[1]++ >> 6) & 1) << 5)
-                | (((*img[2]++ >> 7) & 1) << 6)
-                | (((*img[3]++ >> 6) & 1) << 7);
+            *ppf = (((*img[0]++ >> 6) & 1) << 4)
+                | (((*img[1]++ >> 7) & 1) << 5)
+                | (((*img[2]++ >> 6) & 1) << 6)
+                | (((*img[3]++ >> 7) & 1) << 7);
 
             *(ppf + _ARENA_SCANLINES) = (((*img[4]++ >> 6) & 1) << 7)
                 | (((*img[5]++ >> 7) & 1) << 6)
@@ -685,19 +709,19 @@ void drawOverviewScreen() {
                 | (((*img[10]++ >> 6) & 1) << 1)
                 | (((*img[11]++ >> 7) & 1));
 
-            *(ppf + 2 * _ARENA_SCANLINES) = (((*img[12]++ >> 7) & 1))
-                | (((*img[13]++ >> 6) & 1) << 1)
-                | (((*img[14]++ >> 7) & 1) << 2)
-                | (((*img[15]++ >> 6) & 1) << 3)
-                | (((*img[16]++ >> 7) & 1) << 4)
-                | (((*img[17]++ >> 6) & 1) << 5)
-                | (((*img[18]++ >> 7) & 1) << 6)
-                | (((*img[19]++ >> 6) & 1) << 7);
+            *(ppf + 2 * _ARENA_SCANLINES) = (((*img[12]++ >> 6) & 1))
+                | (((*img[13]++ >> 7) & 1) << 1)
+                | (((*img[14]++ >> 6) & 1) << 2)
+                | (((*img[15]++ >> 7) & 1) << 3)
+                | (((*img[16]++ >> 6) & 1) << 4)
+                | (((*img[17]++ >> 7) & 1) << 5)
+                | (((*img[18]++ >> 6) & 1) << 6)
+                | (((*img[19]++ >> 7) & 1) << 7);
 
-            *(ppf + 3 * _ARENA_SCANLINES) = (((*img[20+0]++ >> 7) & 1) << 4)
-                | (((*img[20+1]++ >> 6) & 1) << 5)
-                | (((*img[20+2]++ >> 7) & 1) << 6)
-                | (((*img[20+3]++ >> 6) & 1) << 7);
+            *(ppf + 3 * _ARENA_SCANLINES) = (((*img[20+0]++ >> 6) & 1) << 4)
+                | (((*img[20+1]++ >> 7) & 1) << 5)
+                | (((*img[20+2]++ >> 6) & 1) << 6)
+                | (((*img[20+3]++ >> 7) & 1) << 7);
 
             *(ppf + 4 * _ARENA_SCANLINES) = (((*img[20+4]++ >> 6) & 1) << 7)
                 | (((*img[20+5]++ >> 7) & 1) << 6)
@@ -708,14 +732,14 @@ void drawOverviewScreen() {
                 | (((*img[20+10]++ >> 6) & 1) << 1)
                 | (((*img[20+11]++ >> 7) & 1));
 
-            *(ppf++ + 5 * _ARENA_SCANLINES) = ((*img[20+12]++ >> 7) & 1)
-                | (((*img[20+13]++ >> 6) & 1) << 1)
-                | (((*img[20+14]++ >> 7) & 1) << 2)
-                | (((*img[20+15]++ >> 6) & 1) << 3)
-                | (((*img[20+16]++ >> 7) & 1) << 4)
-                | (((*img[20+17]++ >> 6) & 1) << 5)
-                | (((*img[20+18]++ >> 7) & 1) << 6)
-                | (((*img[20+19]++ >> 6) & 1) << 7);
+            *(ppf++ + 5 * _ARENA_SCANLINES) = ((*img[20+12]++ >> 6) & 1)
+                | (((*img[20+13]++ >> 7) & 1) << 1)
+                | (((*img[20+14]++ >> 6) & 1) << 2)
+                | (((*img[20+15]++ >> 7) & 1) << 3)
+                | (((*img[20+16]++ >> 6) & 1) << 4)
+                | (((*img[20+17]++ >> 7) & 1) << 5)
+                | (((*img[20+18]++ >> 6) & 1) << 6)
+                | (((*img[20+19]++ >> 7) & 1) << 7);
 
         }
     }  

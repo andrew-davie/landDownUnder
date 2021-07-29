@@ -16,118 +16,118 @@ extern void* DDR;
 #define BMP_CENTER_Y 3
 #define BMP_HEADER_BYTES 4
 
-const unsigned char rocketShip[] = {
+// const unsigned char rocketShip[] = {
 
-    1,                  // width in BYTES (=8 pix/byte) (MAX =4)
-    105,                 // height in SCANLINES (pref multiples of 3 -- TRIPIXs)
-    3,105,               // center point (PIXELS) from 0,0 top left MULT OF 3
+//     1,                  // width in BYTES (=8 pix/byte) (MAX =4)
+//     105,                 // height in SCANLINES (pref multiples of 3 -- TRIPIXs)
+//     3,105,               // center point (PIXELS) from 0,0 top left MULT OF 3
 
-    ________ //________   // 000    // colour 0
-    ________ //________   // 001    // colour 1
-    ________ //________   // 002    // colour 2 etc...
-    ___X____ //___X____   // 003 
-    ________ //________   // 004 
-    ________ //________   // 005 
-    ________ //________   // 006 
-    ___X____ //___X____   // 007 
-    ________ //___X____   // 008 
-    ___X____ //___X____   // 009 
-    ___X____ //___X____   // 010 
-    ________ //___X____   // 011 
-    __XXX___ //__XXX___   // 012 
-    __XXX___ //__XXX___   // 013 
-    ___XX___ //__XXX___   // 014 
-    __XXX___ //__XXX___   // 015 
-    __XXX___ //__XXX___   // 016 
-    ___XX___ //__XXX___   // 017 
-    ___X____ //__XXX___   // 018
-    __X_X___ //__XXX___   // 019 
-    ___XX___ //__XXX___   // 020 
-    ___X____ //__XXX___   // 021  // 00
-    __XXX___ //__XXX___   // 022  // 01
-    ___X____ //__XXX___   // 023  // 02
-    __XXX___ //__XXX___   // 024  // 03
-    _XXXXX__ //_XXXXX__   // 025  // 04
-    __XXX___ //__XXX___   // 026  // 05
-    _XXXXX__ //_XXXXX__   // 027  // 06
-    _XXXXX__ //_XXXXX__   // 028  // 07
-    __XXXX__ //_XXXXX__   // 029  // 08
-    _XXXXX__ //_XXXXX__   // 030  // 09
-    _XXX_X__ //_XXXXX__   // 031  // 10
-    __XX_X__ //_XXXXX__   // 032  // 11
-    _XXXXX__ //_XXXXX__   // 033  // 12
-    _XX_____ //_XXXXX__   // 034  // 13
-    __X_____ //_XXXXX__   // 035  // 14
-    _XXXXX__ //_XXXXX__   // 036  // 15
-    _XX_____ //_XXXXX__   // 037  // 16
-    __X_____ //_XXXXX__   // 038  // 17
-    XXXXXXX_ //XXXXXXX_   // 039  // 18
-    XXX___X_ //XXXXXXX_   // 040  // 19
-    _XX___X_ //XXXXXXX_   // 041  // 20
-    XXXXXXX_ //XXXXXXX_   // 042  // 00
-    XXXX_XX_ //XXXXXXX_   // 043  // 01
-    _XXX_XX_ //XXXXXXX_   // 044  // 02
-    XXXXXXX_ //XXXXXXX_   // 045  // 03
-    XXXXXXX_ //XXXXXXX_   // 046  // 04
-    _XXXXXX_ //XXXXXXX_   // 047  // 05
-    XXXXXXX_ //XXXXXXX_   // 048  // 06
-    XXXXXXX_ //XXXXXXX_   // 049  // 07
-    _XXXXXX_ //XXXXXXX_   // 050  // 08
-    XXXXXXX_ //XXXXXXX_   // 051  // 09
-    XXXXXXX_ //XXXXXXX_   // 052  // 10
-    _XXXXXX_ //XXXXXXX_   // 053  // 11
-    XXXXXXX_ //XXXXXXX_   // 054  // 12
-    XXXXXXX_ //XXXXXXX_   // 055  // 13
-    _XXXXXX_ //XXXXXXX_   // 056  // 14
-    XXXXXXX_ //XXXXXXX_   // 057  // 15
-    XXXXXXX_ //XXXXXXX_   // 058  // 16
-    _XXXXXX_ //XXXXXXX_   // 059  // 17
-    XXXXXXX_ //XXXXXXX_   // 060  // 18
-    XXXXXXX_ //XXXXXXX_   // 061  // 19
-    _XXXXXX_ //XXXXXXX_   // 062  // 20
-    XXXXXXX_ //XXXXXXX_   // 063  // 00
-    XXXXXXX_ //XXXXXXX_   // 064  // 01
-    _XXXXXX_ //XXXXXXX_   // 065  // 02
-    XXXXXXX_ //XXXXXXX_   // 066  // 12
-    XXXXXXX_ //XXXXXXX_   // 067  // 13
-    _XXXXXX_ //XXXXXXX_   // 068  // 14
-    XXXXXXX_ //XXXXXXX_   // 069  // 15
-    XXXXXXX_ //XXXXXXX_   // 070  // 16
-    _XXXXXX_ //XXXXXXX_   // 071  // 17
-    XXXXXXX_ //XXXXXXX_   // 072  // 18
-    XXXXXXX_ //XXXXXXX_   // 073  // 10
-    _XXXXXX_ //XXXXXXX_   // 074  // 11
-    _XXXXXX_ //_XXXXX__   // 075  // 12
-    _XXXXX__ //_XXXXX__   // 076  // 13
-    ________ //_XXXXX__   // 077  // 14
-    _XXXXX__ //_XXXXX__   // 078  // 15
-    __XXXX__ //_XXXXX__   // 079  // 16
-    __XXXX__ //_XXXXX__   // 080  // 17
-    __XXX___ //__XXX___   // 081  // 18
-    _____X__ //_XXXXX__   // 082  // 19
-    __XXXX__ //_XXXXX__   // 083  // 20
-    __XXX___ //__XXX___   // 084 
-    __XXX___ //__XXX___   // 085 
-    __XXX___ //__XXX___   // 086 
-    __XXX___ //__XXX___   // 087 
-    _XX_XX__ //_XXXXX__   // 088 
-    _XXXXX__ //_XXXXX__   // 089 
-    __XXX___ //__XXX___   // 090 
-    XXXXXXX_ //XXXXXXX_   // 091 
-    XXXXXXX_ //XXXXXXX_   // 092 
-    __XXX___ //__XXX___   // 093 
-    __XXX___ //XXXXXXX_   // 094 
-    X_XXXXX_ //XXXXXXX_   // 095 
-    __XXX___ //_XXXX___   // 096 
-    ________ //XXXXXXX_   // 097 
-    X_XXX_X_ //X_XXX_X_   // 098 
-    ___X____ //X_XXX_X_   // 099 
-    ________ //X__X__X_   // 100 
-    X__X__X_ //X_XXX_X_   // 101 
-    ________ //X_XXX_X_   // 102 
-    ________ //X_____X_   // 103 
-    X_____X_ //X_____X_   // 104 
-};
+//     ________ //________   // 000    // colour 0
+//     ________ //________   // 001    // colour 1
+//     ________ //________   // 002    // colour 2 etc...
+//     ___X____ //___X____   // 003 
+//     ________ //________   // 004 
+//     ________ //________   // 005 
+//     ________ //________   // 006 
+//     ___X____ //___X____   // 007 
+//     ________ //___X____   // 008 
+//     ___X____ //___X____   // 009 
+//     ___X____ //___X____   // 010 
+//     ________ //___X____   // 011 
+//     __XXX___ //__XXX___   // 012 
+//     __XXX___ //__XXX___   // 013 
+//     ___XX___ //__XXX___   // 014 
+//     __XXX___ //__XXX___   // 015 
+//     __XXX___ //__XXX___   // 016 
+//     ___XX___ //__XXX___   // 017 
+//     ___X____ //__XXX___   // 018
+//     __X_X___ //__XXX___   // 019 
+//     ___XX___ //__XXX___   // 020 
+//     ___X____ //__XXX___   // 021  // 00
+//     __XXX___ //__XXX___   // 022  // 01
+//     ___X____ //__XXX___   // 023  // 02
+//     __XXX___ //__XXX___   // 024  // 03
+//     _XXXXX__ //_XXXXX__   // 025  // 04
+//     __XXX___ //__XXX___   // 026  // 05
+//     _XXXXX__ //_XXXXX__   // 027  // 06
+//     _XXXXX__ //_XXXXX__   // 028  // 07
+//     __XXXX__ //_XXXXX__   // 029  // 08
+//     _XXXXX__ //_XXXXX__   // 030  // 09
+//     _XXX_X__ //_XXXXX__   // 031  // 10
+//     __XX_X__ //_XXXXX__   // 032  // 11
+//     _XXXXX__ //_XXXXX__   // 033  // 12
+//     _XX_____ //_XXXXX__   // 034  // 13
+//     __X_____ //_XXXXX__   // 035  // 14
+//     _XXXXX__ //_XXXXX__   // 036  // 15
+//     _XX_____ //_XXXXX__   // 037  // 16
+//     __X_____ //_XXXXX__   // 038  // 17
+//     XXXXXXX_ //XXXXXXX_   // 039  // 18
+//     XXX___X_ //XXXXXXX_   // 040  // 19
+//     _XX___X_ //XXXXXXX_   // 041  // 20
+//     XXXXXXX_ //XXXXXXX_   // 042  // 00
+//     XXXX_XX_ //XXXXXXX_   // 043  // 01
+//     _XXX_XX_ //XXXXXXX_   // 044  // 02
+//     XXXXXXX_ //XXXXXXX_   // 045  // 03
+//     XXXXXXX_ //XXXXXXX_   // 046  // 04
+//     _XXXXXX_ //XXXXXXX_   // 047  // 05
+//     XXXXXXX_ //XXXXXXX_   // 048  // 06
+//     XXXXXXX_ //XXXXXXX_   // 049  // 07
+//     _XXXXXX_ //XXXXXXX_   // 050  // 08
+//     XXXXXXX_ //XXXXXXX_   // 051  // 09
+//     XXXXXXX_ //XXXXXXX_   // 052  // 10
+//     _XXXXXX_ //XXXXXXX_   // 053  // 11
+//     XXXXXXX_ //XXXXXXX_   // 054  // 12
+//     XXXXXXX_ //XXXXXXX_   // 055  // 13
+//     _XXXXXX_ //XXXXXXX_   // 056  // 14
+//     XXXXXXX_ //XXXXXXX_   // 057  // 15
+//     XXXXXXX_ //XXXXXXX_   // 058  // 16
+//     _XXXXXX_ //XXXXXXX_   // 059  // 17
+//     XXXXXXX_ //XXXXXXX_   // 060  // 18
+//     XXXXXXX_ //XXXXXXX_   // 061  // 19
+//     _XXXXXX_ //XXXXXXX_   // 062  // 20
+//     XXXXXXX_ //XXXXXXX_   // 063  // 00
+//     XXXXXXX_ //XXXXXXX_   // 064  // 01
+//     _XXXXXX_ //XXXXXXX_   // 065  // 02
+//     XXXXXXX_ //XXXXXXX_   // 066  // 12
+//     XXXXXXX_ //XXXXXXX_   // 067  // 13
+//     _XXXXXX_ //XXXXXXX_   // 068  // 14
+//     XXXXXXX_ //XXXXXXX_   // 069  // 15
+//     XXXXXXX_ //XXXXXXX_   // 070  // 16
+//     _XXXXXX_ //XXXXXXX_   // 071  // 17
+//     XXXXXXX_ //XXXXXXX_   // 072  // 18
+//     XXXXXXX_ //XXXXXXX_   // 073  // 10
+//     _XXXXXX_ //XXXXXXX_   // 074  // 11
+//     _XXXXXX_ //_XXXXX__   // 075  // 12
+//     _XXXXX__ //_XXXXX__   // 076  // 13
+//     ________ //_XXXXX__   // 077  // 14
+//     _XXXXX__ //_XXXXX__   // 078  // 15
+//     __XXXX__ //_XXXXX__   // 079  // 16
+//     __XXXX__ //_XXXXX__   // 080  // 17
+//     __XXX___ //__XXX___   // 081  // 18
+//     _____X__ //_XXXXX__   // 082  // 19
+//     __XXXX__ //_XXXXX__   // 083  // 20
+//     __XXX___ //__XXX___   // 084 
+//     __XXX___ //__XXX___   // 085 
+//     __XXX___ //__XXX___   // 086 
+//     __XXX___ //__XXX___   // 087 
+//     _XX_XX__ //_XXXXX__   // 088 
+//     _XXXXX__ //_XXXXX__   // 089 
+//     __XXX___ //__XXX___   // 090 
+//     XXXXXXX_ //XXXXXXX_   // 091 
+//     XXXXXXX_ //XXXXXXX_   // 092 
+//     __XXX___ //__XXX___   // 093 
+//     __XXX___ //XXXXXXX_   // 094 
+//     X_XXXXX_ //XXXXXXX_   // 095 
+//     __XXX___ //_XXXX___   // 096 
+//     ________ //XXXXXXX_   // 097 
+//     X_XXX_X_ //X_XXX_X_   // 098 
+//     ___X____ //X_XXX_X_   // 099 
+//     ________ //X__X__X_   // 100 
+//     X__X__X_ //X_XXX_X_   // 101 
+//     ________ //X_XXX_X_   // 102 
+//     ________ //X_____X_   // 103 
+//     X_____X_ //X_____X_   // 104 
+// };
 
 
 const unsigned char eroShip[] = {
@@ -241,6 +241,63 @@ const unsigned char eroShip[] = {
     ________ ________ //X_XXX_X_   // 102 
     ______XX XXX_____ //X_____X_   // 103 
     ________ ________ //X_____X_   // 104 
+
+    // 1, 45,
+    // 2, 45,
+
+
+    // __X_____
+    // __X_____
+    // __X_____
+    // _XXX____
+    // _XXX____
+    // _XXX____
+    // _XXX____
+    // _XXX____
+    // _XXX____
+
+
+    // __X_____
+    // __X_____
+    // _XXX____
+    // _XXX____
+    // _XXX____
+    // _XXX____
+    // _XXX____
+    // _XXX____
+    // _XXX____
+
+    // _XXX____
+    // _XXX____
+    // _XXX____
+    // _XXX____
+    // _XXX____
+    // _XXX____
+    // _XXX____
+    // _XXX____
+    // _XXX____
+
+    // _XXX____
+    // _XXX____
+    // _XXX____
+    // _XXX____
+    // _XXX____
+    // _XXX____
+    // XXXXX___
+    // XXXXX___
+    // XXXXX___
+
+    // _XXX____
+    // _XXX____
+    // _XXX____
+    // __X_____
+    // __X_____
+    // __X_____
+    // _XXX____
+    // _XXX____
+    // _XXX____
+
+
 };
 
 const unsigned char rocketShipLeg[] = {
@@ -249,15 +306,16 @@ const unsigned char rocketShipLeg[] = {
     9,                 // height in SCANLINES (pref multiples of 3 -- TRIPIXs)
     0,0,               // center point (PIXELS) from 0,0 top left
 
-    __XXX___ //_XXXX___ 
-    ________ //XXXXXXX_ 
-    X_XXX_X_ //X_XXX_X_ 
-    ________ //X_____X_ 
-    ________ //X_____X_ 
-    X_____X_ //X_____X_ 
-    ________ //X_____X_ 
-    ________ //X_____X_ 
-    X_____X_ //X_____X_ 
+    __XXX___ 
+    ________ 
+    X_XXX_X_ 
+    ________ 
+    ________ 
+    X_____X_ 
+    ________ 
+    ________ 
+    X_____X_ 
+
 };
 
 
@@ -311,56 +369,99 @@ _XXX____
 ________
 
 
+// 1,9,
+// -3,-10,
+
+// ________
+// ________
+// ________
+// ________
+// XX______
+// ________
+// ________
+// XX______
+// ________
+
+
 };
 
 
 const unsigned char rocketShipFlame[] = {
 
-    1,                  // width in BYTES (=8 pix/byte) (MAX =4)
-    21,                 // height in SCANLINES (pref multiples of 3 -- TRIPIXs)
-    3,0,               // center point (PIXELS) from 0,0 top left
+    // 1,                  // width in BYTES (=8 pix/byte) (MAX =4)
+    // 21,                 // height in SCANLINES (pref multiples of 3 -- TRIPIXs)
+    // 3,0,               // center point (PIXELS) from 0,0 top left
 
-    ___X____ //__XXX___ 
-    ________ //__XXX___ 
-    __XXX___ //__XXX___ 
-    ___X____ //__XXX___ 
-    ________ //__XXX___ 
-    __XXX___ //__XXX___ 
-    ___X____ //__XXX___ 
-    ________ //__XXX___ 
-    __XXX___ //__XXX___ 
-    ___X____ //__XXX___ 
-    ________ //__XXX___ 
-    __XXX___ //__XXX___ 
-    ________ //___X____ 
-    ________ //___X____ 
-    ___X____ //___X____ 
-    ________ //___X____ 
-    ________ //___X____ 
-    ___X____ //___X____ 
-    ________ //___X____ 
-    ________ //___X____ 
-    ___X____ //___X____ 
+    // ___X____ //__XXX___ 
+    // ________ //__XXX___ 
+    // __XXX___ //__XXX___ 
+    // ___X____ //__XXX___ 
+    // ________ //__XXX___ 
+    // __XXX___ //__XXX___ 
+    // ___X____ //__XXX___ 
+    // ________ //__XXX___ 
+    // __XXX___ //__XXX___ 
+    // ___X____ //__XXX___ 
+    // ________ //__XXX___ 
+    // __XXX___ //__XXX___ 
+    // ________ //___X____ 
+    // ________ //___X____ 
+    // ___X____ //___X____ 
+    // ________ //___X____ 
+    // ________ //___X____ 
+    // ___X____ //___X____ 
+    // ________ //___X____ 
+    // ________ //___X____ 
+    // ___X____ //___X____ 
+
+
+    1,6,
+    0,5,
+
+    X_______
+    X_______
+    X_______
+    X_______
+    X_______
+    X_______
+
 };
 
 
 
 const unsigned char flagUSA[] = {
 
-    1,12,0,0,
+    // 1,12,0,0,
 
-    _XX_____
+    // _XX_____
+    // X_______
+    // X_______
+    // _XX_____
+    // X_______
+    // ________
+    // XXX_____
+    // ________
+    // ________
+    // XXX_____
+    // ________
+    // ________
+
+
+    1,3,0,0,
+
+    _X______
     X_______
     X_______
-    _XX_____
-    X_______
-    ________
-    XXX_____
     ________
     ________
-    XXX_____
     ________
     ________
+    ________
+    ________
+    ________
+    ________
+    ________
+
 };
 
 
@@ -408,6 +509,7 @@ void drawBitmap(const unsigned char *bmp, int x, int y, bool relativeToScreen) {
                 int bitRange = (bmp[BMP_WIDTH] << 3) - 1;
                 for (int bit = 0; bit <= bitRange; bit++) {
                     int absBit = ((x - scrollX) >> 14) - bmp[BMP_CENTER_X] + bit;
+
                     if (absBit >= 0 && absBit < 40)
                         pix[absBit] = (bits >> (bitRange - bit)) & 1;
                 }

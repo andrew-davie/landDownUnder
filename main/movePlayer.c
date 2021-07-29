@@ -133,7 +133,7 @@ void doPlayer() {
 //                         //AnimIdx[TYPE_DUST] = 0;
 //                 }
 
-//                 if (destType == TYPE_SPACE)
+//                 if (destType == TYPE_BLANK)
 //                     AddAudio(SFX_SPACE);
 
 //                 if (destType == TYPE_OUTBOX) {

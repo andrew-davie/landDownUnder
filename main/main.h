@@ -7,9 +7,10 @@
 #define ENABLE_OVERLAY 0
 #define ENABLE_SOUND 1
 #define ENABLE_DRIP 0
-#define ENABLE_PARALLAX 0
+#define ENABLE_PARALLAX 1
 #define ENABLE_TOGGLE_DISPLAY_ON_DEATH 0
 #define ENABLE_SHAKE 1
+#define ENABLE_SHIMMER 0 /* shimmer CH_BLANK on extra life - depecated */
 
 #define DEF_OVERVIEW 0x80
 #define DEF_PARALLAX 0x40
@@ -105,5 +106,10 @@ extern unsigned char ColourConvert(unsigned char color);
 extern int shakeX;
 extern int shakeY;
 #endif
+
+
+extern int doge;
+extern unsigned int frameToggler;
+
 
 #endif
