@@ -106,7 +106,9 @@ const unsigned char CHAR_DIRTF[] = {
     DIRTBLOCK(0b1001, 0, 0, 0b1001)
 };
 
-extern const int dir[]; // = { -1, 1, -40, 40, -41, 41, -39, 39 };
+extern const int dirX[]; // = { -1, 1, -40, 40, -41, 41, -39, 39 };
+extern const int dirY[];
+extern int boardWidth;
 
 //                                  ULDR
 const unsigned char dirBits[] = { 0b0100, 0b0001, 0b1000, 0b0100, 0b1100, 0b0110, 0b1001, 0b0110, };
@@ -117,7 +119,7 @@ void roundDirtCorner(unsigned char *this) {
     unsigned char roundedDirt = 0;
 
     for (int i = 0; i < 8; i++)
-        if (Attribute[CharToType[*(this + dir[i])]] & ATT_ROUNDDIRT)
+        if (Attribute[CharToType[*(this + boardWidth * dirY[i] + dirX[i])]] & ATT_ROUNDDIRT)
             *this |= dirBits[i];
 
     *this = roundedDirt + CH_DIRT;

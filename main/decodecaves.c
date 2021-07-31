@@ -15,6 +15,22 @@
 extern void* DDR;
 #define RAM ((unsigned char*)DDR)
 
+#define DEF_XSIZE 1
+#define DEF_YSIZE 2
+#define DEF_MILL 3
+#define DEF_DIAMOND 4
+#define DEF_DOGE 5
+#define DEF_SEED 6
+#define DEF_DOGE 11
+#define DEF_TIME 14
+#define DEF_LAVA 21
+#define DEF_WATER 22
+#define DEF_FLAGS 23
+#define DEF_BORDER 24
+#define DEF_FILL 25
+#define DEF_RNDSEED 30
+#define DEF_RNDOBJECT 26
+#define DEF_CAVEDATA 34
 
 /* **************************************** */
 /* Types */
@@ -26,39 +42,6 @@ typedef unsigned char objectType;
 /* **************************************** */
 /* Global data */
 
-/* Coded cave data */
-//#include "cavedata.h"
-
-
-/* Creature code conversion table */
-/* Converts the C64 BoulderDash codes into the codes used by Jeff Bevis's
-   Amiga implementation of BoulderDash. */
-/*UBYTE creatureCode[64]=
-{
-    ' ', '.', 'w', 'm', 'P', 'P', '?', 'W',
-    'q', 'o', 'Q', 'O', 'q', 'o', 'Q', 'O',
-    'r', 'r', 'r', 'r', 'd', 'd', 'd', 'd',
-    '?', '?', '?', '?', '?', '?', '?', '?',
-    '?', '?', '?', '?', '3', 'X', '5', '6',
-    '?', '?', '?', '?', '?', '?', '?', '?',
-    'B', 'c', 'b', 'C', 'B', 'c', 'b', 'C',
-    '7', '8', 'a', 'a', '?', '?', '?', '?' 
-};*/
-
-
-/*
-const char *objects[]=
-{
-    "zSpace", "zDirt", "zBrick", "zMagic", "zPreOut", "zOutBox", "*", "zSteel",
-    "zFFly1", "zFFly2", "zFFly3", "zFFly4", "zFFly1M", "zFFly2M", "zFFly3M",
-    "zFFly4M", "zBouS", "zBouSM", "zBouF", "zBouFM", "zDiaS", "zDiaSM", "zDiaF",
-    "zDiaFM", "", "", "", "zExp1S", "zExp2S", "zExp3S", "zExp4S", "zExp5S",
-    "zExp1D", "zExp2D", "zExp3D", "zExp4D", "zExp5D", "zPRFd1", "zPRFd2", "zPRFd3",
-    "zPRFd4", "", "", "", "", "", "", "", "zBFly1", "zBFly2",
-    "zBFly3", "zBFly4", "zBFly1M", "zBFly2M", "zBFly3M", "zBFly4M", "zRFd",
-    "zRFdM", "zAmoe", "zAmoeM", "", "", "*", "*"
-};
-*/
 
 /* DrawLine data */
 /* When drawing lines, you can draw in all eight directions. This table gives
@@ -103,59 +86,50 @@ extern int time;
 extern int millingTime;
 
     RandSeed1 = 0;
-    RandSeed2 = acaveData[4+level]; //todo:level
+    RandSeed2 = acaveData[DEF_SEED+level]; //todo:level
+
+    boardWidth = acaveData[DEF_XSIZE];
+    boardHeight = acaveData[DEF_YSIZE];
 
 
-    diamondValue = acaveData[2];
-    extraDogeCoinValue = acaveData[3];
+    diamondValue = acaveData[DEF_DIAMOND];
+    extraDogeCoinValue = acaveData[DEF_DOGE];
 
     extern int lava;
     extern int water;
     extern int parallax;
 
-    lava = acaveData[19] * 21;
-    water = acaveData[20] * 21;
+    lava = acaveData[DEF_LAVA] * PIECE_DEPTH;
+    water = acaveData[DEF_WATER] * PIECE_DEPTH;
+    caveFlags = acaveData[DEF_FLAGS];
 
+    displayMode = caveFlags & 0x80 ? OVERVIEW : NORMAL;
+    parallax = caveFlags & 0x40;
 
-
-    caveFlags = acaveData[21];
-
-
-    displayMode = acaveData[21] & 0x80 ? OVERVIEW : NORMAL;
-    parallax = acaveData[21] & 0x40;
-
-    doge = acaveData[9+level]; 
+    doge = acaveData[DEF_DOGE+level]; 
     
-    time = (acaveData[14+level]<<8)+60;
+    time = (acaveData[DEF_TIME+level]<<8)+60;
 
-    millingTime = (acaveData[1] * 60);
+    millingTime = (acaveData[DEF_MILL] * 60);
 
-    
-//    if (!acaveData[22] && !acaveData[23])
-//        DrawFilledRect(CH_DIRTY,0,0,40,22,CH_DIRTY);         // legacy
-//    else
+    DrawFilledRect(acaveData[DEF_BORDER], 0, 0, boardWidth, boardHeight, acaveData[DEF_FILL]); 
 
-        DrawRect(CH_STEEL, 0, -1, 40, 24);
-        DrawFilledRect(acaveData[22], 0, 0, 40, 22, acaveData[23]); 
-//        StoreObject(39,1, 7);
 
     // Decode the random cave data
-    for(int y = 1; y <=21; y++) {
-        for(int x = 0; x <= 39; x++) {
+    for(int y = 1; y < boardHeight - 2; y++) {
+        for(int x = 1; x < boardWidth - 1; x++) {
             NextRandom(&RandSeed1, &RandSeed2);
 
-            for (caveDataIndex = 0; caveDataIndex <= 3; caveDataIndex++)
-                if (RandSeed1 < acaveData[0x1C + caveDataIndex]) {
-                    objectType theObject = acaveData[0x18 + caveDataIndex];
+            for (caveDataIndex = 0; caveDataIndex < 4; caveDataIndex++)
+                if (RandSeed1 < acaveData[DEF_RNDSEED + caveDataIndex]) {
+                    objectType theObject = acaveData[DEF_RNDOBJECT + caveDataIndex];
                     StoreObject(x, y, theObject);
                 }
         }     
     }  
 
-    DrawRect(acaveData[22], 0, 0, 40, 22);
-
-
-    caveDataIndex = 0x20;
+//    DrawRect(CH_STEEL, 0, 0, boardWidth, boardHeight);
+    caveDataIndex = DEF_CAVEDATA;
 
 }
 
@@ -227,8 +201,8 @@ void StoreObject(int x, int y, objectType anObject) {
 //    if (anObject == CH_DIRT && (getRandom32() & 0xFF) < 10)
 //        anObject = CH_DIRT + (getRandom32() & 0xF);
         
-    if (x >=0 && x < 40 && y >= -1 && y <= 22)
-        RAM[_BOARD + x + (y+1)*40] = anObject;
+    if (x >=0 && x < boardWidth && y >= 0 && y < boardHeight)
+        RAM[_BOARD + x + y * boardWidth] = anObject;
 }
 
 

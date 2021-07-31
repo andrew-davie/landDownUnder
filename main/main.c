@@ -85,7 +85,7 @@ int water, lava;
 unsigned char *lastWater;
 unsigned char bgPalette[24];
 
-#define SPACESHIPS 1
+#define SPACESHIPS 0
 int spaceshipY[SPACESHIPS];
 int spaceshipAccel[SPACESHIPS];
 int spaceshipWait[SPACESHIPS];
@@ -136,8 +136,8 @@ unsigned char spaceToggleDisplayed[40];
 
 bool thisFrame[2][40];
 
-unsigned int boardWidth = 40;
-
+int boardWidth = 24;
+int boardHeight = 23;
 
 void setAnimation(int animID);
 
@@ -787,9 +787,6 @@ void Initialize() {
     for (int i = 0; i < 4096/4; i++)
         RAM_INT[i] = 0;
 
-    // for (int i = 0; i < 40; i++)
-    //     RAM[_SHAKE_FIX + i] = CH_STEEL;
-
     //myMemsetInt(RAM_INT, 0, 4096/4);
     
     // likewise the datastream increments will be random, so set them to 1.0
@@ -827,17 +824,16 @@ void GameScheduleProcessBoardRow();
 
 void setChar(int x, int y, int ch) {
 
-    unsigned char *p = RAM + _BOARD + (y * 40) + x;
+    unsigned char *p = RAM + _BOARD + y * boardWidth + x;
     *p = ch;
 }
 
 
 
 void formLandscape(){
-
-
+ 
     int horizon = (((getRandom32() & 0xFF) * 4) >> 8) + 8;
-    for (int i = 1; i < 39; i++) {
+    for (int i = 1; i < boardWidth-1; i++) {
 
         int offset = (((getRandom32() & 0xFF) * 3) >> 8) - 1;
         horizon += offset;
@@ -1715,7 +1711,6 @@ extern void     looneyTuneFade();
 
 
 void setPalette(int start, int size, int step, int tweak) {
-
     setColours();
 
     int bgCharLine = (scrollY >> 16) * 3;
@@ -1743,7 +1738,7 @@ void setPalette(int start, int size, int step, int tweak) {
     int i = start;
     while (i < _ARENA_SCANLINES) {
 
-        if (lava && absLine >= lavaLine) {
+        if (false && lava && absLine >= lavaLine) {
 
             unsigned char lavaCol = 0x44;
             int delta = (absLine - lavaLine);
@@ -1769,7 +1764,7 @@ void setPalette(int start, int size, int step, int tweak) {
 
         }
         
-        else if (water && absLine >= waterLine) {
+        else if (false && water && absLine >= waterLine) {
 
             unsigned char waterCol = 0x90;
             int delta = absLine - waterLine;
@@ -1792,8 +1787,8 @@ void setPalette(int start, int size, int step, int tweak) {
 
         }
         else {
-            RAM[_BUF_COLUPF + i] = ColourConvert(bgPalette[pfCharLine]);
-        }
+           RAM[_BUF_COLUPF + i] = ColourConvert(bgPalette[pfCharLine]);
+       }
         
             
         bgCharLine += 3;            
@@ -1804,7 +1799,7 @@ void setPalette(int start, int size, int step, int tweak) {
 
 
         absLine += step;
-        i+=3;
+        i += 3;
     }
 
 }
@@ -1878,7 +1873,7 @@ void setOverviewPalette() {
 }
 
 void setDisplayPalette() {
-    setPalette(18, 21, 3, 3);
+    setPalette(SCORE_SCANLINES, PIECE_DEPTH, 3, 3);
 
 /*
     setColours();
@@ -2004,7 +1999,7 @@ void drawSoftwareSprites() {
 
         if (!spaceshipWait[sno]) {
 
-            if (spaceshipVar[sno] <20)
+            if (spaceshipVar[sno] < 20)
                 spaceshipVar[sno] +=2;
 
 
@@ -2233,7 +2228,7 @@ void SetupBoard() {
         amoebaGrew = 0;
 
 #if ENABLE_PARALLAX
-        for (int i = 0; i < 40; i++) {
+        for (int i = 0; i < boardWidth; i++) {
             spaceToggleDisplayed[i] = spaceToggle[i];
             spaceToggle[i] = 99;
         }
@@ -2317,18 +2312,18 @@ void Explode(unsigned char *where, unsigned char explosionShape) {
     } OFFSET;
 
     static const OFFSET offset[] = {
-        { 0,-80, },
-        { -1,-40, },
-        { 0,-40, },
-        { 1,-40, },
+        { 0,-2, },
+        { -1,-1, },
+        { 0,-1, },
+        { 1,-1, },
         { -2,0, },
         { -1,0, },
         { 1,0, },
         { 2,0, },
-        { -1,40, },
-        { -0,40, },
-        { 1,40, },
-        { 0,80, },
+        { -1,1, },
+        { -0,1, },
+        { 1,1, },
+        { 0,2, },
     };
 
 
@@ -2342,7 +2337,7 @@ void Explode(unsigned char *where, unsigned char explosionShape) {
     // explosionShape |= FLAG_THISFRAME;
 
     for (int i = 0; i < 12; i++) {
-        unsigned char *cell = where + offset[i].y + offset[i].x;
+        unsigned char *cell = where + offset[i].y * boardWidth + offset[i].x;
         int attribute = Attribute[CharToType[*cell]];
         if (attribute & ATT_EXPLODABLE)
             *cell = explosionShape;
@@ -2352,17 +2347,17 @@ void Explode(unsigned char *where, unsigned char explosionShape) {
 }
 
 
-//00 = facing left
-//01 = facing up
-//10 = facing right
-//11 = facing down
+// //00 = facing left
+// //01 = facing up
+// //10 = facing right
+// //11 = facing down
 
-// turn right = -1
-// turn left = +1
+// // turn right = -1
+// // turn left = +1
 
-int move[] = {
-    -1, -40, +1, +40,
-};
+// int move[] = {
+//     -1, -40, +1, +40,
+// };
 
 
 
@@ -2611,11 +2606,11 @@ void fixRock(unsigned char *rock) {
 
     if (CharToType[*(rock+1)] == TYPE_ROCK)
         linkage += 1;
-    if (CharToType[*(rock+40)] == TYPE_ROCK)
+    if (CharToType[*(rock+boardWidth)] == TYPE_ROCK)
         linkage += 2;
     if (CharToType[*(rock-1)] == TYPE_ROCK)
         linkage += 4;
-    if (CharToType[*(rock-40)] == TYPE_ROCK)
+    if (CharToType[*(rock-boardWidth)] == TYPE_ROCK)
         linkage += 8;
 
     *rock = linkage;
@@ -2627,7 +2622,7 @@ void doRoll(unsigned char *this, unsigned int creature) {
     if (boardRow > 20)
         return;
 
-    unsigned char _DOWN = CharToType[*(this + 40)&(0x7F|0x80)];
+    unsigned char _DOWN = CharToType[*(this + boardWidth)];
     unsigned char *LEFTWARDS = this - 1;
     unsigned char *RIGHTWARDS = this + 1;
 
@@ -2641,11 +2636,11 @@ void doRoll(unsigned char *this, unsigned int creature) {
     if (Attribute[_DOWN] & ATT_ROLL) {
 #endif
 
-        if (boardCol > 0 && (Attribute[CharToType[(*LEFTWARDS)&(0x7F|0x80)]] & ATT_ROCKFORDYBLANK)) {
+        if (boardCol > 0 && (Attribute[CharToType[*LEFTWARDS]] & ATT_ROCKFORDYBLANK)) {
 
-            unsigned char lowerLeft = (*(LEFTWARDS + 40) & (0x7F|0x80));
+            unsigned char lowerLeft = (*(LEFTWARDS + boardWidth));
             unsigned char typeLL = CharToType[lowerLeft];
-            unsigned char typeL = CharToType[*LEFTWARDS & (0x7F|0x80)];
+            unsigned char typeL = CharToType[*LEFTWARDS];
 
             if (CharToType[creature] == TYPE_ROCK
                 && ((typeLL == TYPE_ROCKFORD && (Attribute[typeL] & ATT_BLANK))
@@ -2662,12 +2657,12 @@ void doRoll(unsigned char *this, unsigned int creature) {
             }
         }
         
-        if (boardCol < 39
+        if (boardCol < boardWidth - 1
             && (Attribute[CharToType[*RIGHTWARDS]] & ATT_ROCKFORDYBLANK)) {
 
-            unsigned char lowerRight = (*(RIGHTWARDS + 40)) & (0x7F|0x80);
+            unsigned char lowerRight = (*(RIGHTWARDS + boardWidth));
             unsigned char typeLR = CharToType[lowerRight];
-            unsigned char typeR = CharToType[*RIGHTWARDS & (0x7F|0x80)];
+            unsigned char typeR = CharToType[*RIGHTWARDS];
 
             if (CharToType[creature] == TYPE_ROCK &&
                 ((typeLR == TYPE_ROCKFORD && (Attribute[typeR] & ATT_BLANK))
@@ -2699,7 +2694,10 @@ void doRoll(unsigned char *this, unsigned int creature) {
 }
 
 
-const int dir[] = { -1, 1, -40, 40, -41, 41, -39, 39 };
+//const int dirX[] = { -1, 1, -40, 40, -41, 41, -39, 39 };
+
+const int dirX[] = { -1,  1,  0,  0, -1, 1,  1, -1 };
+const int dirY[] = {  0,  0, -1,  1, -1, 1, -1,  1 };
 
 
 void GameScheduleProcessBoardRow() {
@@ -2708,12 +2706,12 @@ void GameScheduleProcessBoardRow() {
     for (int block = 0; block < 80; block++) {
 
         boardCol++;
-        if (boardCol > 39) {
+        if (boardCol >= boardWidth) {
             boardCol = 0;
             boardRow++;
 
 
-            for (int i = 0; i < 40; i++) {
+            for (int i = 0; i < boardWidth; i++) {
                 thisFrame[0][i] = thisFrame[1][i];
                 thisFrame[1][i] = false;
             }
@@ -2725,7 +2723,7 @@ void GameScheduleProcessBoardRow() {
 
                 bool oldDead = rockfordDead;
 
-                int what = RAM[_BOARD + rockfordY * 40 + rockfordX] & (0x7F|0x80);
+                int what = RAM[_BOARD + rockfordY * boardWidth + rockfordX];
                 int type = CharToType[what];
 //tmp                rockfordDead = (type != TYPE_ROCKFORD && type != TYPE_ROCKFORD_PRE);
 
@@ -2772,7 +2770,7 @@ void GameScheduleProcessBoardRow() {
             break;
 
 
-        unsigned char *this = &RAM[_BOARD + (boardRow * 40) + boardCol];
+        unsigned char *this = &RAM[_BOARD + (boardRow * boardWidth) + boardCol];
 
         if (CharToType[*this] == TYPE_DIRT
          || CharToType[*this] == TYPE_RUBBLE || CharToType[*this] == TYPE_RUBBLE1) {
@@ -2790,7 +2788,7 @@ void GameScheduleProcessBoardRow() {
 
 
         unsigned char creature = *this;
-        unsigned char *prev = this - 40;
+        unsigned char *prev = this - boardWidth;
 
 
         unsigned char blanker = CH_BLANK;
@@ -2800,12 +2798,12 @@ void GameScheduleProcessBoardRow() {
             blanker = CH_LAVA;
 
 
-        if (water && boardRow * 21 + 6  > water && boardRow > 2 && boardRow < 21 && (Attribute[CharToType[creature& (0x7F|0x80)]] & ATT_WATER)) {
+        if (water && boardRow * 21 + 6  > water && boardRow > 2 && boardRow < 21 && (Attribute[CharToType[creature]] & ATT_WATER)) {
             *this = (CH_WATER + (getRandom32() & 3)) ; // | FLAG_THISFRAME;
             thisFrame[1][boardCol] = true;
         }
 
-        unsigned char cType = CharToType[creature & (0x7F|0x80)];
+        unsigned char cType = CharToType[creature];
 
 
 #if ENABLE_SHAKE
@@ -2817,7 +2815,7 @@ void GameScheduleProcessBoardRow() {
 
             if (cType
      //           && (Attribute[cType] & CH_LAVA)
-                && (boardRow > 4 && boardRow < 21 && boardCol > 0 && boardCol < 39)
+                && (boardRow > 4 && boardRow < 21 && boardCol > 0 && boardCol < boardWidth - 1)
                 && (getRandom32() & (0x7FF)) < 3) {
                 Explode(this, CH_EXPLODETOBLANK0);
                 setFlash(0x42, 4);
@@ -2861,15 +2859,13 @@ void GameScheduleProcessBoardRow() {
 
            && (deltaX < 6 && deltaY < 5)
            && boardRow < 18  // or 19?
-            
-
-            && (Attribute[CharToType[creature & (0x7F|0x80)]] & ATT_DRIP) &&  *(this+40) == CH_BLANK
+           && (Attribute[CharToType[creature] & ATT_DRIP]) &&  *(this + boardWidth) == CH_BLANK
             //&& *(this+80) != CH_BLANK
             && (getRandom32() & 0xFF) < doubler
             )
             {
 
-                *(this + 40) = CH_DRIP; // ; // | FLAG_THISFRAME;
+                *(this + boardWidth) = CH_DRIP; // ; // | FLAG_THISFRAME;
                 thisFrame[1][boardCol] = true;
 
                 AnimIdx[TYPE_DRIP].index = -2;
@@ -2904,7 +2900,7 @@ void GameScheduleProcessBoardRow() {
 
                     int dirtNeighbours = 0;
                     for (int i = 0; i < 8; i++)
-                        if (CharToType[*(this + dir[i])] == TYPE_DIRT)
+                        if (CharToType[*(this + boardWidth * dirY[i] + dirX[i])] == TYPE_DIRT)
                             dirtNeighbours++;
 
                     if (!dirtNeighbours) {
@@ -2914,7 +2910,7 @@ void GameScheduleProcessBoardRow() {
 
                     int crowded = 0;
                     for (int i = 0; i < 8; i++)
-                        if (CharToType[*(this + dir[i])] == TYPE_EGG)
+                        if (CharToType[*(this + boardWidth + dirY[i] + dirX[i])] == TYPE_EGG)
                             crowded++;
 
                     if (crowded > 2) {
@@ -2923,17 +2919,12 @@ void GameScheduleProcessBoardRow() {
                     }
 
 
-                    // for (int i = 0; i < 8; i++) {
-                    //     if (CharToType[*(this + dir[i])] == TYPE_ROCK)
-                    //         *(this + dir[i]) = CH_DOGE;
-                    // }
-
-
                     if ((getRandom32() & 0xFF) < 200) {
 
                         int moveTo = getRandom32() & 3;
-                        if (CharToType[*(this + dir[moveTo])] == TYPE_DIRT) {
-                            *(this + dir[moveTo]) = CH_EGG;
+                        int offset = boardWidth * dirY[moveTo] + dirX[moveTo];
+                        if (CharToType[*(this + offset)] == TYPE_DIRT) {
+                            *(this + offset) = CH_EGG;
 
                             switch (moveTo) {
                                 case 1:
@@ -2973,10 +2964,10 @@ void GameScheduleProcessBoardRow() {
 
                     for (int i = 0; i < 8; i++) {
 
-                        unsigned char *where = this + dir[i];
+                        unsigned char *where = this + boardWidth * dirY[i] + dirX[i];
                         unsigned char newCh = (rnd & 3) + CH_AMOEBA0;
 
-                        if (Attribute[CharToType[(*where)&(0x7F|0x80)]] & ATT_PERMEABLE) {
+                        if (Attribute[CharToType[*where]] & ATT_PERMEABLE) {
                             amoebaGrew = 1;
 
                             int expandSpeed = millingTime ? EXPAND_SPEED : EXPAND_SPEED * 4;
@@ -3004,7 +2995,7 @@ void GameScheduleProcessBoardRow() {
 
                     for (int i = 0; i < 4; i++) {
 
-                        unsigned char *where = this + dir[i];
+                        unsigned char *where = this + boardWidth * dirY[i] + dirX[i];
                         unsigned char newCh = (rnd & 3) + CH_LAVA;
 
                         // don't allow side-by-side sameness
@@ -3029,7 +3020,7 @@ void GameScheduleProcessBoardRow() {
                     if (!(rnd & 0x300) || *this == *where)
                         *this = newCh;
 
-                    if (lastWater && CharToType[(*lastWater) & (0x7F|0x80)] == TYPE_WATER)
+                    if (lastWater && CharToType[(*lastWater)] == TYPE_WATER)
                         *lastWater = *this;
                     lastWater = this;
 
@@ -3084,7 +3075,7 @@ void GameScheduleProcessBoardRow() {
             }
 
 
-            unsigned char *next = this + 40;
+            unsigned char *next = this + boardWidth;
 
             switch (creature) {
 
@@ -3095,7 +3086,7 @@ void GameScheduleProcessBoardRow() {
                     if (drillDir) {
 
                         for (int i = 1; i <= drillHeight; i++) {
-                            *(this + i * 40) = CH_BLANK;
+                            *(this + i * boardWidth) = CH_BLANK;
                         }
 
                         int newDrillHeight = drillHeight + drillDir;
@@ -3104,7 +3095,7 @@ void GameScheduleProcessBoardRow() {
                         if (newDrillHeight > 10)
                             newDrillHeight = 10;                     
 
-                        unsigned char *dest = this + 40 * newDrillHeight;
+                        unsigned char *dest = this + boardWidth * newDrillHeight;
 
                         if (Attribute[CharToType[*dest]] & ATT_EXPLODES) {
 
@@ -3135,7 +3126,7 @@ void GameScheduleProcessBoardRow() {
 
 
                     for (int i = 1; i <= drillHeight; i++) {
-                        *(this + i * 40) = CH_DRILL;
+                        *(this + i * boardWidth) = CH_DRILL;
                     }
 
 
@@ -3156,7 +3147,7 @@ void GameScheduleProcessBoardRow() {
 
             case CH_DRIP:
 
-                doge = CH_BLANK;
+//??                doge = CH_BLANK;
 
 #define DRIP_END 14
 #define DRIP_END2 24
@@ -3171,12 +3162,12 @@ void GameScheduleProcessBoardRow() {
                 if (AnimIdx[TYPE_DRIP].index == DRIP_END
                     || AnimIdx[TYPE_DRIP].index == DRIP_END2) {
 
-                    if (!(Attribute[CharToType[*(this+40) & (0x7F|0x80)]] & ATT_BLANK)) {
+                    if (!(Attribute[CharToType[*(this + boardWidth)]] & ATT_BLANK)) {
                         *this = CH_DRIPX;
                         AnimIdx[TYPE_DRIP_SPLASH].index = -2;
                         AnimIdx[TYPE_DRIP_SPLASH].count = 0;
 
-                        if (CharToType[*(this + 40)] == TYPE_ROCKFORD) {
+                        if (CharToType[*(this + boardWidth)] == TYPE_ROCKFORD) {
                             setAnimation(ID_DRIP + (getRandom32() & 1));
                             AddAudio(SFX_DRIP);
                         }
@@ -3187,7 +3178,7 @@ void GameScheduleProcessBoardRow() {
                                                 
                     else {                          
                         *this = CH_BLANK;
-                        *(this+40) = CH_DRIP;
+                        *(this + boardWidth) = CH_DRIP;
                         AnimIdx[TYPE_DRIP].index = DRIP_END + 2;
                         AnimIdx[TYPE_DRIP].count = 0;
                         dripFree = false;
@@ -3296,7 +3287,7 @@ void GameScheduleProcessBoardRow() {
 
                     if (CharToType[*(this-1)] == TYPE_ROCK 
                         || CharToType[*(this+1)] == TYPE_ROCK
-                        || CharToType[*(this-40)] == TYPE_ROCK) {
+                        || CharToType[*(this - boardWidth)] == TYPE_ROCK) {
                         // attached!
                         *this = CH_BOULDER_SHAKE;
                         break;
@@ -3326,7 +3317,7 @@ void GameScheduleProcessBoardRow() {
                     
 //                        *next = (creature + 2) ; // | FLAG_THISFRAME;       // falling, scanned this frame
 
-                    int typeDown = CharToType[*(next+40)];
+                    int typeDown = CharToType[*(next + boardWidth)];
                     int att = Attribute[typeDown];
                     if (!(att & ATT_NOROCKNOISE)) {
                         if (att & ATT_HARD)
@@ -3361,7 +3352,7 @@ void GameScheduleProcessBoardRow() {
 
 
 
-                    _DOWN = CharToType[(*(next+40))];
+                    _DOWN = CharToType[*(next + boardWidth)];
                     int att = Attribute[_DOWN];
                     if (_DOWN != TYPE_BOULDER_FALLING && !(att & ATT_NOROCKNOISE)) {
                         if (creature == CH_BOULDER_FALLING) {
@@ -3373,7 +3364,7 @@ void GameScheduleProcessBoardRow() {
 
                         if (!blanker && type == TYPE_BOULDER_FALLING) {
 
-                            unsigned char *dL = this + 40 - 1;
+                            unsigned char *dL = this + boardWidth - 1;
                             unsigned char *dR = dL + 2;
 
                             if (!CharToType[*dR])

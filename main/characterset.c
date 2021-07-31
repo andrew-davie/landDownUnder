@@ -5,7 +5,7 @@
 
 
 
-static const unsigned char CHAR_BLANK[] = {
+const unsigned char CHAR_BLANK[] = {
 
 __  ____     // 00
 __  ____     // 01
@@ -1045,7 +1045,7 @@ __    ____
     XXX_  
     XXX_  
     XXX_  
-    ____  
+    XXX_  
     ____  
     ____  
     ____  
@@ -1072,10 +1072,10 @@ __    _X__
     XXX_  
     XXX_  
     XXX_  
+    XXX_  
     _X__  
     _X__  
     _X__  
-    ____  
     ____  
     ____  
     ____  
@@ -1101,10 +1101,10 @@ __    XXX_
     XXX_  
     XXX_  
     XXX_  
+    XXX_  
     _X__  
     _X__  
     _X__  
-    ____  
     ____  
     ____  
 
@@ -2921,19 +2921,17 @@ const char AnimBoulderShake[] = {
 
 const char AnimDogeCoin[] = {
     
-    CH_DOGE,8,
-    CH_DOGE_PULSE_1,6,
-    CH_DOGE_PULSE_2,4,
-    CH_DOGE_PULSE_3,3,
-    CH_DOGE_PULSE_4,3,
-    CH_DOGE_PULSE_5,4,
-    CH_DOGE,8,
-    CH_DOGE_PULSE_5,4,
-    CH_DOGE_PULSE_4,3,
-    CH_DOGE_PULSE_3,3,
-    CH_DOGE_PULSE_2,4,
-    CH_DOGE_PULSE_1,6,
-    CH_DOGE,8,
+    CH_DOGE,10,
+    CH_DOGE_PULSE_1,8,
+    CH_DOGE_PULSE_2,6,
+    CH_DOGE_PULSE_3,6,
+    CH_DOGE_PULSE_4,8,
+    CH_DOGE_PULSE_5,10,
+    CH_DOGE_PULSE_4,8,
+    CH_DOGE_PULSE_3,6,
+    CH_DOGE_PULSE_2,6,
+    CH_DOGE_PULSE_1,8,
+//    CH_DOGE,8,
     255,
 };
 

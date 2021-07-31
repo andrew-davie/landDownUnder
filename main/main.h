@@ -110,6 +110,7 @@ extern int shakeY;
 
 extern int doge;
 extern unsigned int frameToggler;
-
+extern int boardWidth;
+extern int boardHeight;
 
 #endif

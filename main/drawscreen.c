@@ -20,7 +20,7 @@ extern int targetScrollSpeed;
 extern int targetYScrollSpeed;
 
 int accel = 1536, accelY = 160*256;
-int decel = 200, decelY =200*16;
+int decel = 300, decelY =200*16;
 
 
 // duplicate from defines_cdfj.h
@@ -33,7 +33,15 @@ extern int getRandom32();
 
 #define SCROLLSPEED_MAXIMUM_X (30 << 8)
 #define SCROLL_MAXIMUM_X (30 << 16)
-#define SCROLL_MAXIMUM_Y (160 << 8)
+//#define SCROLL_MAXIMUM_Y (160 << 8)
+//#define SCROLL_MAXIMUM_Y (((24 * PIECE_DEPTH/3) - _ARENA_SCANLINES/3) << 16)
+
+//(14*PIECE_DEPTH/3-2)<<16
+
+#define SCROLLSPEED_MAXIMUM_Y (300 << 8)
+#define SCROLL_MAXIMUM_Y (95 << 16)
+//^^^ this will change to calc based on boardHeight
+
 #define SCROLL_MINIMUM 0
 
 #define SCROLLEDGER 6
@@ -43,7 +51,6 @@ extern int getRandom32();
 void Scroll() {
 
     int rocky = rockfordX * PIXELS_PER_CHAR + (PIXELS_PER_CHAR >> 1);
-    doge = rocky;
     int halfway = (scrollX >> 14) + HALFWAYX;
 
     if ((halfway - SCROLLEDGER)- rocky > 0)
@@ -51,13 +58,14 @@ void Scroll() {
     else if (rocky - (halfway + SCROLLEDGER) > 0)
         targetScrollSpeed = SCROLLSPEED_MAXIMUM_X;
 
-    rocky = rockfordY * TRILINES + (TRILINES >> 1);
-    halfway = (scrollY >> 16) + HALFWAYY;
+    rocky = rockfordY * TRILINES /*+ (TRILINES >> 1)*/;
+    halfway = (scrollY >> 16) + (_ARENA_SCANLINES - SCORE_SCANLINES) / 6; // + HALFWAYY;
 
     if ((halfway - SCROLLEDGERY) - rocky > 0)
-        targetYScrollSpeed = -SCROLL_MAXIMUM_Y;
+        targetYScrollSpeed = -SCROLLSPEED_MAXIMUM_Y;
     else if (rocky - (halfway + SCROLLEDGERY) > 0)
-        targetYScrollSpeed = SCROLL_MAXIMUM_Y;
+        targetYScrollSpeed = SCROLLSPEED_MAXIMUM_Y;
+
 
 
     if (scrollSpeed < targetScrollSpeed) {
@@ -83,10 +91,12 @@ void Scroll() {
             scrollYSpeed = targetYScrollSpeed;
     }
 
+    int maxX = (boardWidth - 10) << 16;
+
 
     scrollX += scrollSpeed;
-    if (scrollX > SCROLL_MAXIMUM_X) {
-        scrollX = SCROLL_MAXIMUM_X;
+    if (scrollX > maxX) {
+        scrollX = maxX;
         targetScrollSpeed = 0;
         scrollSpeed = 0;
     }
@@ -99,11 +109,12 @@ void Scroll() {
 
 
     scrollY += scrollYSpeed;
-    if (scrollY > (14*PIECE_DEPTH/3-2)<<16) {
-        scrollY = ((14*PIECE_DEPTH/3-2)<<16);
+    if (scrollY > SCROLL_MAXIMUM_Y) {
+        scrollY = SCROLL_MAXIMUM_Y;
         scrollYSpeed = 0;
         targetYScrollSpeed = 0;
     }
+
 
     if (scrollY < SCROLL_MINIMUM) {
         scrollY = SCROLL_MINIMUM;
@@ -500,7 +511,7 @@ extern const unsigned char DUST3[];
         for (int row = startRow; scanline < SCANLINES; row++) {
 
             int xOffset = (half * 5) + frac;
-            unsigned char *xchar = RAM + _BOARD + ((row +1 )* 40) + xOffset;
+            unsigned char *xchar = RAM + _BOARD + row * boardWidth + xOffset;
             const unsigned char *image[6];
 
 
@@ -583,14 +594,23 @@ void drawOverviewScreen() {
     // The following draws the screen!
 
     const unsigned char *img[40];
-    unsigned char *p = RAM + _BOARD + partStart[part] * 40 + 40;
+    for (int i = 0; i < 40; i++)
+        img[i] = &CHAR_BLANK;
 
-    for (int row = partStart[part]; row < partStart[part+1]; row++) {
-        for (int i=0; i< 40; i++) {
+    int scanline = 0;
+    for (int row = partStart[part]; /*scanline < _ARENA_SCANLINES &&*/ row < partStart[part+1]; row++) {
+
+
+        unsigned char *p = RAM + _BOARD + row * boardWidth;
+
+        for (int i = 0; i < boardWidth && i < 40; i++) {
 
             unsigned char p2 = *p;
-
             unsigned char type = CharToType[p2];
+
+            if (i >= boardWidth)
+                type = CH_BLANK;
+
 
             switch (type) {
             case TYPE_AMOEBA: {
@@ -628,7 +648,7 @@ void drawOverviewScreen() {
         int shift = 7 - ((row + 1) & 1);
         int shift2 = shift - 1;
 
-        for (int iccLine=0; iccLine < 9; iccLine++) {
+        for (int iccLine=0; iccLine < 9 /*&& scanline < _ARENA_SCANLINES;*/; scanline++, iccLine++) {
 
             *ppf = (((*img[0]++ >> 6) & 1) << 4)
                 | (((*img[1]++ >> 7) & 1) << 5)

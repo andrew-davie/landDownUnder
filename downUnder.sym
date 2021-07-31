@@ -1,5 +1,4 @@
 --- Symbol List (sorted by symbol)
-//_UNCOVER               03d0                  
 0.ag2                    f0d2              (R )
 0.confirmFlashed         f07e              (R )
 0.done                   f084              (R )
@@ -17,25 +16,31 @@ _BLUE                    0080
 _BLUE2                   0090                  
 _BOARD                   0010                  
 _BROWN                   0030                  
-_BUF_AUDC                0f24                  
-_BUF_AUDF                0f26                  
-_BUF_AUDV                0f22                  
-_BUF_COLUBK              082c                  
-_BUF_COLUP0              05da                  
-_BUF_COLUP1              06a0                  
-_BUF_COLUPF              0766                  
-_BUF_GRP0A               0d96                  
-_BUF_GRP1A               0e5c                  
-_BUF_JUMP1               044c                  
-_BUF_JUMP1_EXIT          05d8                  
-_BUF_PF0_LEFT            08f2                  
-_BUF_PF0_RIGHT           0b44                  
-_BUF_PF1_LEFT            09b8                  
-_BUF_PF1_RIGHT           0c0a                  
-_BUF_PF2_LEFT            0a7e                  
-_BUF_PF2_RIGHT           0cd0                  
-_BUFFER_BLOCK_SIZE       0948                  
-_BUFFERS                 05da              (R )
+_BUF_AUDC                0f76                  
+_BUF_AUDF                0f78                  
+_BUF_AUDV                0f74                  
+_BUF_BUF_1_PF0_LEFT      0b96                  
+_BUF_BUF_1_PF0_RIGHT     0de8                  
+_BUF_BUF_1_PF1_LEFT      0c5c                  
+_BUF_BUF_1_PF1_RIGHT     0eae                  
+_BUF_BUF_1_PF2_LEFT      0d22                  
+_BUF_BUF_1_PF2_RIGHT     0f74                  
+_BUF_COLUBK              062c                  
+_BUF_COLUP0              0d22                  
+_BUF_COLUP1              0de8                  
+_BUF_COLUPF              0566                  
+_BUF_GRP0A               0b96                  
+_BUF_GRP1A               0c5c                  
+_BUF_JUMP1               03d8                  
+_BUF_JUMP1_EXIT          0564                  
+_BUF_PF0_LEFT            06f2                  
+_BUF_PF0_RIGHT           0944                  
+_BUF_PF1_LEFT            07b8                  
+_BUF_PF1_RIGHT           0a0a                  
+_BUF_PF2_LEFT            087e                  
+_BUF_PF2_RIGHT           0ad0                  
+_BUFFER_BLOCK_SIZE       0a0e                  
+_BUFFERS                 0566              (R )
 _CYAN                    00b0                  
 _DS_AUDC0                000f              (R )
 _DS_AUDF0                0010              (R )
@@ -58,8 +63,8 @@ _DS_SPLASH_P0R           0002
 _DS_SPLASH_P1L           0001                  
 _DS_SPLASH_P1R           0003                  
 _DS_TO_ARM               0000              (R )
-_EVERY_FRAME_ZERO_COUNT  0000                  
-_EVERY_FRAME_ZERO_START  0f28              (R )
+_EVERY_FRAME_ZERO_COUNT  0002                  
+_EVERY_FRAME_ZERO_START  0f7a              (R )
 _EXIT_KERNEL             f17f                  
 _FN_GAME_IDLE            0007              (R )
 _FN_GAME_OS              0001              (R )
@@ -90,6 +95,7 @@ _RUN_FUNC                0000
 _SWCHA                   0001                  
 _SWCHB                   0002                  
 _TURQUOISE               00a0                  
+_UNCOVER                 03d0                  
 _VB_TIME                 0005                  
 _VIOLET                  0060                  
 _WHITE                   000e                  
@@ -107,7 +113,8 @@ AUDIOMUSIC               00f0
 AUDIOSAMPLE              0000                  
 AUDV0                    0019              (R )
 AUDV1                    001a              (R )
-BUFN                     000c                  
+BSIZE                    000d              (R )
+BUFN                     0000                  
 CallArmCode              f019              (R )
 CALLFN                   1ff3              (R )
 CDF_BASE_ADDRESS         1ff0              (R )
@@ -197,7 +204,7 @@ NO_ILLEGAL_OPCODES       0000 ????         (R )
 NUSIZ0                   0004                  
 NUSIZ1                   0005                  
 OS_TIM64T                0014              (R )
-OverlapDisplayDataRam    0f28              (R )
+OverlapDisplayDataRam    0f7a              (R )
 OverScan                 f0b1              (R )
 PF0                      000d              (R )
 PF1                      000e              (R )

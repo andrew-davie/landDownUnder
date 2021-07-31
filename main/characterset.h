@@ -28,6 +28,7 @@
 #define CHAR_ALLOC (PIECE_DEPTH + 9 + 9)
 
 extern const unsigned char (*charSet[])[];
+extern const unsigned char CHAR_BLANK[];
 
 struct offset {
     unsigned char x;

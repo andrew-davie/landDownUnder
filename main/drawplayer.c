@@ -25,17 +25,16 @@ int lastPlayerSpriteY = -1;
 
 void removeSprite() {
 
-    // remove previous sprite
+    if (lastPlayerSpriteY >= 0 && lastPlayerSpriteY < _ARENA_SCANLINES - SPRITE_DEPTH) {
 
-    unsigned char *p0 = RAM + _BUF_GRP0A + lastPlayerSpriteY;
-    unsigned char *p1 = RAM + _BUF_GRP1A + lastPlayerSpriteY;
+        unsigned char *p0 = RAM + _BUF_GRP0A + lastPlayerSpriteY;
+        unsigned char *p1 = RAM + _BUF_GRP1A + lastPlayerSpriteY;
 
-    if (lastPlayerSpriteY >= 0)
         for (int i=0; i < SPRITE_DEPTH; i++) {
             *p0++ = 0;
             *p1++ = 0;
+        }
     }
-
 }
 
 extern int scrollX;
@@ -69,25 +68,32 @@ void drawPlayerSprite() {
     updateAnimation();
 
 
-    if ( xpos >= 0 && xpos < 160
-        && ypos >= 0 && ypos < _ARENA_SCANLINES-PIECE_DEPTH) {
 
+
+    if ( xpos >= 0 && xpos < 160) {
+
+        int drawLines = SPRITE_DEPTH;
+        if (_ARENA_SCANLINES - SPRITE_DEPTH < SPRITE_DEPTH)
+            drawLines = _ARENA_SCANLINES - SPRITE_DEPTH;
 
         const signed char *spr = playerBigSprite[*playerAnimation];
         int frameOffset = *spr++;
         int frameYOffset = *spr++;
     
-        lastPlayerSpriteY = ypos + frameYOffset - 1;
+        lastPlayerSpriteY = ypos + frameYOffset /*- 1*/;
 
-        unsigned char *p0Colour = RAM + _BUF_COLUP0 + lastPlayerSpriteY-1;
-        unsigned char *p1Colour = RAM + _BUF_COLUP1 + lastPlayerSpriteY-1;
+        if (lastPlayerSpriteY < 0 || lastPlayerSpriteY >= _ARENA_SCANLINES - SPRITE_DEPTH)
+            return;
+
+        unsigned char *p0Colour = RAM + _BUF_COLUP0 + lastPlayerSpriteY/*-1*/;
+        unsigned char *p1Colour = RAM + _BUF_COLUP1 + lastPlayerSpriteY/*-1*/;
 
         unsigned char *p0 = RAM + _BUF_GRP0A + lastPlayerSpriteY;
         unsigned char *p1 = RAM + _BUF_GRP1A + lastPlayerSpriteY;
 
 
         if (rockfordDirection == RIGHT) {
-            for (int line = 0; line < SPRITE_DEPTH; line++) {
+            for (int line = 0; line < drawLines; line++) {
                 *p0++ = *spr++;
                 *p1++ = *spr++;
                 *p0Colour++ = ColourConvert(*spr++);
@@ -102,7 +108,7 @@ void drawPlayerSprite() {
 
         }
         else {
-            for (int line = 0; line < SPRITE_DEPTH; line++) {
+            for (int line = 0; line < drawLines; line++) {
                 *p0++ = BitRev[(unsigned char)*spr++];
                 *p1++ = BitRev[(unsigned char)*spr++];
                 *p0Colour++ = ColourConvert(*spr++);
