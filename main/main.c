@@ -117,10 +117,15 @@ int shakeTime;
 #endif
 
 #if ENABLE_PARALLAX
-#define CHAR_SIZE (PIECE_DEPTH + 9 + 9)
+#define CHAR_SIZE (PIECE_DEPTH)
 
 unsigned char parallaxBlank[CHAR_SIZE];
 unsigned char charDust3[CHAR_SIZE];
+unsigned char charDrip[CHAR_SIZE];
+unsigned char charDrip1[CHAR_SIZE];
+unsigned char charDrip2[CHAR_SIZE];
+unsigned char charDrip3[CHAR_SIZE];
+unsigned char charDripX[CHAR_SIZE];
 
 
 unsigned char spaceToggle[40];
@@ -131,7 +136,7 @@ unsigned char spaceToggleDisplayed[40];
 
 bool thisFrame[2][40];
 
-
+unsigned int boardWidth = 40;
 
 
 void setAnimation(int animID);
@@ -609,7 +614,7 @@ void InitGameX() {
 
 #if ENABLE_PARALLAX
 
-    for (int i = 0; i < 40; i++) {
+    for (int i = 0; i < boardWidth; i++) {
         spaceToggle[i] = 99;
         spaceToggleDisplayed[i] = 99;
     }
@@ -736,9 +741,6 @@ extern int rinc;
 
     forceScoreDraw = SCOREVISIBLETIME;
 
-    // for (int i = 0; i < (40*24)/8; i++)
-    //     RAM[_UNCOVER + i] = 0xFF;
-
     for (int i = 0; i < TYPE_MAX; i++) {
         AnimIdx[i].index = -2;
         AnimIdx[i].count = 0;
@@ -840,15 +842,15 @@ void formLandscape(){
         int offset = (((getRandom32() & 0xFF) * 3) >> 8) - 1;
         horizon += offset;
 
-        if (horizon < 1) 
-            horizon = 1;
+        if (horizon < 5) 
+            horizon = 5;
 
-        if (horizon > 22)
-            horizon = 22;
+        if (horizon > 20)
+            horizon = 20;
 
 
         for (int j = 1; j < horizon; j++)
-            setChar(i,j, CH_BLANK_PARALLAX);
+            setChar(i,j, CH_BLANK_SKY);
 
 
     }
@@ -3093,7 +3095,7 @@ void GameScheduleProcessBoardRow() {
                     if (drillDir) {
 
                         for (int i = 1; i <= drillHeight; i++) {
-                            *(this + i * 40) = CH_BLANK_ALTERNATE_3;
+                            *(this + i * 40) = CH_BLANK;
                         }
 
                         int newDrillHeight = drillHeight + drillDir;
@@ -3545,205 +3547,6 @@ void GameScheduleProcessBoardRow() {
 //     CH_DIRT3,20,
 //     255,
 // };
-
-
-
-const char AnimPreOut[] = {
-    CH_DOORCLOSED,255,
-};
-
-const char AnimFlashOut[] = {
-
-    CH_DOOROPEN_0,20,
-    CH_DOOROPEN_1,20,
-//    CH_BLANK,254,
-    255
-};
-
-
-const char AnimBoulderShake[] = {
-    CH_BOULDER_SHAKE,3,
-    CH_ROCK0,3,
-    255
-};
-
-
-const char AnimDogeCoin[] = {
-    
-    CH_DOGE,8,
-    CH_DOGE_PULSE_1,6,
-    CH_DOGE_PULSE_2,4,
-    CH_DOGE_PULSE_3,3,
-    CH_DOGE_PULSE_4,3,
-    CH_DOGE_PULSE_5,4,
-    CH_DOGE,8,
-    CH_DOGE_PULSE_5,4,
-    CH_DOGE_PULSE_4,3,
-    CH_DOGE_PULSE_3,3,
-    CH_DOGE_PULSE_2,4,
-    CH_DOGE_PULSE_1,6,
-    CH_DOGE,8,
-    255,
-};
-
-
-const char AnimEgg[] = {
-    CH_EGG, 30,
-    CH_EGG2, 20,
-    255,
-};
-
-
-const char AnimZzapUP[] = {
-    CH_ZZAP, 14,
-    CH_ZZAP2, 14,
-    CH_ZZAP1, 14,
-    255,
-};
-
-const char AnimZzapDOWN[] = {
-    CH_ZZAP1, 8,
-    CH_ZZAP2, 8,
-    CH_ZZAP, 8,
-    255,
-};
-
-const char AnimDrill[] = {
-    CH_DRILL2, 8,
-    CH_DRILL1, 8,
-    CH_DRILL, 8,
-    255,
-};
-
-
-
-const char AnimRockford[] = {
-
-    CH_DUST, 8,
-    CH_DUST2, 8,
-    CH_DUST3, 8,
-    CH_ROCKFORD,255,
-
-    CH_DOGE, 3,
-    CH_DOGE_GRAB,5,
-    CH_ROCKFORD,255,
-
-};
-
-const char AnimDrip[] = {
-    CH_DRIP, 3,
-    CH_BLANK_ALTERNATE_3, 3,
-    CH_DRIP, 3,
-    CH_BLANK_ALTERNATE_3, 3,
-    CH_DRIP, 22,
-
-    CH_DRIP1, 6,
-    CH_DRIP2, 5,
-    CH_DRIP3, 3,
-    CH_DRIP3, 1,
-
-    CH_DRIP1, 4,
-    CH_DRIP2, 4,
-    CH_DRIP3, 3,
-    CH_DRIP3, 255
-};
-
-const char AnimDripSplash[] = {
-    CH_DRIPX, 4,
-    CH_BLANK_ALTERNATE_3, 2,
-    CH_DRIPX, 1,
-    CH_BLANK_ALTERNATE_3, 255,
-};
-
-
-const char AnimBlank[] = {
-    CH_BLANK, 255,
-};
-
-const char AnimBelt[] = {
-
-    CH_BELT, 5,
-    CH_BELT1, 5,
-    CH_BELT2, 5,
-    CH_BELT3, 5,
-    255,
-};
-
-const char AnimBelt2[] = {
-
-    CH_BELT3, 9,
-    CH_BELT2, 9,
-    CH_BELT1, 9,
-    CH_BELT, 9,
-    255,
-};
-
-
-
-const char (*Animate[TYPE_MAX])[] = {
-
-    // indexed by object TYPE
-    // 0 if the object does not animate
-
-    0,                          // 00 BLANK_PARALLAX
-    &AnimBlank,                 // 01 BLANK
-    0,                          // 02 DIRT            
-    0,                          // 03 BRICKWALL       
-    &AnimPreOut,                // 04 OUTBOX_PRE      
-    &AnimFlashOut,              // 05 OUTBOX          
-    0,                          // 06 BOULDER_FALLING 
-    0,                          // 07 STEELWALL       
-    0,                          // 08 BOULDER         
-    &AnimDogeCoin,              // 09 DOGE            
-    0,                          // 10 EXPLODE_SPACE_0 
-    0,                          // 11 EXPLODE_SPACE_1 
-    0,                          // 12 EXPLODE_SPACE_2 
-    0,                          // 13 EXPLODE_SPACE_3 
-    0,                          // 14 EXPLODE_SPACE_4 
-    0,                          // 15 EXPLODE_DOGE_0  
-    0,                          // 16 EXPLODE_DOGE_1  
-    0,                          // 17 EXPLODE_DOGE_2  
-    0,                          // 18 EXPLODE_DOGE_3  
-    0,                          // 19 EXPLODE_DOGE_4  
-    0,                          // 20 ROCKFORD_PRE    
-    &AnimRockford,              // 21 ROCKFORD        
-    0,                          // 22 AMOEBA          
-    &AnimDrip,                  // 23 DRIP            
-    &AnimDripSplash,            // 24 DRIP_SPLASH     
-    0,                          // 25 __NOTHING       
-    0,                          // 26 EXPLODE_THIS    
-    0,                          // 27 BLANK_THIS      
-    0,                          // 28 DIRT3           
-    0,                          // 29 DIRT2           
-    0,                          // 30 EXPLODE_BLANK_0 
-    0,                          // 31 EXPLODE_BLANK_1 
-    0,                          // 32 EXPLODE_BLANK_2 
-    0,                          // 33 EXPLODE_BLANK_3 
-    0,                          // 34 EXPLODE_BLANK_4 
-    0,                          // 35 DOGE_GRAB       
-    0,                          // 36 DIRT_GRAB       
-    0,                          // 37 DUST            
-    0,                          // 38 DUST2           
-    0,                          // 39 DUST3           
-    &AnimBoulderShake,          // 40 BOULDER_SHAKE   
-    0,                          // 41 DUST_LEFT       
-    0,                          // 42 DUST2_LEFT      
-    0,                          // 43 DUST3_LEFT      
-    0,                          // 44 DUST_RIGHT      
-    0,                          // 45 DUST2_RIGHT     
-    0,                          // 46 DUST3_RIGHT     
-    0,                          // 47 LAVA            
-    0,                          // 48 WATER           
-    &AnimEgg,                   // 49 EGG             
-    &AnimZzapUP,                // 50 ZZAP            
-    &AnimZzapDOWN,              // 51 ZZAP1           
-    0,                          // 52 ROCK            
-    &AnimDrill,                 // 53 DRILL
-    0,                          // 54 DRILLBODY           
-    &AnimBelt,                  // 55 BELT
-    &AnimBelt2,                 // 56 BELT2
-};
-
 
 
 

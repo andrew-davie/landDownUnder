@@ -41,8 +41,8 @@ enum ChName {
     // +---> charSet[] @ characterset.c
     // +---> CharToType[] (below)
 
-    CH_BLANK_PARALLAX,              // 000
-    CH_BLANK,                       // 001
+    CH_BLANK,                       // 000
+    CH_BLANK_SKY,                   // 001
     CH_BRICKWALL,                   // 002
     CH_DOORCLOSED,                  // 003
     CH_DOOROPEN_0,                  // 004
@@ -53,106 +53,123 @@ enum ChName {
     CH_BOULDER_FALLING,             // 009
     CH_DOGE_FALLING,                // 010
     CH_DOGE_4,                      // 011
-    CH_BLANK_ALTERNATE_3,           // 012
-    CH_EXPLODETODOGE0,              // 013
-    CH_EXPLODETODOGE1,              // 014
-    CH_EXPLODETODOGE2,              // 015
-    CH_EXPLODETODOGE3,              // 016
-    CH_EXPLODETODOGE4,              // 017
-    CH_ROCKYa,                      // 018
-    CH_ROCKYb,                      // 019
-    CH_ROCKYc,                      // 020
-    CH_ROCKYd,                      // 021
-    CH_xxROCKFORD,                  // 022
-    CH_xxROCKFORD_THIS,             // 023
-    CH_AMOEBA0,                     // 024
-    CH_AMOEBA1,                     // 025
-    CH_AMOEBA2,                     // 026
-    CH_AMOEBA3,                     // 027
-    CH_ZZAP,                        // 028
-    CH_DOGE,                        // 029
-    CH_DOGE_PULSE_1,                // 030
-    CH_DOGE_PULSE_2,                // 031
-    CH_DOGE_PULSE_3,                // 032
-    CH_DOGE_PULSE_4,                // 033
-    CH_DOGE_PULSE_5,                // 034
-    CH_EXPLODETOBLANK0,             // 035
-    CH_EXPLODETOBLANK1,             // 036
-    CH_EXPLODETOBLANK2,             // 037
-    CH_EXPLODETOBLANK3,             // 038
-    CH_EXPLODETOBLANK4,             // 039
-    CH_DOGE_GRAB,                   // 040
-    CH_DIRT_GRAB,                   // 041
-    CH_DUST,                        // 042
-    CH_DUST2,                       // 043
-    CH_DUST3,                       // 044
-    CH_BOULDER_SHAKE,               // 045
-    CH_DUST_LEFT,                   // 046
-    CH_DUST2_LEFT,                  // 047
-    CH_DUST3_LEFT,                  // 048
-    CH_DUST_RIGHT,                  // 049
-    CH_DUST2_RIGHT,                 // 050
-    CH_DUST3_RIGHT,                 // 051
-    CH_LAVA,                        // 052
-    CH_LAVA1,                       // 053
-    CH_LAVA2,                       // 054
-    CH_LAVA3,                       // 055
-    CH_WATER,                       // 056
-    CH_WATER1,                      // 057
-    CH_WATER2,                      // 058
-    CH_WATER3,                      // 059
-    CH_EGG2,                        // 060
-    CH_ROCKFORD,                    // 061
-    CH_ROCKFORD_THIS,               // 062
-    CH_DRIP,                        // 063
-    CH_DRIP1,                       // 064
-    CH_DRIP2,                       // 065
-    CH_DRIP3,                       // 066
-    CH_DRIPX,                       // 067
-    CH_DIRT,                        // 068
-    CH_DIRT1,                       // 069
-    CH_DIRT2,                       // 070
-    CH_DIRT3,                       // 071
-    CH_DIRT4,                       // 072
-    CH_DIRT5,                       // 073
-    CH_DIRT6,                       // 074
-    CH_DIRT7,                       // 075
-    CH_DIRT8,                       // 076
-    CH_DIRT9,                       // 077
-    CH_DIRTA,                       // 078
-    CH_DIRTB,                       // 079
-    CH_DIRTC,                       // 080
-    CH_DIRTD,                       // 081
-    CH_DIRTE,                       // 082
-    CH_DIRTF,                       // 083
-    CH_RUBBLE,                      // 084
-    CH_RUBBLE1,                     // 085
-    CH_ZZAP2,                       // 086
-    CH_ROCK0,                       // 087
-    CH_ROCK1,                       // 088
-    CH_ROCK2,                       // 089
-    CH_ROCK3,                       // 090
-    CH_ROCK4,                       // 091
-    CH_ROCK5,                       // 092
-    CH_ROCK6,                       // 093
-    CH_ROCK7,                       // 094
-    CH_ROCK8,                       // 095
-    CH_ROCK9,                       // 096
-    CH_ROCKA,                       // 097
-    CH_ROCKB,                       // 098
-    CH_ROCKC,                       // 099
-    CH_ROCKD,                       // 100
-    CH_ROCKE,                       // 101
-    CH_ROCKF,                       // 102
-    CH_DRILL,                       // 103
-    CH_DRILL1,                      // 104
-    CH_DRILL2,                      // 105
-    CH_DRILLBODY,                   // 106
-    CH_DRILLBODY1,                  // 107
-    CH_BELT,                        // 108
-    CH_BELT1,                       // 109
-    CH_BELT2,                       // 110
-    CH_BELT3,                       // 111
+
+    CH_EXPLODETODOGE0,              // 012 --+ EXPLODE -> DOGE
+    CH_EXPLODETODOGE1,              // 013  X|
+    CH_EXPLODETODOGE2,              // 014  X|
+    CH_EXPLODETODOGE3,              // 015  X|
+    CH_EXPLODETODOGE4,              // 016 --+
+
+    CH_ROCKYa,                      // 017
+    CH_ROCKYb,                      // 018
+    CH_ROCKYc,                      // 019
+    CH_ROCKYd,                      // 020
+    CH_xxROCKFORD,                  // 021
+    CH_xxROCKFORD_THIS,             // 022
+
+    CH_AMOEBA0,                     // 023 --+ AMOEBA
+    CH_AMOEBA1,                     // 024  X|
+    CH_AMOEBA2,                     // 025  X|
+    CH_AMOEBA3,                     // 026 --+
+
+    CH_ZZAP,                        // 027
+
+    CH_DOGE,                        // 028 --+ DOGE COIN
+    CH_DOGE_PULSE_1,                // 029  X|
+    CH_DOGE_PULSE_2,                // 030  X|
+    CH_DOGE_PULSE_3,                // 031  X|
+    CH_DOGE_PULSE_4,                // 032  X|
+    CH_DOGE_PULSE_5,                // 033 --+
+
+    CH_EXPLODETOBLANK0,             // 034 --+ EXPLODE -> BLANK
+    CH_EXPLODETOBLANK1,             // 035  X|
+    CH_EXPLODETOBLANK2,             // 036  X|
+    CH_EXPLODETOBLANK3,             // 037  X|
+    CH_EXPLODETOBLANK4,             // 038 --+
+
+    CH_DOGE_GRAB,                   // 039
+    CH_DIRT_GRAB,                   // 040
+
+    CH_DUST,                        // 041 --+ DIG DUST
+    CH_DUST2,                       // 042  X|
+    CH_DUST3,                       // 043  X|
+    CH_BOULDER_SHAKE,               // 044 --+
+
+    CH_DUST_LEFT,                   // 045 --+ ROCKDUST
+    CH_DUST2_LEFT,                  // 046  X|
+    CH_DUST3_LEFT,                  // 047  X|
+    CH_DUST_RIGHT,                  // 048  X|
+    CH_DUST2_RIGHT,                 // 049  X|
+    CH_DUST3_RIGHT,                 // 050 --+
+    
+    CH_LAVA,                        // 051 --+ LAVA
+    CH_LAVA1,                       // 052  X|
+    CH_LAVA2,                       // 053  X|
+    CH_LAVA3,                       // 054 --+
+
+    CH_WATER,                       // 055 --+ WATER
+    CH_WATER1,                      // 056  X|
+    CH_WATER2,                      // 057  X|
+    CH_WATER3,                      // 058 --+
+
+    CH_EGG2,                        // 059
+    CH_ROCKFORD,                    // 060
+    CH_ROCKFORD_THIS,               // 061
+
+    CH_DRIP,                        // 062 --+ DRIP
+    CH_DRIP1,                       // 063  X|
+    CH_DRIP2,                       // 064  X|
+    CH_DRIP3,                       // 065  X|
+    CH_DRIPX,                       // 066 --+
+
+    CH_DIRT,                        // 067 --+ DIRT
+    CH_DIRT1,                       // 068  X|
+    CH_DIRT2,                       // 069  X|
+    CH_DIRT3,                       // 070  X|
+    CH_DIRT4,                       // 071  X|
+    CH_DIRT5,                       // 072  X|
+    CH_DIRT6,                       // 073  X|
+    CH_DIRT7,                       // 074  X|
+    CH_DIRT8,                       // 075  X|
+    CH_DIRT9,                       // 076  X|
+    CH_DIRTA,                       // 077  X|
+    CH_DIRTB,                       // 078  X|
+    CH_DIRTC,                       // 079  X|
+    CH_DIRTD,                       // 080  X|
+    CH_DIRTE,                       // 081  X|
+    CH_DIRTF,                       // 082 --+
+
+    CH_RUBBLE,                      // 083
+    CH_RUBBLE1,                     // 084
+    CH_ZZAP2,                       // 085
+
+    CH_ROCK0,                       // 086 --+ ROCK
+    CH_ROCK1,                       // 087  X|
+    CH_ROCK2,                       // 088  X|
+    CH_ROCK3,                       // 089  X|
+    CH_ROCK4,                       // 090  X|
+    CH_ROCK5,                       // 091  X|
+    CH_ROCK6,                       // 092  X|
+    CH_ROCK7,                       // 093  X|
+    CH_ROCK8,                       // 094  X|
+    CH_ROCK9,                       // 095  X|
+    CH_ROCKA,                       // 096  X|
+    CH_ROCKB,                       // 097  X|
+    CH_ROCKC,                       // 098  X|
+    CH_ROCKD,                       // 099  X|
+    CH_ROCKE,                       // 100  X|
+    CH_ROCKF,                       // 101 --+
+
+    CH_DRILL,                       // 102 --+ DRILL
+    CH_DRILL1,                      // 103  X|
+    CH_DRILL2,                      // 104  X|
+    CH_DRILLBODY,                   // 105  X|
+    CH_DRILLBODY1,                  // 106 --+
+
+    CH_BELT,                        // 107 --+ CONVEYOR
+    CH_BELT1,                       // 108  X|
+    CH_BELT2,                       // 109  X|
+    CH_BELT3,                       // 110 --+
 
     CH_MAX,
 };
@@ -161,8 +178,8 @@ static const unsigned char CharToType[CH_MAX]= {
 
     // see ChName for corresponding character name/number
 
-    TYPE_BLANK_PARALLAX,            // 000 CH_BLANK_PARALLAX  
-    TYPE_BLANK,                     // 001 CH_BLANK  
+    TYPE_BLANK,                     // 000 CH_BLANK  
+    TYPE_BLANK_SKY,                 // 001 CH_BLANK_SKY
     TYPE_BRICKWALL,                 // 002 CH_BRICKWALL  
     TYPE_OUTBOX_PRE,                // 003 CH_DOORCLOSED  
     TYPE_OUTBOX,                    // 004 CH_DOOROPEN_0  
@@ -173,7 +190,6 @@ static const unsigned char CharToType[CH_MAX]= {
     TYPE_BOULDER_FALLING,           // 009 CH_BOULDER_FALLING 
     TYPE_DOGE,                      // 010 CH_DOGE_FALLING 
     TYPE_DOGE,                      // 011 CH_DOGE_4 
-    TYPE___NOTHING,                 // 012 CH_BLANK_ALTERNATE_3 
     TYPE_EXPLODE_DOGE_0,            // 013 CH_EXPLODETODOGE0 
     TYPE_EXPLODE_DOGE_1,            // 014 CH_EXPLODETODOGE1 
     TYPE_EXPLODE_DOGE_2,            // 015 CH_EXPLODETODOGE2 

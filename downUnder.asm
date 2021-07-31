@@ -774,7 +774,11 @@ _ARENA_COLOR:   ds 1
 
 
 _BOARD              ds 24*40
-//_UNCOVER            ds 24*40/8+2                ; +2 for word-align speed in clearing (C)
+
+    ; sonwehere there's a memory overflow which requires this following definition
+    ; we're overwriting _board, probably... so needs to be fixed!
+
+_UNCOVER            ds 6 ;24*40/8+2                ; +2 for word-align speed in clearing (C)
 
     align 4
 
@@ -794,18 +798,52 @@ _BUF_{1}    ds ARENA_BUFFER_SIZE
 BUFN SET BUFN + 1
     ENDM
 
-    DEFBUF COLUP0
-    DEFBUF COLUP1
-    DEFBUF COLUPF
-    DEFBUF COLUBK
-    DEFBUF PF0_LEFT
-    DEFBUF PF1_LEFT
-    DEFBUF PF2_LEFT
-    DEFBUF PF0_RIGHT
-    DEFBUF PF1_RIGHT
-    DEFBUF PF2_RIGHT
-    DEFBUF GRP0A
-    DEFBUF GRP1A
+;    DEFBUF COLUPF
+;    DEFBUF COLUBK
+;    DEFBUF PF0_LEFT
+;    DEFBUF PF1_LEFT
+;    DEFBUF PF2_LEFT
+;    DEFBUF PF0_RIGHT
+;    DEFBUF PF1_RIGHT
+;    DEFBUF PF2_RIGHT
+;    DEFBUF GRP0A
+;    DEFBUF GRP1A
+;
+;    DEFBUF COLUP0
+;    DEFBUF COLUP1
+
+BSIZE SET 0
+
+    MAC ALLOC
+_BUF_{1} = _BUFFERS + {2} * ARENA_BUFFER_SIZE
+    IF {2} > BSIZE
+BSIZE SET {2}
+    ENDIF
+    ENDM
+
+    ALLOC COLUPF, 0
+    ALLOC COLUBK, 1
+
+    ALLOC PF0_LEFT, 2
+    ALLOC PF1_LEFT, 3
+    ALLOC PF2_LEFT, 4
+    ALLOC PF0_RIGHT, 5
+    ALLOC PF1_RIGHT, 6
+    ALLOC PF2_RIGHT, 7
+
+    ALLOC GRP0A, 8
+    ALLOC GRP1A, 9
+    ALLOC COLUP0, 10
+    ALLOC COLUP1, 11
+
+    ALLOC BUF_1_PF0_LEFT, 8
+    ALLOC BUF_1_PF1_LEFT, 9
+    ALLOC BUF_1_PF2_LEFT, 10
+    ALLOC BUF_1_PF0_RIGHT, 11
+    ALLOC BUF_1_PF1_RIGHT, 12
+    ALLOC BUF_1_PF2_RIGHT, 13
+
+    ds BSIZE * ARENA_BUFFER_SIZE
 
 _BUFFER_BLOCK_SIZE = * - _BUFFERS
 

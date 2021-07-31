@@ -139,20 +139,6 @@ void Scroll() {
 }
 
 
-unsigned char screenMask[6];
-
-
-//extern int uncoverCount;
-
-unsigned int mindex = 0;
-
-
-
-
-
-
-
-
 int looneyIndex = 0;
 int looneyY = 0x400;
 
@@ -329,17 +315,16 @@ void drawScreen(){
         RAM + _BUF_PF0_RIGHT + SCORE_SCANLINES,
     };
 
-        for (int c = 0; c < 6; c++)
-            screenMask[c] = 0;
-
-
-//    Scroll();
-
 #if ENABLE_PARALLAX
 
     extern unsigned char parallaxBlank[];
     extern unsigned char charDust2[];
     extern unsigned char charDust3[];
+    extern unsigned char charDrip[];
+    extern unsigned char charDrip1[];
+    extern unsigned char charDrip2[];
+    extern unsigned char charDrip3[];
+    extern unsigned char charDripX[];
 
     const unsigned char dirtBG[] = {
 
@@ -395,10 +380,6 @@ void drawScreen(){
             parallaxBlank[i] = (dirtBG[cidx] >> offset) & 0b1111;
         }
 
-        parallaxBlank[1] |= 0xC0;
-        parallaxBlank[7] |= 0x80;
-        parallaxBlank[4] |= 0x40;
-
 
 #if ENABLE_EXTRA_SHIMMER
 // not implemented: overview part
@@ -447,11 +428,11 @@ extern const unsigned char DUST3[];
 
     for (int i=0; i < PIECE_DEPTH; i++) {
 
-        // charDrip[i] = CHAR_DRIP[i] | parallaxBlank[i];
-        // charDrip1[i] = CHAR_DRIP1[i] | parallaxBlank[i];
-        // charDrip2[i] = CHAR_DRIP2[i] | parallaxBlank[i];
-        // charDrip3[i] = CHAR_DRIP3[i] | parallaxBlank[i];
-        // charDripSplash[i] = CHAR_DRIPX[i] | parallaxBlank[i];
+         charDrip[i] = CHAR_DRIP[i] | parallaxBlank[i];
+         charDrip1[i] = CHAR_DRIP1[i] | parallaxBlank[i];
+         charDrip2[i] = CHAR_DRIP2[i] | parallaxBlank[i];
+         charDrip3[i] = CHAR_DRIP3[i] | parallaxBlank[i];
+         charDripX[i] = CHAR_DRIPX[i] | parallaxBlank[i];
         // charDogeCoin[i] = DOGEA[i] | parallaxBlank[i];
         // charDogeCoin1[i] = DOGEx1[i] | parallaxBlank[i];
         // charDogeCoin2[i] = DOGEx2[i] | parallaxBlank[i];
@@ -496,123 +477,88 @@ extern const unsigned char DUST3[];
     }
 
 
-    for (int row = startRow, scanline = 0; scanline < SCANLINES; row++) {
-
-
-        int slc = lcount;
-        int scn = scanline;
-
 #if ENABLE_SHAKE
-        int frac = (scrollX + shakeX) >> 16;
+    int frac = (scrollX + shakeX) >> 16;
 #else
-        int frac = scrollX >> 16;
+    int frac = scrollX >> 16;
 #endif
+
+    int lct = lcount;
+
+    for (int half = 0; half < 2; half++) { 
+
+        int scanline = 0;
+        lcount = lct;
+
+        unsigned char *pf0 = arenas[half];
+        unsigned char *pf1 = pf0 + _ARENA_SCANLINES;
+        unsigned char *pf2 = pf1 + _ARENA_SCANLINES;
 
 
         int rnd = 0;
 
-        for (int half = 0; half < 2; half++) { 
-
-
-            scanline = scn;
-            lcount = slc;
+        for (int row = startRow; scanline < SCANLINES; row++) {
 
             int xOffset = (half * 5) + frac;
             unsigned char *xchar = RAM + _BOARD + ((row +1 )* 40) + xOffset;
             const unsigned char *image[6];
-            // int base = row * 5 + _UNCOVER;
+
 
             for (int ch = 0; ch < 6; ch++) {
 
                 unsigned char piece = *xchar;
+                unsigned char type = CharToType[piece];
 
-                // if (uncoverCount) {
-                //     if (RAM[base + ((half * 5 + ch + frac) >> 3)] & (1 << ((half * 5 + ch + frac) & 7)))
-                //         piece =  (*Animate[TYPE_UNCOVER])[AnimIdx[TYPE_UNCOVER].index];
-                // }
+                switch (type) {
+                case TYPE_AMOEBA:
+                    if (rnd < 256)
+                        rnd = getRandom32();
+                    if (((rnd >>= 8) & 0xFF) > 255-BUBBLE_SPEED)
+                        piece = *xchar = (rnd & 3) + CH_AMOEBA0;
+                    break;
+                case TYPE_LAVA:
+                    if (rnd < 256)
+                        rnd = getRandom32();
+                    if (((rnd >>= 8) & 0xFF) > 255 - LAVA_SPEED)
+                        piece = *xchar = (rnd & 3) + CH_LAVA;
+                    break;
+                case TYPE_WATER:
+//                       if (rnd < 256)
+//                           rnd = getRandom32();
+//                       if (((rnd >>= 8) & 0xFF) > 252) //5 - WATER_SPEED)
+//                           piece = *xchar = (rnd & 3) + CH_WATER;
+                    break;
+                case TYPE_DIRT:
+                    break;
 
-                // else {
+                default:
 
-                    unsigned char type = CharToType[piece];
-
-                    switch (type) {
-//                     case TYPE_BLANK:
-
-//                         // if (sparkleTimer) {
-//                         //     if (rnd < 8)
-//                         //         rnd = getRandom32();
-//                         //     piece = ( 7 & (rnd >>= 3)) + CH_BLANK_EXTRA1;
-//                         // }
-//                         // else {
-
-//                             if (Animate[type]
-// #if ENABLE_PARALLAX
-//                              && spaceToggleDisplayed[xOffset + ch] > row
-// #endif
-//                             )
-//                                 piece = (*Animate[type])[AnimIdx[type].index];
-//                             else
-//                             {
-//                                 piece = CH_BLANK;
-//                             }
-//                             // 
-// //                        }
-//                         break;
-                    case TYPE_AMOEBA:
-                        if (rnd < 256)
-                            rnd = getRandom32();
-                        if (((rnd >>= 8) & 0xFF) > 255-BUBBLE_SPEED)
-                            piece = *xchar = (rnd & 3) + CH_AMOEBA0;
-                        break;
-                    case TYPE_LAVA:
-                        if (rnd < 256)
-                            rnd = getRandom32();
-                        if (((rnd >>= 8) & 0xFF) > 255 - LAVA_SPEED)
-                            piece = *xchar = (rnd & 3) + CH_LAVA;
-                        break;
-                    case TYPE_WATER:
- //                       if (rnd < 256)
- //                           rnd = getRandom32();
- //                       if (((rnd >>= 8) & 0xFF) > 252) //5 - WATER_SPEED)
- //                           piece = *xchar = (rnd & 3) + CH_WATER;
-                        break;
-                    case TYPE_DIRT:
-                        break;
-
-                    default:
-
-                        if (Animate[type])
-                            piece = (*Animate[type])[AnimIdx[type].index];
-                    }
-                // }
+                    if (Animate[type])
+                        piece = (*Animate[type])[AnimIdx[type].index];
+                }
 
                 image[ch] = *charSet[piece];
                 xchar++;
             }
 
-            unsigned char *pf0 = arenas[half] + scanline;
-
 
             for (int y = 0; scanline < SCANLINES && y < PIECE_DEPTH; y++) {
 
-                int p = 0;
-                for (int pix = 0, pshift=20; pix < 6; pix++, pshift -= 4)
-                    p |= ((*(image[pix])++) & 0b1111) << pshift;
-                p >>= 4-shift;
+                int p = (*image[0]++ & 0b1111) << 20
+                      | (*image[1]++ & 0b1111) << 16
+                      | (*image[2]++ & 0b1111) << 12
+                      | (*image[3]++ & 0b1111) << 8
+                      | (*image[4]++ & 0b1111) << 4
+                      | (*image[5]++ & 0b1111);
 
-                if (lcount >= 0 ) {
-                    *pf0 = ((BitRev[(p >> 16) & 0b1111]));
-                    *(pf0 + _ARENA_SCANLINES) = ((((p >> 12) & 0b1111) << 4) | (((p >> 8) & 0b1111)));
-                    *(pf0 + (_ARENA_SCANLINES << 1)) = ((
-                            BitRev[p & 0b1111] | (BitRev[(p >> 4) & 0b1111] >> 4)
-                          ));
+                p >>= 4 - shift;
 
-                    pf0++;
-
+                if (lcount++ >= 0 ) {
+                    *pf0++ = BitRev[(p >> 16) & 0b1111];
+                    *pf1++ = p >> 8;
+                    *pf2++ = BitRev[p & 0b1111] | (BitRev[(p >> 4) & 0b1111] >> 4);
                     scanline++;
                 }
-
-                lcount++;
             }
 
         }
@@ -647,17 +593,6 @@ void drawOverviewScreen() {
             unsigned char type = CharToType[p2];
 
             switch (type) {
-//             case TYPE_BLANK:
-//                 if (Animate[type]
-// #if ENABLE_PARALLAX
-//                     && spaceToggleDisplayed[i] > row
-// #endif
-//                 )
-//                     p2 = CH_BLANK;
-//                 else
-//                     p2 = CH_BLANK; //CH_DOOROPEN_1;      // anything blank but NOT CH_BLANK!
-//                 break;
-
             case TYPE_AMOEBA: {
                     unsigned int rnd = getRandom32();
                     if ((rnd & 0xFF) > (255-BUBBLE_SPEED))
@@ -744,4 +679,107 @@ void drawOverviewScreen() {
         }
     }  
 }
+
+
+
+void drawPlanet() {
+
+    unsigned char *const arenas[] = {
+        RAM + _BUF_PF0_LEFT + SCORE_SCANLINES,
+        RAM + _BUF_PF0_RIGHT + SCORE_SCANLINES,
+    };
+
+
+    int lcount = -(scrollY >>16) * 3;
+    int shift = (scrollX >> 14 ) & 3;
+
+
+    int startRow = 0;
+    while (lcount <= -PIECE_DEPTH) {
+        lcount += PIECE_DEPTH;
+        startRow++;
+    }
+
+
+    for (int row = startRow, scanline = 0; scanline < SCANLINES; row++) {
+
+
+        int slc = lcount;
+        int scn = scanline;
+        int frac = scrollX >> 16;
+        int rnd = 0;
+
+        for (int half = 0; half < 2; half++) { 
+
+
+            scanline = scn;
+            lcount = slc;
+
+            int xOffset = (half * 5) + frac;
+            unsigned char *xchar = RAM + _BOARD + ((row +1 )* 40) + xOffset;
+            const unsigned char *image[6];
+
+
+            for (int ch = 0; ch < 6; ch++) {
+
+                unsigned char piece = *xchar;
+                unsigned char type = CharToType[piece];
+
+                switch (type) {
+                case TYPE_AMOEBA:
+                    if (rnd < 256)
+                        rnd = getRandom32();
+                    if (((rnd >>= 8) & 0xFF) > 255-BUBBLE_SPEED)
+                        piece = *xchar = (rnd & 3) + CH_AMOEBA0;
+                    break;
+                case TYPE_LAVA:
+                    if (rnd < 256)
+                        rnd = getRandom32();
+                    if (((rnd >>= 8) & 0xFF) > 255 - LAVA_SPEED)
+                        piece = *xchar = (rnd & 3) + CH_LAVA;
+                    break;
+                case TYPE_DIRT:
+                    break;
+
+                default:
+
+                    if (Animate[type])
+                        piece = (*Animate[type])[AnimIdx[type].index];
+                }
+
+                image[ch] = *charSet[piece];
+                xchar++;
+            }
+
+            unsigned char *pf0 = arenas[half] + scanline;
+
+
+            for (int y = 0; scanline < SCANLINES && y < PIECE_DEPTH; y++) {
+
+                int p = 0;
+                for (int pix = 0, pshift=20; pix < 6; pix++, pshift -= 4)
+                    p |= ((*(image[pix])++) & 0b1111) << pshift;
+                p >>= 4-shift;
+
+                if (lcount >= 0 ) {
+                    *pf0 = ((BitRev[(p >> 16) & 0b1111]));
+                    *(pf0 + _ARENA_SCANLINES) = ((((p >> 12) & 0b1111) << 4) | (((p >> 8) & 0b1111)));
+                    *(pf0 + (_ARENA_SCANLINES << 1)) = ((
+                            BitRev[p & 0b1111] | (BitRev[(p >> 4) & 0b1111] >> 4)
+                          ));
+
+                    pf0++;
+
+                    scanline++;
+                }
+
+                lcount++;
+            }
+
+        }
+    }
+
+
+}
+
 

@@ -10,8 +10,8 @@ enum ObjectType {
     // +--> modify Attribute[] @ attribute.c
     // +--> modify Animate[] @ main.c
 
-    TYPE_BLANK_PARALLAX,     // 00
-    TYPE_BLANK,              // 01
+    TYPE_BLANK,              // 00          // parallax
+    TYPE_BLANK_SKY,          // 01
     TYPE_DIRT,               // 02
     TYPE_BRICKWALL,          // 03
     TYPE_OUTBOX_PRE,         // 04
