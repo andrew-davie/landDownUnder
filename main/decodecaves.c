@@ -126,12 +126,20 @@ extern int millingTime;
                     objectType theObject = acaveData[DEF_RNDOBJECT + caveDataIndex];
 
 
-                    if (theObject == CH_CRATER_BIG
-                        && x < boardWidth-1 && y < boardHeight-1) {
+                    if (theObject == CH_CRATER_BIG) {
+
+                        int x2 = x + 1;
+                        if (x2 >= boardWidth - 1)
+                            x2 = 0;
+
+                        int y2 = y + 1;
+                        if (y2 >= boardHeight - 1)
+                            y2 = 0;
+
                         StoreObject(x, y, theObject);
-                        StoreObject(x+1, y, theObject+1);
-                        StoreObject(x, y+1, theObject+2);
-                        StoreObject(x+1, y+1, theObject+3);
+                        StoreObject(x2, y, theObject+1);
+                        StoreObject(x, y2, theObject+2);
+                        StoreObject(x2, y2, theObject+3);
                     }
 
                     else
