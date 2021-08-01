@@ -568,7 +568,7 @@ void drawBitmap(const unsigned char *bmp, int x, int y, bool relativeToScreen) {
 
             for (int ssl = 0; ssl < 3; ssl++)
                 for (int i = 0; i < 6; i++) {
-                    unsigned char *screen = RAM + _BUF_PF0_LEFT + i * _ARENA_SCANLINES + scanline + ssl;
+                    unsigned char *screen = RAM + buf[0][i] /*_BUF_PF0_LEFT + i * _ARENA_SCANLINES*/ + scanline + ssl;
                     *screen = ((*screen) & masker[i]) | pf[ssl][i];
                 }
 

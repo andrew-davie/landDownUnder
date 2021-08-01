@@ -773,6 +773,9 @@ _ARENA_COLOR:   ds 1
                         ; 4 byte aligned 
 
 
+_BUF_JUMP1:         ds _ARENA_SCANLINES * 2         ; long-word align!!
+_BUF_JUMP1_EXIT:    ds 2
+
 _BOARD              ds 24*40
 
     ; sonwehere there's a memory overflow which requires this following definition
@@ -782,8 +785,6 @@ _UNCOVER            ds 6 ;24*40/8+2                ; +2 for word-align speed in 
 
     align 4
 
-_BUF_JUMP1:         ds _ARENA_SCANLINES * 2         ; long-word align!!
-_BUF_JUMP1_EXIT:    ds 2
 
 ; DO NOT CHANGE ORDER
 ;{ clear in main.c assumes one block to clear

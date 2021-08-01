@@ -148,7 +148,7 @@ UBYTE cave12b[]= {
 
 0x01,       // cave
 
-40,22,      // size
+40,22,1,      // size x,y + gravity
 
 0x14,       // milling
 0x0A,0x0F,  // diamond $
@@ -157,7 +157,7 @@ UBYTE cave12b[]= {
 0x0C,0x0C,0x0C,0x0C,0x0C,
 0x96,0x6E,0x46,0x28,0x1E,
 
-0,0,DEF_PARALLAX, //15,0x09,
+0,0,DEF_PARALLAX|DEF_DRIP, //15,0x09,
 
 CH_STEEL,CH_DIRT,
 
@@ -177,6 +177,40 @@ LINE,CH_ZZAP1, 21,2,19, DOWN,
 0xFF,
 
 };
+
+
+static const unsigned char planet0[]= {
+
+
+0x01,       // cave
+
+20,8,0,      // size, gravity
+
+0x14,       // milling
+0x0A,0x0F,  // diamond $
+
+0x0A,0x0B,0x0C,0x0D,0x0E,       // randomiser[level]
+0x0C,0x0C,0x0C,0x0C,0x0C,
+0x96,0x6E,0x46,0x28,0x1E,
+
+0,0,0, //15,0x09,
+
+0,CH_AMOEBA0,
+
+
+CH_ROCK0,CH_DIRT,0,0,
+130, 40, 0, 0,
+
+LINE, CH_STEEL, 0,0, 19, RIGHT,
+LINE, CH_STEEL, 0,7, 19, RIGHT,
+
+
+0,CH_DOORCLOSED,0x03,0x04,     // entry
+
+0xFF,
+
+};
+
 
 
 
@@ -209,6 +243,24 @@ const struct caveInfo caveList[] = {
     //         },
     //             },
     // },
+
+
+    { planet0,       {   { 0x86, 0xD6, 0x86,
+            0x24,
+            0x24,
+            0x24,
+            0x24,
+            0x24,
+            0x24,
+            0x24,
+            0x24,
+            0x24,
+            0x24,
+            },
+                },
+    },
+
+
 
     { cave12b,       {   { 0x86, 0x24, 0xC8,
         // n (cave depth) lines of colour change for COL1

@@ -136,8 +136,9 @@ unsigned char spaceToggleDisplayed[40];
 
 bool thisFrame[2][40];
 
-int boardWidth = 24;
-int boardHeight = 23;
+int boardWidth;
+int boardHeight;
+int planetGravity;
 
 void setAnimation(int animID);
 
@@ -442,6 +443,29 @@ extern void NextRandom(int *RandSeed1, int *RandSeed2);
 //==============================================================================
 
 
+unsigned int buf[3][6];
+
+
+void setVideoBufferPointers() {
+    unsigned int mem = _BOARD + boardWidth * boardHeight;
+    for (int i = 0; i < 3; i ++) {
+        for (int j = 0; j < 6; j++) {
+            buf[i][j] = mem;
+            mem += _ARENA_SCANLINES;
+        }
+    }
+
+    buf[0][0] = _BUF_PF0_LEFT;
+    buf[0][1] = _BUF_PF1_LEFT;
+    buf[0][2] = _BUF_PF2_LEFT;
+    buf[0][3] = _BUF_PF0_RIGHT;
+    buf[0][4] = _BUF_PF1_RIGHT;
+    buf[0][5] = _BUF_PF2_RIGHT;
+
+
+}
+
+
 void setFlash(int colour, int time) {
     ARENA_COLOR = colour;
     flashTime = time;
@@ -733,6 +757,8 @@ extern int rinc;
 
 
     DecodeCave(caveList[cave].cavePtr);
+    setVideoBufferPointers();
+
     gameSchedule = SCHEDULE_UNPACK_CAVE;
 
 
@@ -831,7 +857,8 @@ void setChar(int x, int y, int ch) {
 
 
 void formLandscape(){
- 
+ return;
+
     int horizon = (((getRandom32() & 0xFF) * 4) >> 8) + 8;
     for (int i = 1; i < boardWidth-1; i++) {
 
@@ -899,12 +926,12 @@ void Scheduler() {
 void InitGameDatastreams() {
 
     // initialize the Data Streams for the Arena
-    setPointer(_DS_PF0_LEFT, _BUF_PF0_LEFT);
-    setPointer(_DS_PF1_LEFT, _BUF_PF1_LEFT);
-    setPointer(_DS_PF2_LEFT, _BUF_PF2_LEFT);
-    setPointer(_DS_PF0_RIGHT, _BUF_PF0_RIGHT);
-    setPointer(_DS_PF1_RIGHT, _BUF_PF1_RIGHT);
-    setPointer(_DS_PF2_RIGHT, _BUF_PF2_RIGHT);
+    setPointer(_DS_PF0_LEFT, buf[0][0]); //_BUF_PF0_LEFT);
+    setPointer(_DS_PF1_LEFT, buf[0][1]); //_BUF_PF1_LEFT);
+    setPointer(_DS_PF2_LEFT, buf[0][2]); //_BUF_PF2_LEFT);
+    setPointer(_DS_PF0_RIGHT, buf[0][3]); //_BUF_PF0_RIGHT);
+    setPointer(_DS_PF1_RIGHT, buf[0][4]); //_BUF_PF1_RIGHT);
+    setPointer(_DS_PF2_RIGHT, buf[0][5]); //_BUF_PF2_RIGHT);
 
     setPointer(_DS_AUDV0, _BUF_AUDV);
     setPointer(_DS_AUDC0, _BUF_AUDC);
@@ -1513,24 +1540,23 @@ const bool mirror[] = {
     1,1,0,0,1,
 };
 
-const int base[] = {
-    _BUF_PF2_RIGHT,
-    _BUF_PF2_RIGHT,
-    _BUF_PF1_RIGHT,
-    _BUF_PF1_RIGHT,
-    _BUF_PF0_RIGHT,
-    _BUF_PF2_LEFT,
-    _BUF_PF2_LEFT,
-    _BUF_PF1_LEFT,
-    _BUF_PF1_LEFT,
-    _BUF_PF0_LEFT,
+const unsigned int *base[] = {
+    &buf[0][5], //_BUF_PF2_RIGHT,
+    &buf[0][5], //_BUF_PF2_RIGHT,
+    &buf[0][4], //_BUF_PF1_RIGHT,
+    &buf[0][4], //_BUF_PF1_RIGHT,
+    &buf[0][3], //    _BUF_PF0_RIGHT,
+    &buf[0][2], //_BUF_PF2_LEFT,
+    &buf[0][2], //_BUF_PF2_LEFT,
+    &buf[0][1], //_BUF_PF1_LEFT,
+    &buf[0][1], //_BUF_PF1_LEFT,
+    &buf[0][0], //_BUF_PF0_LEFT,
 };
 
 
 void drawBigDigit(int offset, int pos) {
-
     for (int line = 0; line < DIGIT_SIZE; line++, offset++) {
-        RAM[base[pos]+line] = (RAM[base[pos]+line] & ~mask[pos])
+        *(RAM + *base[pos] + line) = *(RAM + *base[pos] + line) & ~mask[pos]
             | ((mirror[pos]? BitRev[digitShape[offset]] : digitShape[offset]) & mask[pos]);
     }
 }
@@ -2094,12 +2120,8 @@ void GameScheduleDrawSprites() {
             // clear lines below score to cleanup overview/normal garbage
 
             for (int i = 0; i < (SCORE_SCANLINES - DIGIT_SIZE); i++) {
-                RAM[_BUF_PF0_LEFT + DIGIT_SIZE + i] = 0;
-                RAM[_BUF_PF1_LEFT + DIGIT_SIZE + i] = 0;
-                RAM[_BUF_PF2_LEFT + DIGIT_SIZE + i] = 0;
-                RAM[_BUF_PF0_RIGHT + DIGIT_SIZE + i] = 0;
-                RAM[_BUF_PF1_RIGHT + DIGIT_SIZE + i] = 0;
-                RAM[_BUF_PF2_RIGHT + DIGIT_SIZE + i] = 0;
+                for (int digit = 0; digit < 6; digit++)
+                    *(RAM + buf[0][digit] + DIGIT_SIZE + i) = 0;
             }
 
             removeSmallSprite();
@@ -2850,7 +2872,7 @@ void GameScheduleProcessBoardRow() {
 //        if (boardCol == rockfordX)
 //            doubler *= 4;
 
-        if (lastDripFree
+        if ((caveFlags & DEF_DRIP) &&  lastDripFree
 
             // && boardRow * 21 > (scrollY >> 16)
             // && boardRow * 21 < (scrollY >> 16) + _ARENA_SCANLINES - 20
@@ -2858,7 +2880,7 @@ void GameScheduleProcessBoardRow() {
             // && boardCol * 4 < (scrollX >> 16) + 36
 
            && (deltaX < 6 && deltaY < 5)
-           && boardRow < 18  // or 19?
+           && boardRow < boardHeight
            && (Attribute[CharToType[creature] & ATT_DRIP]) &&  *(this + boardWidth) == CH_BLANK
             //&& *(this+80) != CH_BLANK
             && (getRandom32() & 0xFF) < doubler
@@ -2944,47 +2966,47 @@ void GameScheduleProcessBoardRow() {
             case TYPE_AMOEBA:
                 {
 
-                    block+=2;
+                //     block+=2;
 
-                    // Trapped? Change to doge
-                    if (!lastAmoebaGrew) {
-                        *this = CH_DOGE;
-                        break;
-                    }
+                //     // Trapped? Change to doge
+                //     // if (!lastAmoebaGrew) {
+                //     //     *this = CH_DOGE;
+                //     //     break;
+                //     // }
 
-                    if (changeAmoebaToBoulder > MAXIMUM_AMOEBA_SIZE) {
-                        *this = CH_ROCK0;
-                        break;
-                    }
+                //     // if (changeAmoebaToBoulder > MAXIMUM_AMOEBA_SIZE) {
+                //     //     *this = CH_ROCK0;
+                //     //     break;
+                //     // }
                     
                     
-                    int rnd = getRandom32();
+                //     int rnd = getRandom32();
 
-                    amoebaCounter++;
+                //     amoebaCounter++;
 
-                    for (int i = 0; i < 8; i++) {
+                //     for (int i = 0; i < 8; i++) {
 
-                        unsigned char *where = this + boardWidth * dirY[i] + dirX[i];
-                        unsigned char newCh = (rnd & 3) + CH_AMOEBA0;
+                //         unsigned char *where = this + boardWidth * dirY[i] + dirX[i];
+                //         unsigned char newCh = (rnd & 3) + CH_AMOEBA0;
 
-                        if (Attribute[CharToType[*where]] & ATT_PERMEABLE) {
-                            amoebaGrew = 1;
+                //         if (Attribute[CharToType[*where]] & ATT_PERMEABLE) {
+                //             amoebaGrew = 1;
 
-                            int expandSpeed = millingTime ? EXPAND_SPEED : EXPAND_SPEED * 4;
+                //             int expandSpeed = millingTime ? EXPAND_SPEED : EXPAND_SPEED * 4;
 
-                            if ((rnd & 0x1FF) < expandSpeed) {
-                                //setFlash(0xB2,10);
-                                *where = newCh ; // | FLAG_THISFRAME;
-                            }
-                        }
+                //             if ((rnd & 0x1FF) < expandSpeed) {
+                //                 //setFlash(0xB2,10);
+                //                 *where = newCh ; // | FLAG_THISFRAME;
+                //             }
+                //         }
 
-                        // don't allow side-by-side sameness
-                        if (!(rnd & 0x700) && *this == *where)
-                            *this = newCh;
+                //         // don't allow side-by-side sameness
+                //         if (!(rnd & 0x700) && *this == *where)
+                //             *this = newCh;
 
 
-                        rnd >>= 2;
-                    }
+                //         rnd >>= 2;
+                //     }
                 }
                 break;
 
@@ -3271,6 +3293,9 @@ void GameScheduleProcessBoardRow() {
             case CH_ROCK0:
 
             {
+                if (!planetGravity)
+                    break;
+
 
                 block += 1;
                 unsigned char _DOWN = CharToType[*next];

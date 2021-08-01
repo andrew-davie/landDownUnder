@@ -17,20 +17,21 @@ extern void* DDR;
 
 #define DEF_XSIZE 1
 #define DEF_YSIZE 2
-#define DEF_MILL 3
-#define DEF_DIAMOND 4
-#define DEF_DOGE 5
-#define DEF_SEED 6
-#define DEF_DOGE 11
-#define DEF_TIME 14
-#define DEF_LAVA 21
-#define DEF_WATER 22
-#define DEF_FLAGS 23
-#define DEF_BORDER 24
-#define DEF_FILL 25
-#define DEF_RNDSEED 30
-#define DEF_RNDOBJECT 26
-#define DEF_CAVEDATA 34
+#define DEF_GRAVITY 3
+#define DEF_MILL 4
+#define DEF_DIAMOND 5
+#define DEF_DOGE 6
+#define DEF_SEED 7
+#define DEF_DOGE 12
+#define DEF_TIME 15
+#define DEF_LAVA 22
+#define DEF_WATER 23
+#define DEF_FLAGS 24
+#define DEF_BORDER 25
+#define DEF_FILL 26
+#define DEF_RNDSEED 31
+#define DEF_RNDOBJECT 27
+#define DEF_CAVEDATA 35
 
 /* **************************************** */
 /* Types */
@@ -90,6 +91,7 @@ extern int millingTime;
 
     boardWidth = acaveData[DEF_XSIZE];
     boardHeight = acaveData[DEF_YSIZE];
+    planetGravity = acaveData[DEF_GRAVITY];
 
 
     diamondValue = acaveData[DEF_DIAMOND];
@@ -112,12 +114,11 @@ extern int millingTime;
 
     millingTime = (acaveData[DEF_MILL] * 60);
 
-    DrawFilledRect(acaveData[DEF_BORDER], 0, 0, boardWidth, boardHeight, acaveData[DEF_FILL]); 
-
+    DrawFilledRect(acaveData[DEF_FILL], 0, 0, boardWidth, boardHeight, acaveData[DEF_FILL]); 
 
     // Decode the random cave data
-    for(int y = 1; y < boardHeight - 2; y++) {
-        for(int x = 1; x < boardWidth - 1; x++) {
+    for(int y = 0; y < boardHeight; y++) {
+        for(int x = 0; x < boardWidth; x++) {
             NextRandom(&RandSeed1, &RandSeed2);
 
             for (caveDataIndex = 0; caveDataIndex < 4; caveDataIndex++)
@@ -128,7 +129,9 @@ extern int millingTime;
         }     
     }  
 
-//    DrawRect(CH_STEEL, 0, 0, boardWidth, boardHeight);
+    if (acaveData[DEF_BORDER])
+        DrawRect(acaveData[DEF_BORDER], 0, 0, boardWidth, boardHeight);
+
     caveDataIndex = DEF_CAVEDATA;
 
 }

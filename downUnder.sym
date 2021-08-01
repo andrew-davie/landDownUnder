@@ -14,33 +14,33 @@ _BALL_X                  0008
 _BLACK                   0000                  
 _BLUE                    0080                  
 _BLUE2                   0090                  
-_BOARD                   0010                  
+_BOARD                   019e                  
 _BROWN                   0030                  
-_BUF_AUDC                0f76                  
-_BUF_AUDF                0f78                  
-_BUF_AUDV                0f74                  
-_BUF_BUF_1_PF0_LEFT      0b96                  
-_BUF_BUF_1_PF0_RIGHT     0de8                  
-_BUF_BUF_1_PF1_LEFT      0c5c                  
-_BUF_BUF_1_PF1_RIGHT     0eae                  
-_BUF_BUF_1_PF2_LEFT      0d22                  
-_BUF_BUF_1_PF2_RIGHT     0f74                  
-_BUF_COLUBK              062c                  
-_BUF_COLUP0              0d22                  
-_BUF_COLUP1              0de8                  
-_BUF_COLUPF              0566                  
-_BUF_GRP0A               0b96                  
-_BUF_GRP1A               0c5c                  
-_BUF_JUMP1               03d8                  
-_BUF_JUMP1_EXIT          0564                  
-_BUF_PF0_LEFT            06f2                  
-_BUF_PF0_RIGHT           0944                  
-_BUF_PF1_LEFT            07b8                  
-_BUF_PF1_RIGHT           0a0a                  
-_BUF_PF2_LEFT            087e                  
-_BUF_PF2_RIGHT           0ad0                  
+_BUF_AUDC                0f74                  
+_BUF_AUDF                0f76                  
+_BUF_AUDV                0f72                  
+_BUF_BUF_1_PF0_LEFT      0b94                  
+_BUF_BUF_1_PF0_RIGHT     0de6                  
+_BUF_BUF_1_PF1_LEFT      0c5a                  
+_BUF_BUF_1_PF1_RIGHT     0eac                  
+_BUF_BUF_1_PF2_LEFT      0d20                  
+_BUF_BUF_1_PF2_RIGHT     0f72                  
+_BUF_COLUBK              062a                  
+_BUF_COLUP0              0d20                  
+_BUF_COLUP1              0de6                  
+_BUF_COLUPF              0564                  
+_BUF_GRP0A               0b94                  
+_BUF_GRP1A               0c5a                  
+_BUF_JUMP1               0010                  
+_BUF_JUMP1_EXIT          019c                  
+_BUF_PF0_LEFT            06f0                  
+_BUF_PF0_RIGHT           0942                  
+_BUF_PF1_LEFT            07b6                  
+_BUF_PF1_RIGHT           0a08                  
+_BUF_PF2_LEFT            087c                  
+_BUF_PF2_RIGHT           0ace                  
 _BUFFER_BLOCK_SIZE       0a0e                  
-_BUFFERS                 0566              (R )
+_BUFFERS                 0564              (R )
 _CYAN                    00b0                  
 _DS_AUDC0                000f              (R )
 _DS_AUDF0                0010              (R )
@@ -63,8 +63,8 @@ _DS_SPLASH_P0R           0002
 _DS_SPLASH_P1L           0001                  
 _DS_SPLASH_P1R           0003                  
 _DS_TO_ARM               0000              (R )
-_EVERY_FRAME_ZERO_COUNT  0002                  
-_EVERY_FRAME_ZERO_START  0f7a              (R )
+_EVERY_FRAME_ZERO_COUNT  0000                  
+_EVERY_FRAME_ZERO_START  0f78              (R )
 _EXIT_KERNEL             f17f                  
 _FN_GAME_IDLE            0007              (R )
 _FN_GAME_OS              0001              (R )
@@ -95,7 +95,7 @@ _RUN_FUNC                0000
 _SWCHA                   0001                  
 _SWCHB                   0002                  
 _TURQUOISE               00a0                  
-_UNCOVER                 03d0                  
+_UNCOVER                 055e                  
 _VB_TIME                 0005                  
 _VIOLET                  0060                  
 _WHITE                   000e                  
@@ -204,7 +204,7 @@ NO_ILLEGAL_OPCODES       0000 ????         (R )
 NUSIZ0                   0004                  
 NUSIZ1                   0005                  
 OS_TIM64T                0014              (R )
-OverlapDisplayDataRam    0f7a              (R )
+OverlapDisplayDataRam    0f78              (R )
 OverScan                 f0b1              (R )
 PF0                      000d              (R )
 PF1                      000e              (R )

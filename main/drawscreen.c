@@ -224,12 +224,12 @@ int desiredRadius = 175;
 
 void circle(int leftX, int rightX, int r2) {
     
-    p0 = &RAM[_BUF_PF0_LEFT];
-    p1 = &RAM[_BUF_PF1_LEFT];
-    p2 = &RAM[_BUF_PF2_LEFT];
-    p3 = &RAM[_BUF_PF0_RIGHT];
-    p4 = &RAM[_BUF_PF1_RIGHT];
-    p5 = &RAM[_BUF_PF2_RIGHT];
+    p0 = RAM + buf[0][0]; //&RAM[_BUF_PF0_LEFT];
+    p1 = RAM + buf[0][1]; //&RAM[_BUF_PF1_LEFT];
+    p2 = RAM + buf[0][2]; //&RAM[_BUF_PF2_LEFT];
+    p3 = RAM + buf[0][3]; //&RAM[_BUF_PF0_RIGHT];
+    p4 = RAM + buf[0][4]; //&RAM[_BUF_PF1_RIGHT];
+    p5 = RAM + buf[0][5]; //&RAM[_BUF_PF2_RIGHT];
 
     for (int y = 0; y <= centerY; y++) {
 
@@ -318,13 +318,23 @@ int ascrollY;
 
 // unsigned int bgDriftX, bgDriftY;
 
+const unsigned char blankRow[] = {
+    CH_BLANK,
+    CH_BLANK,
+    CH_BLANK,
+    CH_BLANK,
+    CH_BLANK,
+    CH_BLANK,
+    CH_BLANK,
+    CH_BLANK,
+    CH_BLANK,
+    CH_BLANK,
+};
+
+
 
 void drawScreen(){
 
-    unsigned char *const arenas[] = {
-        RAM + _BUF_PF0_LEFT + SCORE_SCANLINES,
-        RAM + _BUF_PF0_RIGHT + SCORE_SCANLINES,
-    };
 
 #if ENABLE_PARALLAX
 
@@ -501,9 +511,9 @@ extern const unsigned char DUST3[];
         int scanline = 0;
         lcount = lct;
 
-        unsigned char *pf0 = arenas[half];
-        unsigned char *pf1 = pf0 + _ARENA_SCANLINES;
-        unsigned char *pf2 = pf1 + _ARENA_SCANLINES;
+        unsigned char *pf0 = RAM + buf[0][half * 3] + SCORE_SCANLINES;
+        unsigned char *pf1 = RAM + buf[0][half * 3 + 1] + SCORE_SCANLINES;
+        unsigned char *pf2 = RAM + buf[0][half * 3 + 2] + SCORE_SCANLINES;
 
 
         int rnd = 0;
@@ -512,6 +522,10 @@ extern const unsigned char DUST3[];
 
             int xOffset = (half * 5) + frac;
             unsigned char *xchar = RAM + _BOARD + row * boardWidth + xOffset;
+
+            if (row >= boardHeight)
+                xchar = blankRow;
+
             const unsigned char *image[6];
 
 
@@ -588,7 +602,7 @@ void drawOverviewScreen() {
         part = 1;
 
 
-    unsigned char *ppf = RAM + _BUF_PF0_LEFT + partStart[part] * 9;
+    unsigned char *ppf = RAM + buf[0][0] + /*RAM + _BUF_PF0_LEFT +*/ partStart[part] * 9;
 
 
     // The following draws the screen!
@@ -603,43 +617,43 @@ void drawOverviewScreen() {
 
         unsigned char *p = RAM + _BOARD + row * boardWidth;
 
-        for (int i = 0; i < boardWidth && i < 40; i++) {
+        for (int i = 0; i < 40; i++) {
 
             unsigned char p2 = *p;
             unsigned char type = CharToType[p2];
 
-            if (i >= boardWidth)
-                type = CH_BLANK;
 
+            if (i < boardWidth)
+                switch (type) {
+                case TYPE_AMOEBA: {
+                        unsigned int rnd = getRandom32();
+                        if ((rnd & 0xFF) > (255-BUBBLE_SPEED))
+                            p2 = *p = (rnd & 3) + CH_AMOEBA0;
+                    }
+                    break;
 
-            switch (type) {
-            case TYPE_AMOEBA: {
-                    unsigned int rnd = getRandom32();
-                    if ((rnd & 0xFF) > (255-BUBBLE_SPEED))
-                        p2 = *p = (rnd & 3) + CH_AMOEBA0;
+                case TYPE_LAVA: {
+                        unsigned int rnd = getRandom32();
+                        if ((rnd & 0xFF) > (255-LAVA_SPEED))
+                            p2 = *p = (rnd & 3) + CH_LAVA;
+                    }
+                    break;
+
+                case TYPE_WATER: {
+    //                    unsigned int rnd = getRandom32();
+    //                    if (((rnd >>= 8) & 0xFF) > 252) //5 - WATER_SPEED)
+    //                        p2 = *p = (rnd & 3) + CH_WATER;
                 }
-                break;
+                    break;
 
-            case TYPE_LAVA: {
-                    unsigned int rnd = getRandom32();
-                    if ((rnd & 0xFF) > (255-LAVA_SPEED))
-                        p2 = *p = (rnd & 3) + CH_LAVA;
+                default:
+
+                    if (Animate[type])
+                        p2 = (*Animate[type])[AnimIdx[type].index];
+                    break;
                 }
-                break;
-
-            case TYPE_WATER: {
-//                    unsigned int rnd = getRandom32();
-//                    if (((rnd >>= 8) & 0xFF) > 252) //5 - WATER_SPEED)
-//                        p2 = *p = (rnd & 3) + CH_WATER;
-            }
-                break;
-
-            default:
-
-                if (Animate[type])
-                    p2 = (*Animate[type])[AnimIdx[type].index];
-                break;
-            }
+            else
+                p2 = CH_BLANK;
 
             img[i] = *charSet[p2];
             p++;
@@ -704,10 +718,10 @@ void drawOverviewScreen() {
 
 void drawPlanet() {
 
-    unsigned char *const arenas[] = {
-        RAM + _BUF_PF0_LEFT + SCORE_SCANLINES,
-        RAM + _BUF_PF0_RIGHT + SCORE_SCANLINES,
-    };
+    // unsigned char *const arenas[] = {
+    //     RAM + _BUF_PF0_LEFT + SCORE_SCANLINES,
+    //     RAM + _BUF_PF0_RIGHT + SCORE_SCANLINES,
+    // };
 
 
     int lcount = -(scrollY >>16) * 3;
@@ -771,7 +785,7 @@ void drawPlanet() {
                 xchar++;
             }
 
-            unsigned char *pf0 = arenas[half] + scanline;
+            unsigned char *pf0 = RAM + buf[0][half * 3] /*arenas[half]*/ + scanline;
 
 
             for (int y = 0; scanline < SCANLINES && y < PIECE_DEPTH; y++) {

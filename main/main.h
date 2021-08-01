@@ -14,6 +14,7 @@
 
 #define DEF_OVERVIEW 0x80
 #define DEF_PARALLAX 0x40
+#define DEF_DRIP 0x20
 
 #define DEBUG_SLOWDOWN 1
 #define GAMESPEED 11
@@ -112,5 +113,8 @@ extern int doge;
 extern unsigned int frameToggler;
 extern int boardWidth;
 extern int boardHeight;
+extern int planetGravity;
+
+extern unsigned int buf[3][6];
 
 #endif
