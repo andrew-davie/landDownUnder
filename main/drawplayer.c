@@ -27,8 +27,8 @@ void removeSprite() {
 
     if (lastPlayerSpriteY >= 0 && lastPlayerSpriteY < _ARENA_SCANLINES - SPRITE_DEPTH) {
 
-        unsigned char *p0 = RAM + _BUF_GRP0A + lastPlayerSpriteY;
-        unsigned char *p1 = RAM + _BUF_GRP1A + lastPlayerSpriteY;
+        unsigned char *p0 = RAM + buf[0][VIDBUF_GRP0A] + lastPlayerSpriteY;
+        unsigned char *p1 = RAM + buf[0][VIDBUF_GRP1A] + lastPlayerSpriteY;
 
         for (int i=0; i < SPRITE_DEPTH; i++) {
             *p0++ = 0;
@@ -60,10 +60,9 @@ void drawPlayerSprite() {
 
     movePlayer();
 
-    int ypos = absRockfordY; //(rockfordY * PIECE_DEPTH + 17 -PIECE_DEPTH) - (y * 3) - frameAdjustY + SCORE_SCANLINES - 22 + 4;
-    // int type = CharToType[RAM[_BOARD + rockfordY * 40 + rockfordX] & 0x7F];
-    int xpos = absRockfordX; //(rockfordX * 4 /* -frameAdjustX*/) - x;
-
+    int ypos = absRockfordY;
+    int xpos = absRockfordX;
+    
 
     updateAnimation();
 
@@ -85,11 +84,11 @@ void drawPlayerSprite() {
         if (lastPlayerSpriteY < 0 || lastPlayerSpriteY >= _ARENA_SCANLINES - SPRITE_DEPTH)
             return;
 
-        unsigned char *p0Colour = RAM + _BUF_COLUP0 + lastPlayerSpriteY/*-1*/;
-        unsigned char *p1Colour = RAM + _BUF_COLUP1 + lastPlayerSpriteY/*-1*/;
+        unsigned char *p0Colour = RAM + buf[0][VIDBUF_COLUP0] + lastPlayerSpriteY/*-1*/;
+        unsigned char *p1Colour = RAM + buf[0][VIDBUF_COLUP1] + lastPlayerSpriteY/*-1*/;
 
-        unsigned char *p0 = RAM + _BUF_GRP0A + lastPlayerSpriteY;
-        unsigned char *p1 = RAM + _BUF_GRP1A + lastPlayerSpriteY;
+        unsigned char *p0 = RAM + buf[0][VIDBUF_GRP0A] + lastPlayerSpriteY;
+        unsigned char *p1 = RAM + buf[0][VIDBUF_GRP1A] + lastPlayerSpriteY;
 
 
         if (rockfordDirection == RIGHT) {
@@ -140,7 +139,7 @@ int lastSmallPlayerSpriteY = -1;
 
 void removeSmallSprite() {
 
-    unsigned char *p0 = RAM + _BUF_GRP0A + lastSmallPlayerSpriteY;
+    unsigned char *p0 = RAM + buf[0][VIDBUF_GRP0A] + lastSmallPlayerSpriteY;
     if (lastSmallPlayerSpriteY >= 0)
         for (int i=0; i < 9; i++)
             *p0++ = 0;
@@ -166,8 +165,8 @@ void drawPlayerSmallSprite() {
 
         lastSmallPlayerSpriteY = ypos + frameYOffset - frameAdjustSmallY;
 
-        unsigned char *p0Colour = RAM + _BUF_COLUP0 + lastSmallPlayerSpriteY;
-        unsigned char *p0 = RAM + _BUF_GRP0A + lastSmallPlayerSpriteY;
+        unsigned char *p0Colour = RAM + buf[0][VIDBUF_COLUP0] + lastSmallPlayerSpriteY;
+        unsigned char *p0 = RAM + buf[0][VIDBUF_GRP0A] + lastSmallPlayerSpriteY;
 
 
         for (int line = 0; line < 9; line++) {

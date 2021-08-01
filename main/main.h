@@ -15,12 +15,14 @@
 #define DEF_OVERVIEW 0x80
 #define DEF_PARALLAX 0x40
 #define DEF_DRIP 0x20
+#define DEF_PEBBLE 0x10
+
 
 #define DEBUG_SLOWDOWN 1
 #define GAMESPEED 11
 
 
-#define PIECE_DEPTH 21
+#define PIECE_DEPTH 24
 #define SPRITE_DEPTH 23
 
 #define DOGE_PULSE_EDGE 60
@@ -115,6 +117,21 @@ extern int boardWidth;
 extern int boardHeight;
 extern int planetGravity;
 
-extern unsigned int buf[3][6];
+
+#define VIDBUF_COLUPF    0
+#define VIDBUF_COLUBK    1
+#define VIDBUF_PF0_LEFT  2
+#define VIDBUF_PF1_LEFT  3
+#define VIDBUF_PF2_LEFT  4
+#define VIDBUF_PF0_RIGHT 5
+#define VIDBUF_PF1_RIGHT 6
+#define VIDBUF_PF2_RIGHT 7
+#define VIDBUF_GRP0A     8
+#define VIDBUF_GRP1A     9
+#define VIDBUF_COLUP0    10
+#define VIDBUF_COLUP1    11
+
+
+extern unsigned int buf[3][12];
 
 #endif

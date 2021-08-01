@@ -2656,6 +2656,197 @@ const unsigned char CHAR_BELT3[] = {
 };
 
 
+const unsigned char CHAR_CRATER_SMALL[] = {
+    XXXX  
+    _XX_  
+    _XX_  
+    _XXX  
+    X_XX  
+    ___X  
+    _XXX  
+    X__X  
+    ___X  
+    _XXX  
+    X__X
+    ____  
+    _XXX  
+    ____
+    ____  
+    _XX_  
+    ____  
+    ____  
+    X__X  
+    ____  
+    ____
+};
+
+const unsigned char CHAR_CRATER_TINY[] = {
+    XXXX  
+    ____  
+    ____  
+    XXXX  
+    ____  
+    ____  
+    XXXX  
+    ____  
+    ____  
+    XXXX  
+    ____
+    __X_  
+    XXXX  
+    __X_
+    ____  
+    XXXX  
+    ____  
+    ____  
+    XXXX  
+    ____  
+    ____
+};
+
+const unsigned char CHAR_CRATER_MID[] = {
+    XXXX  
+    __X_  
+    _XXX  
+    XXXX  
+    ___X  
+    _X__  
+    XXXX  
+    ____  
+    _X__  
+    XX__  
+    ____
+    ____  
+    XX_X  
+    __X_
+    ____  
+    XXXX  
+    ____  
+    ____  
+    XXXX  
+    ____  
+    ____
+};
+
+const unsigned char CHAR_CRATER_BIG[] = {
+    X__X  
+    ___X  
+    ___X  
+    XXXX  
+    __X_  
+    ____  
+    XXXX  
+    _X__  
+    ____  
+    XXXX  
+    X___
+    ____  
+    XXXX  
+    X___
+    ____  
+    XXXX  
+    X___  
+    ____  
+    XXXX  
+    X___  
+    ____
+};
+
+const unsigned char CHAR_CRATER_BIG1[] = {
+    __XX
+    XX__  
+    XX__  
+    XXXX  
+    XX__  
+    XXX_  
+    __XX  
+    XXX_  
+    __X_  
+    XXXX  
+    __X_
+    ___X  
+    XXXX  
+    ___X
+    ____  
+    XXXX  
+    ___X  
+    ____  
+    XXXX  
+    ___X  
+    ____
+};
+
+const unsigned char CHAR_CRATER_BIG2[] = {
+    XXXX  
+    ____  
+    X___  
+    _XXX  
+    X___  
+    ____  
+    _XXX  
+    X___  
+    ____  
+    __XX  
+    _X__
+    ____  
+    X_XX  
+    _X__
+    ____  
+    XX__  
+    __XX  
+    ____  
+    XXXX  
+    ____  
+    ____
+};
+
+const unsigned char CHAR_CRATER_BIG3[] = {
+    XXXX  
+    ____  
+    ___X  
+    XXXX  
+    ____  
+    ___X  
+    XXXX  
+    ____  
+    ___X  
+    XXXX  
+    ____
+    __X_  
+    XXXX  
+    ____
+    __X_  
+    XXXX  
+    XX__  
+    XX__  
+    __XX  
+    ____  
+    ____
+};
+
+const unsigned char CHAR_FLAT_1[] = {
+    XXXX  
+    ____  
+    ____  
+    XXXX  
+    ____  
+    ____  
+    X_XX  
+    _X__  
+    ____  
+    XXXX  
+    ____
+    ____  
+    XXXX  
+    ____
+    ____  
+    XXXX  
+    ____  
+    ____  
+    _XXX  
+    X___  
+    ____
+};
 
 
 #if ENABLE_PARALLAX
@@ -2809,13 +3000,17 @@ const unsigned char (*charSet[])[] = {
     &CHAR_BELT1,                                    // 108 CH_BELT1
     &CHAR_BELT2,                                    // 109 CH_BELT2
     &CHAR_BELT3,                                    // 110 CH_BELT3
-
+    &CHAR_CRATER_SMALL,                             // 111 CH_CRATER_SMALL
+    &CHAR_CRATER_TINY,                              // 112 CH_CRATER_TINY
+    &CHAR_CRATER_BIG,                               // 113 CH_CRATER_BIG
+    &CHAR_CRATER_BIG1,                              // 114 CH_CRATER_BIG1
+    &CHAR_CRATER_BIG2,                              // 115 CH_CRATER_BIG2
+    &CHAR_CRATER_BIG3,                              // 116 CH_CRATER_BIG3
+    &CHAR_CRATER_MID,                               // 117 CH_DRATER_MID
+    &CHAR_FLAT_1,                                   // 118 CH_FLAT_1
 
     // +--> CharToType[]
-
 };
-
-
 
 
 const char AnimPreOut[] = {
@@ -3005,6 +3200,8 @@ const char (*Animate[TYPE_MAX])[] = {
     0,                          // 54 DRILLBODY           
     &AnimBelt,                  // 55 BELT
     &AnimBelt2,                 // 56 BELT2
+    0,                          // 57 CRATER
+    0,                          // 58 FLAT
 };
 
 

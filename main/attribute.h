@@ -8,7 +8,7 @@ extern const int Attribute[];
 enum ObjectType {
 
     // +--> modify Attribute[] @ attribute.c
-    // +--> modify Animate[] @ main.c
+    // +--> modify Animate[] @ characterset.c
 
     TYPE_BLANK,              // 00          // parallax
     TYPE_BLANK_SKY,          // 01
@@ -67,9 +67,11 @@ enum ObjectType {
     TYPE_DRILLBODY,          // 54
     TYPE_BELT,               // 55
     TYPE_BELT2,              // 56
+    TYPE_CRATER,             // 57
+    TYPE_FLAT,               // 58
 
     // +--> modify Attribute[] @ attribute.c
-    // +--> modify Animate[] @ main.c
+    // +--> modify Animate[] @characterset.c
 
     TYPE_MAX
 };

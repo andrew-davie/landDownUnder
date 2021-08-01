@@ -52,7 +52,7 @@ const int ldy[8]={-1, -1, 0, 1, 1,  1,  0, -1};
 
 
 
-unsigned char *caveData = (unsigned char *)_BOARD;
+//unsigned char *caveData = (unsigned char *)_BUFFERS;
 
 
 /* **************************************** */
@@ -122,9 +122,22 @@ extern int millingTime;
             NextRandom(&RandSeed1, &RandSeed2);
 
             for (caveDataIndex = 0; caveDataIndex < 4; caveDataIndex++)
-                if (RandSeed1 < acaveData[DEF_RNDSEED + caveDataIndex]) {
+                if ((getRandom32() & 0xFF) < acaveData[DEF_RNDSEED + caveDataIndex]) {
                     objectType theObject = acaveData[DEF_RNDOBJECT + caveDataIndex];
-                    StoreObject(x, y, theObject);
+
+
+                    if (theObject == CH_CRATER_BIG
+                        && x < boardWidth-1 && y < boardHeight-1) {
+                        StoreObject(x, y, theObject);
+                        StoreObject(x+1, y, theObject+1);
+                        StoreObject(x, y+1, theObject+2);
+                        StoreObject(x+1, y+1, theObject+3);
+                    }
+
+                    else
+                        StoreObject(x, y, theObject);
+
+
                 }
         }     
     }  

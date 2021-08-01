@@ -14,33 +14,14 @@ _BALL_X                  0008
 _BLACK                   0000                  
 _BLUE                    0080                  
 _BLUE2                   0090                  
-_BOARD                   019e                  
+_BOARD                   01a4                  
 _BROWN                   0030                  
-_BUF_AUDC                0f74                  
-_BUF_AUDF                0f76                  
-_BUF_AUDV                0f72                  
-_BUF_BUF_1_PF0_LEFT      0b94                  
-_BUF_BUF_1_PF0_RIGHT     0de6                  
-_BUF_BUF_1_PF1_LEFT      0c5a                  
-_BUF_BUF_1_PF1_RIGHT     0eac                  
-_BUF_BUF_1_PF2_LEFT      0d20                  
-_BUF_BUF_1_PF2_RIGHT     0f72                  
-_BUF_COLUBK              062a                  
-_BUF_COLUP0              0d20                  
-_BUF_COLUP1              0de6                  
-_BUF_COLUPF              0564                  
-_BUF_GRP0A               0b94                  
-_BUF_GRP1A               0c5a                  
+_BUF_AUDC                01a0                  
+_BUF_AUDF                01a2                  
+_BUF_AUDV                019e                  
 _BUF_JUMP1               0010                  
 _BUF_JUMP1_EXIT          019c                  
-_BUF_PF0_LEFT            06f0                  
-_BUF_PF0_RIGHT           0942                  
-_BUF_PF1_LEFT            07b6                  
-_BUF_PF1_RIGHT           0a08                  
-_BUF_PF2_LEFT            087c                  
-_BUF_PF2_RIGHT           0ace                  
-_BUFFER_BLOCK_SIZE       0a0e                  
-_BUFFERS                 0564              (R )
+_BUFFERS                 01a4                  
 _CYAN                    00b0                  
 _DS_AUDC0                000f              (R )
 _DS_AUDF0                0010              (R )
@@ -64,7 +45,7 @@ _DS_SPLASH_P1L           0001
 _DS_SPLASH_P1R           0003                  
 _DS_TO_ARM               0000              (R )
 _EVERY_FRAME_ZERO_COUNT  0000                  
-_EVERY_FRAME_ZERO_START  0f78              (R )
+_EVERY_FRAME_ZERO_START  01a4              (R )
 _EXIT_KERNEL             f17f                  
 _FN_GAME_IDLE            0007              (R )
 _FN_GAME_OS              0001              (R )
@@ -95,7 +76,6 @@ _RUN_FUNC                0000
 _SWCHA                   0001                  
 _SWCHB                   0002                  
 _TURQUOISE               00a0                  
-_UNCOVER                 055e                  
 _VB_TIME                 0005                  
 _VIOLET                  0060                  
 _WHITE                   000e                  
@@ -104,7 +84,7 @@ _YELLOW_GREEN            00d0
 Again1                   f128              (R )
 Again2                   f0be              (R )
 AMPLITUDE                0023                  
-ARENA_BUFFER_SIZE        00c6              (R )
+ARENA_BUFFER_SIZE        00c6                  
 AUDC0                    0015              (R )
 AUDC1                    0016              (R )
 AUDF0                    0017              (R )
@@ -113,7 +93,7 @@ AUDIOMUSIC               00f0
 AUDIOSAMPLE              0000                  
 AUDV0                    0019              (R )
 AUDV1                    001a              (R )
-BSIZE                    000d              (R )
+BSIZE                    0000                  
 BUFN                     0000                  
 CallArmCode              f019              (R )
 CALLFN                   1ff3              (R )
@@ -204,7 +184,7 @@ NO_ILLEGAL_OPCODES       0000 ????         (R )
 NUSIZ0                   0004                  
 NUSIZ1                   0005                  
 OS_TIM64T                0014              (R )
-OverlapDisplayDataRam    0f78              (R )
+OverlapDisplayDataRam    01a4              (R )
 OverScan                 f0b1              (R )
 PF0                      000d              (R )
 PF1                      000e              (R )

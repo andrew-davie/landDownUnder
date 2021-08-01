@@ -224,12 +224,12 @@ int desiredRadius = 175;
 
 void circle(int leftX, int rightX, int r2) {
     
-    p0 = RAM + buf[0][0]; //&RAM[_BUF_PF0_LEFT];
-    p1 = RAM + buf[0][1]; //&RAM[_BUF_PF1_LEFT];
-    p2 = RAM + buf[0][2]; //&RAM[_BUF_PF2_LEFT];
-    p3 = RAM + buf[0][3]; //&RAM[_BUF_PF0_RIGHT];
-    p4 = RAM + buf[0][4]; //&RAM[_BUF_PF1_RIGHT];
-    p5 = RAM + buf[0][5]; //&RAM[_BUF_PF2_RIGHT];
+    p0 = RAM + buf[0][VIDBUF_PF0_LEFT]; //&RAM[_BUF_PF0_LEFT];
+    p1 = RAM + buf[0][VIDBUF_PF1_LEFT]; //&RAM[_BUF_PF1_LEFT];
+    p2 = RAM + buf[0][VIDBUF_PF2_LEFT]; //&RAM[_BUF_PF2_LEFT];
+    p3 = RAM + buf[0][VIDBUF_PF0_RIGHT]; //&RAM[_BUF_PF0_RIGHT];
+    p4 = RAM + buf[0][VIDBUF_PF1_RIGHT]; //&RAM[_BUF_PF1_RIGHT];
+    p5 = RAM + buf[0][VIDBUF_PF2_RIGHT]; //&RAM[_BUF_PF2_RIGHT];
 
     for (int y = 0; y <= centerY; y++) {
 
@@ -511,9 +511,11 @@ extern const unsigned char DUST3[];
         int scanline = 0;
         lcount = lct;
 
-        unsigned char *pf0 = RAM + buf[0][half * 3] + SCORE_SCANLINES;
-        unsigned char *pf1 = RAM + buf[0][half * 3 + 1] + SCORE_SCANLINES;
-        unsigned char *pf2 = RAM + buf[0][half * 3 + 2] + SCORE_SCANLINES;
+        int base = half ? VIDBUF_PF0_RIGHT : VIDBUF_PF0_LEFT;
+
+        unsigned char *pf0 = RAM + buf[0][base] + SCORE_SCANLINES;
+        unsigned char *pf1 = RAM + buf[0][base + 1] + SCORE_SCANLINES;
+        unsigned char *pf2 = RAM + buf[0][base + 2] + SCORE_SCANLINES;
 
 
         int rnd = 0;
@@ -602,7 +604,7 @@ void drawOverviewScreen() {
         part = 1;
 
 
-    unsigned char *ppf = RAM + buf[0][0] + /*RAM + _BUF_PF0_LEFT +*/ partStart[part] * 9;
+    unsigned char *ppf = RAM + buf[0][VIDBUF_PF0_LEFT] + /*RAM + _BUF_PF0_LEFT +*/ partStart[part] * 9;
 
 
     // The following draws the screen!
@@ -621,6 +623,9 @@ void drawOverviewScreen() {
 
             unsigned char p2 = *p;
             unsigned char type = CharToType[p2];
+
+            if (row >= boardHeight)
+                type = TYPE_BLANK;
 
 
             if (i < boardWidth)
@@ -785,7 +790,8 @@ void drawPlanet() {
                 xchar++;
             }
 
-            unsigned char *pf0 = RAM + buf[0][half * 3] /*arenas[half]*/ + scanline;
+            int base = half ? VIDBUF_PF0_RIGHT : VIDBUF_PF0_LEFT;
+            unsigned char *pf0 = RAM + buf[0][base] /*arenas[half]*/ + scanline;
 
 
             for (int y = 0; scanline < SCANLINES && y < PIECE_DEPTH; y++) {

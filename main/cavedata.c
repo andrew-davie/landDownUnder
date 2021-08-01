@@ -163,7 +163,7 @@ CH_STEEL,CH_DIRT,
 
 
 CH_DIRT,CH_DOGE,CH_ROCK0,CH_EGG,
-0xB0, 0x68, 0x60,0xA,
+0xB0, 0x8, 0x60,0xA,
 
 0,CH_DOORCLOSED,0x03,0x04,     // entry
 LINE,CH_ZZAP, 20,2,19, DOWN,
@@ -201,8 +201,8 @@ static const unsigned char planet0[]= {
 CH_ROCK0,CH_DIRT,0,0,
 130, 40, 0, 0,
 
-LINE, CH_STEEL, 0,0, 19, RIGHT,
-LINE, CH_STEEL, 0,7, 19, RIGHT,
+LINE, CH_STEEL, 0,0, 20, RIGHT,
+LINE, CH_STEEL, 0,7, 20, RIGHT,
 
 
 0,CH_DOORCLOSED,0x03,0x04,     // entry
@@ -211,6 +211,34 @@ LINE, CH_STEEL, 0,7, 19, RIGHT,
 
 };
 
+
+static const unsigned char moon0[]= {
+
+
+0x01,       // cave
+
+20,8,0,      // size, gravity
+
+0x14,       // milling
+0x0A,0x0F,  // diamond $
+
+0x0A,0x0B,0x0C,0x0D,0x0E,       // randomiser[level]
+0x0C,0x0C,0x0C,0x0C,0x0C,
+0x96,0x6E,0x46,0x28,0x1E,
+
+0,0,0, //15,0x09,
+
+0,CH_FLAT_1,
+
+
+CH_CRATER_SMALL,CH_CRATER_TINY,CH_CRATER_BIG,CH_CRATER_MID,
+30, 20, 10, 10,
+
+0,CH_DOORCLOSED,0x03,0x04,     // entry
+
+0xFF,
+
+};
 
 
 
@@ -243,6 +271,23 @@ const struct caveInfo caveList[] = {
     //         },
     //             },
     // },
+
+
+    { moon0,       {   { 0x02, 0x04, 0x06,
+            0x02,
+            0x02,
+            0x02,
+            0x02,
+            0x02,
+            0x02,
+            0x02,
+            0x02,
+            0x02,
+            0x02,
+            },
+                },
+    },
+
 
 
     { planet0,       {   { 0x86, 0xD6, 0x86,
