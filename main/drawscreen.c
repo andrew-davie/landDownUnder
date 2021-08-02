@@ -108,9 +108,11 @@ void Scroll() {
     }
 
 
+    int maxY = ((boardHeight * PIECE_DEPTH) - (_ARENA_SCANLINES - SCORE_SCANLINES - 3)) << 16;
+
     scrollY += scrollYSpeed;
-    if (scrollY > SCROLL_MAXIMUM_Y) {
-        scrollY = SCROLL_MAXIMUM_Y;
+    if (scrollY * 3 > maxY) {
+        scrollY -= scrollYSpeed;
         scrollYSpeed = 0;
         targetYScrollSpeed = 0;
     }
@@ -372,7 +374,7 @@ void drawScreen(){
         0b01000100, // 20  
         0b00000000, // 21 <
         0b00000000, // 22  
-        0b01000100, // 23  
+        0b00000000, // 23  
     };
 
     extern int parallax;
@@ -603,35 +605,33 @@ void drawOverviewScreen() {
     static const unsigned char partStart[] = { 0, 11, 22 };
     static signed char part = 0;
 
-    if (--part < 0)
+    part--;
+    if (part < 0)
         part = 1;
 
 
-    unsigned char *ppf = RAM + buf[0][VIDBUF_PF0_LEFT] + /*RAM + _BUF_PF0_LEFT +*/ partStart[part] * 9;
+    unsigned char *ppf = RAM + buf[0][VIDBUF_PF0_LEFT] + partStart[part] * 9;
 
 
     // The following draws the screen!
 
     const unsigned char *img[40];
-    for (int i = 0; i < 40; i++)
-        img[i] = &CHAR_BLANK;
 
-    int scanline = 0;
-    for (int row = partStart[part]; /*scanline < _ARENA_SCANLINES &&*/ row < partStart[part+1]; row++) {
+    int scanline = partStart[part] * 9;
+    for (int row = partStart[part]; scanline < _ARENA_SCANLINES && row < partStart[part+1]; row++) {
 
+        for (int i = 0; i < 40; i++)
+            img[i] = &CHAR_BLANK[0];
 
-        unsigned char *p = RAM + _BOARD + row * boardWidth;
+        if (row < boardHeight) {
+        
+            unsigned char *p = RAM + _BOARD + row * boardWidth;
 
-        for (int i = 0; i < 40; i++) {
+            for (int i = 0; i < boardWidth && i < 40; i++) {
 
-            unsigned char p2 = *p;
-            unsigned char type = CharToType[p2];
+                unsigned char p2 = *p;
+                unsigned char type = CharToType[p2];
 
-            if (row >= boardHeight)
-                type = TYPE_BLANK;
-
-
-            if (i < boardWidth)
                 switch (type) {
                 case TYPE_AMOEBA: {
                         unsigned int rnd = getRandom32();
@@ -660,17 +660,16 @@ void drawOverviewScreen() {
                         p2 = (*Animate[type])[AnimIdx[type].index];
                     break;
                 }
-            else
-                p2 = CH_BLANK;
 
-            img[i] = *charSet[p2];
-            p++;
+                img[i] = *charSet[p2];
+                p++;
+            }
         }
-
+        
         int shift = 7 - ((row + 1) & 1);
         int shift2 = shift - 1;
 
-        for (int iccLine=0; iccLine < 9 /*&& scanline < _ARENA_SCANLINES;*/; scanline++, iccLine++) {
+        for (int iccLine=0; iccLine < 9 /*&& scanline < _ARENA_SCANLINES;*/; /*scanline++,*/ iccLine++) {
 
             *ppf = (((*img[0]++ >> 6) & 1) << 4)
                 | (((*img[1]++ >> 7) & 1) << 5)
@@ -719,7 +718,19 @@ void drawOverviewScreen() {
                 | (((*img[20+19]++ >> 7) & 1) << 7);
 
         }
-    }  
+    } 
+
+    // while (scanline < _ARENA_SCANLINES) {
+    //     *ppf = 0;
+    //     *(ppf + _ARENA_SCANLINES) = 0;
+    //     *(ppf + 2 * _ARENA_SCANLINES) = 0;
+    //     *(ppf + 3 * _ARENA_SCANLINES) = 0;
+    //     *(ppf + 4 * _ARENA_SCANLINES) = 0;
+    //     *(ppf++ + 5 * _ARENA_SCANLINES) = 0;
+    //     scanline++;
+    // }
+
+
 }
 
 

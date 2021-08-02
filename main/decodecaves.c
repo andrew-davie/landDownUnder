@@ -129,11 +129,11 @@ extern int millingTime;
                     if (theObject == CH_CRATER_BIG) {
 
                         int x2 = x + 1;
-                        if (x2 >= boardWidth - 1)
+                        if (x2 >= boardWidth)
                             x2 = 0;
 
                         int y2 = y + 1;
-                        if (y2 >= boardHeight - 1)
+                        if (y2 >= boardHeight)
                             y2 = 0;
 
                         StoreObject(x, y, theObject);

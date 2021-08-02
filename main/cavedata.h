@@ -28,12 +28,10 @@ extern const unsigned char cave17[];
 extern const unsigned char cave18[];
 extern const unsigned char cave19[];
 
-//const unsigned char *cavePtr[];
-//const unsigned char caveColour[][3];
-
 struct caveInfo {
     const unsigned char *cavePtr;
-    const unsigned char caveColour[1][3+24];
+    const unsigned char caveColour[3];
+    const unsigned char *caveBGColour;
 };
 
 

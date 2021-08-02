@@ -69,7 +69,7 @@ _DS_GRP1a = DS12DATA
     
 ; timer values
 VB_TIM64T = 50;46; //7; //7
-OS_TIM64T = 20; 41; //33 ;-3
+OS_TIM64T = 21; 41; //33 ;-3
 
 ; color values
 _BLACK           = $00
@@ -773,7 +773,7 @@ _ARENA_COLOR:   ds 1
                         ; 4 byte aligned 
 
 
-_BUF_JUMP1:         ds _ARENA_SCANLINES * 2         ; long-word align!!
+_BUF_JUMP1:         ds (_ARENA_SCANLINES -1 ) * 2         ; long-word align!!
 _BUF_JUMP1_EXIT:    ds 2
 
 _BUF_AUDV           ds 2
@@ -781,7 +781,8 @@ _BUF_AUDC           ds 2
 _BUF_AUDF           ds 2
 
 
-
+    ds 2 ; bug?
+    
 ;_BOARD              ds 24*40
 
     ; sonwehere there's a memory overflow which requires this following definition

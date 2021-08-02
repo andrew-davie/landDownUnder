@@ -3,5 +3,6 @@
 
 extern void drawScreen();
 extern void Scroll();
+extern void looneyTuneFade();
 
 #endif

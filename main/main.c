@@ -83,7 +83,8 @@ int scoreLineCurrent[10];
 int scoreLineNew[10];
 int water, lava;
 unsigned char *lastWater;
-unsigned char bgPalette[24];
+
+unsigned char *bgPalette;
 
 #define SPACESHIPS 0
 int spaceshipY[SPACESHIPS];
@@ -458,9 +459,6 @@ void clearBuffer(int buff) {
     buf[0][n] = mem; \
     mem += _ARENA_SCANLINES;
 
-// #define defBuf(n,m) \
-//     buf[0][n] = m;
-
 
 void setVideoBufferPointers() {
 
@@ -600,15 +598,7 @@ void setColours() {
     unsigned char colour[3];
 
     for (i = 0; i < 3; i++)
-        colour[i] = ColourConvert(caveList[cave].caveColour[0][i]);
-
-/*    if (attractCounter > ATTRACT_TRIGGER) {
-        unsigned char colbase = getRandom32();
-        for (i = 0; i < 3; i++)
-            colour[i] = ((colour[i] ^ colbase ) + i * 0x50) & 0xF2;
-        ARENA_COLOR = colbase & 0xF0;
-    }
-*/
+        colour[i] = ColourConvert(caveList[cave].caveColour[i]);
 
     unsigned char scorecol = lives? 0x29 : 0x49;
     unsigned char bgCol = flashTime ? ARENA_COLOR : 0;
@@ -776,10 +766,7 @@ extern int rinc;
     frameAdjustSmallX = frameAdjustSmallY = 0;
     rockfordDirection = 1;
 
-
-    for (int bgLine = 0; bgLine < 24; bgLine++)
-        bgPalette[bgLine] = caveList[cave].caveColour[0][3+ bgLine];
-
+    bgPalette = caveList[cave].caveBGColour;
 
     DecodeCave(caveList[cave].cavePtr);
     setVideoBufferPointers();
@@ -835,8 +822,11 @@ void Initialize() {
     // point. Using myMemsetInt is faster than using myMemset, but requires
     // dividing the number of bytes by 4 because an integer is stored in 4 bytes.
 
-    // for (int i = 0; i < 4096/4; i++)
-    //     RAM_INT[i] = 0;
+    for (int i = 0; i < 4096/4; i++)
+        RAM_INT[i] = 0;
+
+
+
 
     //myMemsetInt(RAM_INT, 0, 4096/4);
     
@@ -1745,16 +1735,13 @@ void GameVerticalBlank() {
 
     if (gameSchedule != SCHEDULE_UNPACK_CAVE) {
 
-//        drawBitmap(&rocketShip[0], 30, lava-(scrollY>>16), false);
+
 
 
 //        GameScheduleAnimate();
 #if ENABLE_OVERLAY
         GameScheduleDrawOverlay();
 #endif
-        // Uncover();
-
-extern void     looneyTuneFade();
 
         looneyTuneFade();
     }
@@ -1763,6 +1750,7 @@ extern void     looneyTuneFade();
 
 
 void setPalette(int start, int size, int step, int tweak) {
+
     setColours();
 
     int bgCharLine = (scrollY >> 16) * 3;
@@ -1790,7 +1778,7 @@ void setPalette(int start, int size, int step, int tweak) {
     int i = start;
     while (i < _ARENA_SCANLINES) {
 
-        if (false && lava && absLine >= lavaLine) {
+        if (lava && absLine >= lavaLine) {
 
             unsigned char lavaCol = 0x44;
             int delta = (absLine - lavaLine);
@@ -1816,7 +1804,7 @@ void setPalette(int start, int size, int step, int tweak) {
 
         }
         
-        else if (false && water && absLine >= waterLine) {
+        else if (water && absLine >= waterLine) {
 
             unsigned char waterCol = 0x90;
             int delta = absLine - waterLine;
@@ -1838,9 +1826,9 @@ void setPalette(int start, int size, int step, int tweak) {
             RAM[buf[0][VIDBUF_COLUPF] + i + 2] = ColourConvert(0x94);     // flow + inside stream colour
 
         }
-        else {
-           RAM[buf[0][VIDBUF_COLUPF] + i] = ColourConvert(bgPalette[pfCharLine]);
-       }
+
+        else
+            RAM[buf[0][VIDBUF_COLUPF] + i] = ColourConvert(bgPalette[pfCharLine]);
         
             
         bgCharLine += 3;            
@@ -1859,144 +1847,7 @@ void setPalette(int start, int size, int step, int tweak) {
 
 
 
-void setOverviewPalette() {
 
-    setPalette(0, 9, 7, 6);
-/*
-    setColours();
-
-    int bgCharLine = (scrollY >> 16) * 3;
-    int absLine = 0; //(scrollY >> 16) * 7;
-    int pfCharLine = 0;
-
-    int i = 0;
-    while (i < _ARENA_SCANLINES) {
-
-        if (lava && absLine >= lava) {
-
-            unsigned char lavaCol = (absLine - lava) < 8 ? 0x2F - (absLine-lava) : 0x44;
-
-
-            if (!flashTime) {
-                RAM[_BUF_COLUBK + i ] = 
-                RAM[_BUF_COLUBK + i + 1 ] =
-                RAM[_BUF_COLUBK + i + 2 ] = lavaCol;
-            }
-
-            RAM[_BUF_COLUPF + i ] = 0x6A;
-            RAM[_BUF_COLUPF + i + 1 ] = 0x3C;
-            RAM[_BUF_COLUPF + i + 2 ] = 0x4;
-
-        }
-        
-        else if (water && absLine >= water - 6) {
-
-            unsigned char waterCol = (absLine - water) < 8 ? 0x96 - ((absLine-water)>>2) : 0x82;
-
-            if (!flashTime) {
-//            RAM[_BUF_COLUBK + i ] = 
-                RAM[_BUF_COLUBK + i + 1 ] =
-                RAM[_BUF_COLUBK + i + 2 ] = waterCol;
-
-                RAM[_BUF_COLUPF + i ] = 0xA2;
-                RAM[_BUF_COLUPF + i + 1] = 0x92;
-                RAM[_BUF_COLUPF + i + 2] = 0x86;
-            }
-
-        }
-        else {
-
-            RAM[_BUF_COLUPF + i ] = bgPalette[pfCharLine];
-        }
-        
-            
-        bgCharLine += 3;            
-        if (bgCharLine >= 9) {
-            bgCharLine = 0;
-            pfCharLine++;
-        }
-
-        absLine += 7;
-        i += 3;
-    }
-*/
-
-
-}
-
-void setDisplayPalette() {
-    setPalette(SCORE_SCANLINES, PIECE_DEPTH, 3, 3);
-
-/*
-    setColours();
-
-    int bgCharLine = (scrollY >> 16) * 3;
-    int absLine = bgCharLine;
-
-    bgCharLine--;
-
-    int pfCharLine = 0;
-    while (bgCharLine >= 21) {
-        bgCharLine -= 21;
-        pfCharLine++;
-    }
-
-
-    int i =18;
-    while (i < _ARENA_SCANLINES) {
-
-        if (lava && absLine >= lava) {
-
-            unsigned char lavaCol = (absLine - lava) < 10 ? 0x2F - (absLine-lava) : 0x44;
-
-            if (!flashTime) {
-                RAM[_BUF_COLUBK + i ] = 
-                RAM[_BUF_COLUBK + i + 1 ] =
-                RAM[_BUF_COLUBK + i + 2] = lavaCol;
-            }
-
-            RAM[_BUF_COLUPF + i] = 0x28;
-            RAM[_BUF_COLUPF + i + 1 ] = 0x6A;
-            RAM[_BUF_COLUPF + i + 2 ] = 0x3C;
-
-        }
-        
-        else if (water && absLine >= water - 3) {
-
-            unsigned char waterCol = (absLine - water) < 10 ? 0x96 - ((absLine-water)>>2) : 0x82;
-
-            if (!flashTime) {
-                // RAM[_BUF_COLUBK + i ] = 
-                RAM[_BUF_COLUBK + i + 1 ] =
-                RAM[_BUF_COLUBK + i + 2 ] = waterCol;
-            }
-
-            RAM[_BUF_COLUPF + i ] = 0xA2;
-            RAM[_BUF_COLUPF + i + 1] = 0x92;
-            RAM[_BUF_COLUPF + i + 2] = 0x86;
-
-        }
-        else {
-
-            RAM[_BUF_COLUPF + i] = bgPalette[pfCharLine];
-//            RAM[_BUF_COLUBK +i ] = 0;
-//            RAM[_BUF_COLUBK +i + 1 ] = 0;
-//            RAM[_BUF_COLUBK +i + 2 ] = 0;
-        }
-        
-            
-        bgCharLine += 3;            
-        if (bgCharLine >= 21) {
-            bgCharLine = 0;
-            pfCharLine++;
-        }
-
-
-        absLine += 3;
-        i+=3;
-    }
-*/
-}
 
 void drawSoftwareSprites() {
 
@@ -2132,7 +1983,7 @@ void GameScheduleDrawSprites() {
         if (lastDisplayMode != displayMode)
             removeSprite();
 
-        setOverviewPalette();
+        setPalette(0, 9, PIECE_DEPTH/3, 6);
         drawOverviewScreen();
         drawPlayerSmallSprite();
         drawSoftwareSprites();
@@ -2158,12 +2009,10 @@ void GameScheduleDrawSprites() {
                 scoreLineCurrent[i] = -1;
         }
 
-        setDisplayPalette();
+        setPalette(SCORE_SCANLINES, PIECE_DEPTH, 3, 3);
         drawScore();
         drawScreen();
         drawSoftwareSprites();
-
-
 
         doPlayer();
 
@@ -2338,7 +2187,7 @@ void InitGameBuffers() {
     
     // set the Jump Datastream so each entry runs the NORMAL KERNEL by default
     // init Jump Datastream
-    for (int i=0; i < _ARENA_SCANLINES; i++)
+    for (int i=0; i < _ARENA_SCANLINES - 1; i++)
         RAM_SINT[(_BUF_JUMP1 / 2) + i] = _NORMAL_KERNEL;
     RAM_SINT[ _BUF_JUMP1_EXIT / 2 ] = _EXIT_KERNEL;
 }

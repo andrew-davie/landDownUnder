@@ -9,7 +9,7 @@
 #define ENABLE_DRIP 0
 #define ENABLE_PARALLAX 1
 #define ENABLE_TOGGLE_DISPLAY_ON_DEATH 0
-#define ENABLE_SHAKE 1
+#define ENABLE_SHAKE 0
 #define ENABLE_SHIMMER 0 /* shimmer CH_BLANK on extra life - depecated */
 
 #define DEF_OVERVIEW 0x80

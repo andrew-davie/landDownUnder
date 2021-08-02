@@ -7,11 +7,11 @@
 #define _BLUE2                    0x0090
 #define _BOARD                    0x01a4
 #define _BROWN                    0x0030
-#define _BUF_AUDC                 0x01a0
-#define _BUF_AUDF                 0x01a2
-#define _BUF_AUDV                 0x019e
+#define _BUF_AUDC                 0x019e
+#define _BUF_AUDF                 0x01a0
+#define _BUF_AUDV                 0x019c
 #define _BUF_JUMP1                0x0010
-#define _BUF_JUMP1_EXIT           0x019c
+#define _BUF_JUMP1_EXIT           0x019a
 #define _BUFFERS                  0x01a4
 #define _CYAN                     0x00b0
 #define _DS_AUDC0                 0x000f

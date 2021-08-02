@@ -363,14 +363,14 @@ const unsigned char CHAR_DRIPX[] = {
 
 const unsigned char CHAR_STEEL[] = {
 
-XX    X__X      // 00
-__    XXXX      // 01
+__    X__X      // 00
+XX    XXXX      // 01
 XX    XXXX      // 02
-XX    X__X      // 03
-__    XXXX      // 04
+__    X__X      // 03
+XX    XXXX      // 04
 XX    XXXX      // 05
-XX    __XX      // 06
-__    XXXX      // 07
+__    __XX      // 06
+XX    XXXX      // 07
 XX    XXXX      // 08
       __XX      // 09
       XXXX      // 10
@@ -2034,21 +2034,21 @@ XX    _X__
 __    XX__  
 __    _X__  
 __    XX__  
-    _X__  
-    _X__  
-    X___  
-    ____  
-    _X__  
-    _X__  
-    _XX_  
-    _X__  
-    __X_  
-    ____  
-    _X__  
-    _XX_
-    ____
-    ____
-    ____
+      _X__  
+      _X__  
+      X___  
+      ____  
+      _X__  
+      _X__  
+      _XX_  
+      _X__  
+      __X_  
+      ____  
+      _X__  
+      _XX_
+      _X__
+      _X__
+      _X__
 
 };
 
@@ -2075,9 +2075,9 @@ XX    _X__
     _X__  
     _X__  
     _X__
-    ____
-    ____
-    ____
+    _X__
+    _X__
+    _X__
 };
 
 const unsigned char CHAR_DRILL2[] = {
@@ -2103,9 +2103,9 @@ XX    _XX_
     _X__  
     _X__  
     X___  
-    ____
-    ____
-    ____
+    _X__
+    _X__
+    _X__
 
 };
 
@@ -2665,10 +2665,10 @@ __  ____
     XXXX  
     ____  
     ____  
-    XXXX  
+    XXX_  
     ____  
     ____
-    XXXX
+    XX__
     ____
 
 };
@@ -2843,43 +2843,43 @@ const unsigned char CHAR_BELT3[] = {
 
 
 const unsigned char CHAR_CRATER_SMALL[] = {
-    X__X    // 00  
-    _XX_    // 01  
-    ____    // 02  
-    __XX    // 03  
-    X__X    // 04  
-    ____    // 05  
-    _XXX    // 06  
-    X__X    // 07  
-    ____    // 08  
-    _XXX    // 09  
-    X__X    // 10
-    X___    // 11  
-    XXXX    // 12  
-    X___    // 13
-    XX_X    // 14  
-    XXXX    // 15  
-    _XX_    // 16  
-    _XX_    // 17  
-    XXXX    // 18  
-    ____    // 19  
-    ____    // 20
-    XXXX    // 21
-    ____    // 22
-    ____    // 23
+XX    X__X    // 00  
+XX    _XX_    // 01  
+XX    ____    // 02  
+__    ___X    // 03  
+__    X_XX    // 04  
+__    ____    // 05  
+__    _X_X    // 06  
+__    X__X    // 07  
+__    ____    // 08  
+      _X_X    // 09  
+      X__X    // 10
+      X___    // 11  
+      XXXX    // 12  
+      X__X    // 13
+      XX__    // 14  
+      XXXX    // 15  
+      _XX_    // 16  
+      _XX_    // 17  
+      XXXX    // 18  
+      ____    // 19  
+      ____    // 20
+      XXXX    // 21
+      ____    // 22
+      ____    // 23
 };
 
 const unsigned char CHAR_CRATER_TINY[] = {
 
-    XXXX    // 00  
-    ____    // 01  
-    ____    // 02  
-    XXXX    // 03  
-    ____    // 04  
-    ____    // 05  
-    XXXX    // 06  
-    ____    // 07  
-    ____    // 08  
+XX    XXXX    // 00  
+__    ____    // 01  
+__    ____    // 02  
+XX    XXXX    // 03  
+__    ____    // 04  
+__    ____    // 05  
+XX    XXXX    // 06  
+__    ____    // 07  
+__    ____    // 08  
     XXXX    // 09  
     ____    // 10
     __X_    // 11  
@@ -2900,43 +2900,43 @@ const unsigned char CHAR_CRATER_TINY[] = {
 
 const unsigned char CHAR_CRATER_MID[] = {
 
-    XX_X    // 00  
-    __X_    // 01  
-    ____    // 02  
-    X__X    // 03  
-    _XX_    // 04  
-    ____    // 05  
-    X_X_    // 06  
-    ___X    // 07  
-    _X__    // 08  
-    XX__    // 09  
-    ___X    // 10
-    _X__    // 11  
-    XXX_    // 12  
-    _XX_    // 13
-    __X_    // 14  
-    XXXX    // 15  
-    ____    // 16  
-    ____    // 17  
-    XXXX    // 18  
-    ____    // 19  
-    ____    // 20
-    XXXX    // 21
-    ____    // 22
-    ____    // 23
-
+XX    XX_X    // 00  
+XX    __X_    // 01  
+XX    ____    // 02  
+XX    X__X    // 03  
+XX    _XX_    // 04  
+__    ____    // 05  
+__    X___    // 06  
+__    ___X    // 07  
+__    _X__    // 08  
+      XX__    // 09  
+      ___X    // 10
+      _X__    // 11  
+      XXX_    // 12  
+      _XX_    // 13
+      __X_    // 14  
+      XXXX    // 15  
+      ____    // 16  
+      ____    // 17  
+      XXXX    // 18  
+      ____    // 19  
+      ____    // 20
+      XXXX    // 21
+      ____    // 22
+      ____    // 23
+  
 };
 
 const unsigned char CHAR_CRATER_BIG[] = {
-    XXXX  
-    ___X  
-    ___X  
-    XXX_  
-    __X_  
-    ____  
-    XXX_  
-    _X__  
-    ____  
+XX    XXXX  
+XX    ___X  
+XX    ___X  
+XX    XXX_  
+XX    __X_  
+XX    ____  
+XX    XXX_  
+XX    _X__  
+XX    ____  
     XXXX  
     _X__
     ____  
@@ -2956,69 +2956,69 @@ const unsigned char CHAR_CRATER_BIG[] = {
 
 const unsigned char CHAR_CRATER_BIG1[] = {
 
-    __XX    // 00
-    XX__    // 01  
-    XX__    // 02  
-    XXXX    // 03  
-    XX__    // 04  
-    XXX_    // 05  
-    __XX    // 06  
-    XXX_    // 07  
-    __X_    // 08  
-    __XX    // 09  
-    __X_    // 10
-    ___X    // 11  
-    XX_X    // 12  
-    ___X    // 13
-    ____    // 14  
-    XXXX    // 15  
-    ___X    // 16  
-    ____    // 17  
-    XXXX    // 18  
-    ___X    // 19  
-    ____    // 20
-    XXXX    // 21
-    ____    // 22
-    ____    // 23
+XX    __XX    // 00
+XX    XX__    // 01  
+XX    XX__    // 02  
+XX    XXXX    // 03  
+XX    XX__    // 04  
+XX    XXX_    // 05  
+XX    __XX    // 06  
+XX    __X_    // 07  
+XX    __X_    // 08  
+      __XX    // 09  
+      __X_    // 10
+      ____    // 11  
+      XX_X    // 12  
+      ___X    // 13
+      ____    // 14  
+      XX_X    // 15  
+      ___X    // 16  
+      ____    // 17  
+      XX_X    // 18  
+      ___X    // 19  
+      ____    // 20
+      XXXX    // 21
+      ___X    // 22
+      ____    // 23
 };
 
 const unsigned char CHAR_CRATER_BIG2[] = {
-    XXXX  
-    ____  
-    X___  
-    XXXX  
-    ____  
-    X___  
-    _XXX  
-    X___  
-    ____  
-    _XXX  
-    X___  
-    ____  
-    __XX  
-    _X__
-    ____  
-    X_XX  
-    _X__
-    ____  
-    XX__  
-    __XX  
-    ____  
-    XXXX  
-    ____  
-    ____
+XX    XXXX  
+XX    X___  
+XX    ____  
+XX    XXXX  
+XX    X___  
+XX    ____  
+XX    _XXX  
+XX    X___  
+XX    ____  
+      _XXX  
+      X___  
+      ____  
+      __XX  
+      _X__
+      ____  
+      X_XX  
+      _X__
+      ____  
+      XX__  
+      __XX  
+      ____  
+      XXXX  
+      ___X  
+      ____
 };
 
 const unsigned char CHAR_CRATER_BIG3[] = {
-    XXXX  
-    ____  
-    ___X  
-    XXXX  
-    ____  
-    ___X  
-    XXXX  
-    ____  
-    ___X  
+XX   XXXX  
+XX   ___X  
+XX   ____  
+XX   XXXX  
+XX   ___X  
+XX   ____  
+XX   XXXX  
+XX   ____  
+XX   ___X  
     XXXX  
     ____  
     ___X  
@@ -3030,22 +3030,22 @@ const unsigned char CHAR_CRATER_BIG3[] = {
     __X_  
     XXXX  
     XX__  
-    XX__  
-    __XX  
     ____  
+    XXXX  
+    X___  
     ____
 };
 
 const unsigned char CHAR_FLAT_1[] = {
-    XXXX  
-    ____  
-    ____  
-    X_XX  
-    _X__  
-    ____  
-    XXXX  
-    ____  
-    ____  
+XX    XXXX  
+__    ____  
+__    ____  
+XX    X_XX  
+__    _X__  
+__    ____  
+XX    XXXX  
+__    ____  
+__    ____  
     XXX_  
     ___X
     ____  
