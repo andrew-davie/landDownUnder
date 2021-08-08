@@ -2844,12 +2844,12 @@ const unsigned char CHAR_BELT3[] = {
 
 const unsigned char CHAR_CRATER_SMALL[] = {
 XX    X__X    // 00  
-XX    _XX_    // 01  
-XX    ____    // 02  
-__    ___X    // 03  
-__    X_XX    // 04  
-__    ____    // 05  
-__    _X_X    // 06  
+__    _XX_    // 01  
+__    ____    // 02  
+XX    ___X    // 03  
+XX    X_XX    // 04  
+XX    ____    // 05  
+XX    _X_X    // 06  
 __    X__X    // 07  
 __    ____    // 08  
       _X_X    // 09  
@@ -2875,7 +2875,7 @@ XX    XXXX    // 00
 __    ____    // 01  
 __    ____    // 02  
 XX    XXXX    // 03  
-__    ____    // 04  
+XX    ____    // 04  
 __    ____    // 05  
 XX    XXXX    // 06  
 __    ____    // 07  
@@ -2900,13 +2900,13 @@ __    ____    // 08
 
 const unsigned char CHAR_CRATER_MID[] = {
 
-XX    XX_X    // 00  
+__    XX_X    // 00  
 XX    __X_    // 01  
 XX    ____    // 02  
 XX    X__X    // 03  
 XX    _XX_    // 04  
-__    ____    // 05  
-__    X___    // 06  
+XX    ____    // 05  
+XX    X___    // 06  
 __    ___X    // 07  
 __    _X__    // 08  
       XX__    // 09  
@@ -2928,15 +2928,15 @@ __    _X__    // 08
 };
 
 const unsigned char CHAR_CRATER_BIG[] = {
-XX    XXXX  
+__    XXXX  
 XX    ___X  
 XX    ___X  
 XX    XXX_  
 XX    __X_  
 XX    ____  
 XX    XXX_  
-XX    _X__  
-XX    ____  
+__    _X__  
+__    ____  
     XXXX  
     _X__
     ____  
@@ -2963,8 +2963,8 @@ XX    XXXX    // 03
 XX    XX__    // 04  
 XX    XXX_    // 05  
 XX    __XX    // 06  
-XX    __X_    // 07  
-XX    __X_    // 08  
+__    __X_    // 07  
+__    __X_    // 08  
       __XX    // 09  
       __X_    // 10
       ____    // 11  
@@ -2990,8 +2990,8 @@ XX    XXXX
 XX    X___  
 XX    ____  
 XX    _XXX  
-XX    X___  
-XX    ____  
+__    X___  
+__    ____  
       _XXX  
       X___  
       ____  
@@ -3010,15 +3010,15 @@ XX    ____
 };
 
 const unsigned char CHAR_CRATER_BIG3[] = {
-XX   XXXX  
+__   XXXX  
 XX   ___X  
 XX   ____  
 XX   XXXX  
 XX   ___X  
 XX   ____  
-XX   XXXX  
-XX   ____  
-XX   ___X  
+__   XXXX  
+__   ____  
+__   ___X  
     XXXX  
     ____  
     ___X  
@@ -3062,6 +3062,95 @@ __    ____
     ____
     ____
 };
+
+
+const unsigned char CHAR_FLAT_2[] = {
+    ____
+    ____
+    XXXX  
+    ____  
+    ____  
+    XXXX  
+    ____  
+    ____  
+    XXXX  
+    ____  
+    ____  
+    XXXX  
+    ____
+    ____  
+    XXXX  
+    ____
+    ____  
+    XXXX  
+    ____  
+    ____  
+    XXXX  
+    ____  
+    ____
+    XXXX  
+};
+
+const unsigned char CHAR_SHADOW[] = {
+XX    _X_X  
+__    ____  
+__    ____  
+XX    X_X_  
+__    ____  
+__    ____  
+XX    __X_  
+__    ____  
+__    ____  
+    X___  
+    ____
+    ____  
+    X__X  
+    ____
+    ____  
+    __X_  
+    ____  
+    ____  
+    X___  
+    ____  
+    ____
+    __X_  
+    ____
+    ____
+};
+
+
+
+const unsigned char CHAR_LATITUDE[] = {
+    ____
+    ____
+    _XXX  
+    ____  
+    ____  
+    _XXX  
+    ____  
+    ____  
+    _XXX  
+    ____  
+    ____  
+    _XXX  
+    ____
+    ____  
+    _XXX  
+    ____
+    ____  
+    _XXX  
+    ____  
+    ____  
+    _XXX  
+    ____  
+    ____
+    _XXX  
+};
+
+
+
+
+
 
 
 #if ENABLE_PARALLAX
@@ -3223,6 +3312,9 @@ const unsigned char (*charSet[])[] = {
     &CHAR_CRATER_BIG3,                              // 116 CH_CRATER_BIG3
     &CHAR_CRATER_MID,                               // 117 CH_DRATER_MID
     &CHAR_FLAT_1,                                   // 118 CH_FLAT_1
+    &CHAR_SHADOW,                                   // 119 CH_SHADOW
+    &CHAR_FLAT_2,                                   // 120 CH_FLAT_2
+    &CHAR_LATITUDE,                                 // 121 CH_LATITUDE
 
     // +--> CharToType[]
 };
@@ -3417,6 +3509,7 @@ const char (*Animate[TYPE_MAX])[] = {
     &AnimBelt2,                 // 56 BELT2
     0,                          // 57 CRATER
     0,                          // 58 FLAT
+    0,                          // 59 SHADOW
 };
 
 

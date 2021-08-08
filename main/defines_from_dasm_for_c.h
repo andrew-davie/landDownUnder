@@ -5,14 +5,14 @@
 #define _BLACK                    0x0000
 #define _BLUE                     0x0080
 #define _BLUE2                    0x0090
-#define _BOARD                    0x01a4
+#define _BOARD                    0x01a2
 #define _BROWN                    0x0030
 #define _BUF_AUDC                 0x019e
 #define _BUF_AUDF                 0x01a0
 #define _BUF_AUDV                 0x019c
 #define _BUF_JUMP1                0x0010
 #define _BUF_JUMP1_EXIT           0x019a
-#define _BUFFERS                  0x01a4
+#define _BUFFERS                  0x01a2
 #define _CYAN                     0x00b0
 #define _DS_AUDC0                 0x000f
 #define _DS_AUDF0                 0x0010
@@ -35,8 +35,8 @@
 #define _DS_SPLASH_P1L            0x0001
 #define _DS_SPLASH_P1R            0x0003
 #define _DS_TO_ARM                0x0000
-#define _EVERY_FRAME_ZERO_COUNT   0x0000
-#define _EVERY_FRAME_ZERO_START   0x01a4
+#define _EVERY_FRAME_ZERO_COUNT   0x0002
+#define _EVERY_FRAME_ZERO_START   0x01a2
 #define _EXIT_KERNEL              0xf17f
 #define _FN_GAME_IDLE             0x0007
 #define _FN_GAME_OS               0x0001

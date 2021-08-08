@@ -226,12 +226,12 @@ int desiredRadius = 175;
 
 void circle(int leftX, int rightX, int r2) {
     
-    p0 = RAM + buf[0][VIDBUF_PF0_LEFT]; //&RAM[_BUF_PF0_LEFT];
-    p1 = RAM + buf[0][VIDBUF_PF1_LEFT]; //&RAM[_BUF_PF1_LEFT];
-    p2 = RAM + buf[0][VIDBUF_PF2_LEFT]; //&RAM[_BUF_PF2_LEFT];
-    p3 = RAM + buf[0][VIDBUF_PF0_RIGHT]; //&RAM[_BUF_PF0_RIGHT];
-    p4 = RAM + buf[0][VIDBUF_PF1_RIGHT]; //&RAM[_BUF_PF1_RIGHT];
-    p5 = RAM + buf[0][VIDBUF_PF2_RIGHT]; //&RAM[_BUF_PF2_RIGHT];
+    p0 = RAM + buf[VIDBUF_PF0_LEFT];
+    p1 = RAM + buf[VIDBUF_PF1_LEFT];
+    p2 = RAM + buf[VIDBUF_PF2_LEFT];
+    p3 = RAM + buf[VIDBUF_PF0_RIGHT];
+    p4 = RAM + buf[VIDBUF_PF1_RIGHT];
+    p5 = RAM + buf[VIDBUF_PF2_RIGHT];
 
     for (int y = 0; y <= centerY; y++) {
 
@@ -320,7 +320,7 @@ int ascrollY;
 
 // unsigned int bgDriftX, bgDriftY;
 
-const unsigned char blankRow[] = {
+unsigned char blankRow[] = {
     CH_BLANK,
     CH_BLANK,
     CH_BLANK,
@@ -341,7 +341,7 @@ void drawScreen(){
 #if ENABLE_PARALLAX
 
     extern unsigned char parallaxBlank[];
-    extern unsigned char charDust2[];
+    // extern unsigned char charDust2[];
     extern unsigned char charDust3[];
     extern unsigned char charDrip[];
     extern unsigned char charDrip1[];
@@ -442,12 +442,12 @@ extern const unsigned char CHAR_DRIP1[];
 extern const unsigned char CHAR_DRIP2[];
 extern const unsigned char CHAR_DRIP3[];
 extern const unsigned char CHAR_DRIPX[];
-extern const unsigned char DOGEA[];
-extern const unsigned char DOGEx1[];
-extern const unsigned char DOGEx2[];
-extern const unsigned char DOGEx3[];
-extern const unsigned char DOGEx4[];
-extern const unsigned char DOGEx5[];
+// extern const unsigned char DOGEA[];
+// extern const unsigned char DOGEx1[];
+// extern const unsigned char DOGEx2[];
+// extern const unsigned char DOGEx3[];
+// extern const unsigned char DOGEx4[];
+// extern const unsigned char DOGEx5[];
 
 //extern const unsigned char DUST2[];
 extern const unsigned char DUST3[];
@@ -474,6 +474,10 @@ extern const unsigned char DUST3[];
 
 
 #endif
+
+
+    // scrollX = 0; //tmp
+    // scrollY = 0; //tmp
 
 
     // The following draws the screen!
@@ -517,11 +521,9 @@ extern const unsigned char DUST3[];
         lcount = lct;
 
         int base = half ? VIDBUF_PF0_RIGHT : VIDBUF_PF0_LEFT;
-
-        unsigned char *pf0 = RAM + buf[0][base] + SCORE_SCANLINES;
-        unsigned char *pf1 = RAM + buf[0][base + 1] + SCORE_SCANLINES;
-        unsigned char *pf2 = RAM + buf[0][base + 2] + SCORE_SCANLINES;
-
+        unsigned char *pf0 = RAM + buf[base] + SCORE_SCANLINES;
+        unsigned char *pf1 = RAM + buf[base + 1] + SCORE_SCANLINES;
+        unsigned char *pf2 = RAM + buf[base + 2] + SCORE_SCANLINES;
 
         int rnd = 0;
 
@@ -588,8 +590,8 @@ extern const unsigned char DUST3[];
                 if (lcount++ >= 0 ) {
                     *pf0++ = BitRev[(p >> 16) & 0b1111];
                     *pf1++ = p >> 8;
-                    *pf2++ = BitRev[p & 0b1111] | (BitRev[(p >> 4) & 0b1111] >> 4);
-                    scanline++;
+                    //*pf2++ = BitRev[p & 0b1111] | (BitRev[(p >> 4) & 0b1111] >> 4);
+                    *pf2++ = BitRev[p & 0xFF];
                 }
             }
 
@@ -610,7 +612,7 @@ void drawOverviewScreen() {
         part = 1;
 
 
-    unsigned char *ppf = RAM + buf[0][VIDBUF_PF0_LEFT] + partStart[part] * 9;
+    unsigned char *ppf = RAM + buf[VIDBUF_PF0_LEFT] + partStart[part] * 9;
 
 
     // The following draws the screen!
@@ -667,7 +669,7 @@ void drawOverviewScreen() {
         }
         
         int shift = 7 - ((row + 1) & 1);
-        int shift2 = shift - 1;
+//        int shift2 = shift - 1;
 
         for (int iccLine=0; iccLine < 9 /*&& scanline < _ARENA_SCANLINES;*/; /*scanline++,*/ iccLine++) {
 
@@ -732,108 +734,4 @@ void drawOverviewScreen() {
 
 
 }
-
-
-
-void drawPlanet() {
-
-    // unsigned char *const arenas[] = {
-    //     RAM + _BUF_PF0_LEFT + SCORE_SCANLINES,
-    //     RAM + _BUF_PF0_RIGHT + SCORE_SCANLINES,
-    // };
-
-
-    int lcount = -(scrollY >>16) * 3;
-    int shift = (scrollX >> 14 ) & 3;
-
-
-    int startRow = 0;
-    while (lcount <= -PIECE_DEPTH) {
-        lcount += PIECE_DEPTH;
-        startRow++;
-    }
-
-
-    for (int row = startRow, scanline = 0; scanline < SCANLINES; row++) {
-
-
-        int slc = lcount;
-        int scn = scanline;
-        int frac = scrollX >> 16;
-        int rnd = 0;
-
-        for (int half = 0; half < 2; half++) { 
-
-
-            scanline = scn;
-            lcount = slc;
-
-            int xOffset = (half * 5) + frac;
-            unsigned char *xchar = RAM + _BOARD + ((row +1 )* 40) + xOffset;
-            const unsigned char *image[6];
-
-
-            for (int ch = 0; ch < 6; ch++) {
-
-                unsigned char piece = *xchar;
-                unsigned char type = CharToType[piece];
-
-                switch (type) {
-                case TYPE_AMOEBA:
-                    if (rnd < 256)
-                        rnd = getRandom32();
-                    if (((rnd >>= 8) & 0xFF) > 255-BUBBLE_SPEED)
-                        piece = *xchar = (rnd & 3) + CH_AMOEBA0;
-                    break;
-                case TYPE_LAVA:
-                    if (rnd < 256)
-                        rnd = getRandom32();
-                    if (((rnd >>= 8) & 0xFF) > 255 - LAVA_SPEED)
-                        piece = *xchar = (rnd & 3) + CH_LAVA;
-                    break;
-                case TYPE_DIRT:
-                    break;
-
-                default:
-
-                    if (Animate[type])
-                        piece = (*Animate[type])[AnimIdx[type].index];
-                }
-
-                image[ch] = *charSet[piece];
-                xchar++;
-            }
-
-            int base = half ? VIDBUF_PF0_RIGHT : VIDBUF_PF0_LEFT;
-            unsigned char *pf0 = RAM + buf[0][base] /*arenas[half]*/ + scanline;
-
-
-            for (int y = 0; scanline < SCANLINES && y < PIECE_DEPTH; y++) {
-
-                int p = 0;
-                for (int pix = 0, pshift=20; pix < 6; pix++, pshift -= 4)
-                    p |= ((*(image[pix])++) & 0b1111) << pshift;
-                p >>= 4-shift;
-
-                if (lcount >= 0 ) {
-                    *pf0 = ((BitRev[(p >> 16) & 0b1111]));
-                    *(pf0 + _ARENA_SCANLINES) = ((((p >> 12) & 0b1111) << 4) | (((p >> 8) & 0b1111)));
-                    *(pf0 + (_ARENA_SCANLINES << 1)) = ((
-                            BitRev[p & 0b1111] | (BitRev[(p >> 4) & 0b1111] >> 4)
-                          ));
-
-                    pf0++;
-
-                    scanline++;
-                }
-
-                lcount++;
-            }
-
-        }
-    }
-
-
-}
-
 

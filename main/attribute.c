@@ -15,7 +15,7 @@ const int Attribute[] = {
 
 #define RKF ATT_ROCKFORDYBLANK
 #define PSH ATT_PUSH
-#define SSP ATT_SEMIBLANK
+//#define SSP ATT_SEMIBLANK
 #define WTR ATT_WATER
 #define LAV ATT_LAVA
 #define QUI ATT_NOROCKNOISE
@@ -25,7 +25,7 @@ const int Attribute[] = {
 #define ACT ATT_ACTIVE
 #define BNG ATT_EXPLODES
 #define GRB ATT_GRAB
-#define SQD ATT_SQUASHABLE_TO_DOGES
+//#define SQD ATT_SQUASHABLE_TO_DOGES
 #define SPC ATT_BLANK
 #define PER ATT_PERMEABLE
 #define XPD ATT_EXPLODABLE
@@ -107,6 +107,7 @@ const int Attribute[] = {
      _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 56 BELT2
      _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 57 CRATER
      _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 58 CRATER
+     _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _  , // 59 SHADOW
 
 //  RND|DRP RKF PSH SSP WTR LAV QUI XIT HRD SQB ACT BNG GRB SQD SPC PER XPD FLY ROL
 //   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |

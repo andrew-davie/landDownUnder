@@ -8,6 +8,7 @@
 #define NDEBUG /* Uncomment if you don't want assertion */
 #include <assert.h>
 #include "defines_from_dasm_for_c.h"
+#include "main.h"
 //#include "defines_cdfj.h"
 #include "attribute.h"
 #include "characterset.h"
@@ -19,11 +20,11 @@ extern void* DDR;
 #define DEF_YSIZE 2
 #define DEF_GRAVITY 3
 #define DEF_MILL 4
-#define DEF_DIAMOND 5
-#define DEF_DOGE 6
+#define DEF_DOGEVALUE 5
+#define DEF_DOGEEXTRAVALUE 6
 #define DEF_SEED 7
 #define DEF_DOGE 12
-#define DEF_TIME 15
+#define DEF_TIME 17
 #define DEF_LAVA 22
 #define DEF_WATER 23
 #define DEF_FLAGS 24
@@ -94,8 +95,8 @@ extern int millingTime;
     planetGravity = acaveData[DEF_GRAVITY];
 
 
-    diamondValue = acaveData[DEF_DIAMOND];
-    extraDogeCoinValue = acaveData[DEF_DOGE];
+    diamondValue = acaveData[DEF_DOGEVALUE];
+    extraDogeCoinValue = acaveData[DEF_DOGEEXTRAVALUE];
 
     extern int lava;
     extern int water;
@@ -105,7 +106,12 @@ extern int millingTime;
     water = acaveData[DEF_WATER] * PIECE_DEPTH;
     caveFlags = acaveData[DEF_FLAGS];
 
-    displayMode = caveFlags & 0x80 ? OVERVIEW : NORMAL;
+    displayMode = caveFlags & DEF_OVERVIEW ? DISPLAY_OVERVIEW : DISPLAY_NORMAL;
+    if (caveFlags & DEF_PLANET)
+        displayMode = DISPLAY_PLANET;
+
+
+
     parallax = caveFlags & 0x40;
 
     doge = acaveData[DEF_DOGE+level]; 
@@ -129,8 +135,8 @@ extern int millingTime;
                     if (theObject == CH_CRATER_BIG) {
 
                         int x2 = x + 1;
-                        if (x2 >= boardWidth)
-                            x2 = 0;
+                        if (x2 >= 30)
+                            x2 -= 30;
 
                         int y2 = y + 1;
                         if (y2 >= boardHeight)

@@ -781,7 +781,7 @@ _BUF_AUDC           ds 2
 _BUF_AUDF           ds 2
 
 
-    ds 2 ; bug?
+    ;ds 2 ; bug?
     
 ;_BOARD              ds 24*40
 

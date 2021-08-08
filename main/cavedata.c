@@ -21,9 +21,9 @@
 //#define UP 0
 //#define UPRIGHT 1
 #define RIGHT 2
-//#define DOWNRIGHT 3
+#define DOWNRIGHT 3
 #define DOWN 4
-//#define DOWNLEFT 5
+#define DOWNLEFT 5
 #define LEFT 6
 //#define UPLEFT 7
 
@@ -181,11 +181,11 @@ LINE,CH_ZZAP1, 21,2,19, DOWN,
 
 
 static const unsigned char planet0[]= {
-#define PLANET0_DEPTH 8
+#define PLANET0_DEPTH 20
 
 0x01,       // cave
 
-20,PLANET0_DEPTH,0,      // size, gravity
+40,PLANET0_DEPTH,0,      // size, gravity
 
 0x14,       // milling
 0x0A,0x0F,  // diamond $
@@ -194,7 +194,7 @@ static const unsigned char planet0[]= {
 0x0C,0x0C,0x0C,0x0C,0x0C,
 0x96,0x6E,0x46,0x28,0x1E,
 
-0,0,0, //15,0x09,
+0,0,DEF_PLANET, //15,0x09,
 
 0,CH_AMOEBA0,
 
@@ -202,8 +202,8 @@ static const unsigned char planet0[]= {
 CH_ROCK0,CH_DIRT,0,0,
 130, 40, 0, 0,
 
-LINE, CH_STEEL, 0,0, 20, RIGHT,
-LINE, CH_STEEL, 0,7, 20, RIGHT,
+LINE, CH_STEEL, 0,0, 40, RIGHT,
+LINE, CH_STEEL, 0,PLANET0_DEPTH-1, 40, RIGHT,
 
 
 0,CH_DOORCLOSED,0x03,0x04,     // entry
@@ -213,12 +213,13 @@ LINE, CH_STEEL, 0,7, 20, RIGHT,
 };
 
 
-static const unsigned char moon0[]= {
-#define MOON0_DEPTH 30
+static const unsigned char planetEarth[]= {
+#define PLANETEARTH_DEPTH 20
+#define SHIFT_EARTH 2
 
 0x01,       // cave
 
-20,MOON0_DEPTH,0,      // size, gravity
+40,PLANETEARTH_DEPTH,0,      // size, gravity
 
 0x14,       // milling
 0x0A,0x0F,  // diamond $
@@ -227,7 +228,219 @@ static const unsigned char moon0[]= {
 0x0C,0x0C,0x0C,0x0C,0x0C,
 0x96,0x6E,0x46,0x28,0x1E,
 
-0,0,0, //15,0x09,
+0,0,DEF_PLANET, //15,0x09,
+
+0,CH_FLAT_2,
+
+
+0,0,0,0,
+0,0,0, 0,
+
+LINE, CH_LATITUDE, 0, 0, 19, DOWN,
+//LINE, CH_LATITUDE, 2, 0, 19, DOWN,
+LINE, CH_LATITUDE, 5, 0, 19, DOWN,
+//LINE, CH_LATITUDE, 6, 0, 19, DOWN,
+LINE, CH_LATITUDE, 10, 0, 19, DOWN,
+//LINE, CH_LATITUDE, 10, 0, 19, DOWN,
+LINE, CH_LATITUDE, 15, 0, 19, DOWN,
+//LINE, CH_LATITUDE, 14, 0, 19, DOWN,
+LINE, CH_LATITUDE, 20, 0, 19, DOWN,
+//LINE, CH_LATITUDE, 18, 0, 19, DOWN,
+LINE, CH_LATITUDE, 25, 0, 19, DOWN,
+//LINE, CH_LATITUDE, 22, 0, 19, DOWN,
+//LINE, CH_LATITUDE, 24, 0, 19, DOWN,
+//LINE, CH_LATITUDE, 26, 0, 19, DOWN,
+//LINE, CH_LATITUDE, 28, 0, 19, DOWN,
+// LINE, CH_LATITUDE, 30, 0, 19, DOWN,
+// LINE, CH_LATITUDE, 12, 0, 19, DOWN,
+// LINE, CH_LATITUDE, 14, 0, 19, DOWN,
+// LINE, CH_LATITUDE, 16, 0, 19, DOWN,
+// LINE, CH_LATITUDE, 18, 0, 19, DOWN,
+
+// LINE, CH_ROCK0, 22,1, 5, RIGHT,
+// 0, CH_ROCK0, 1, 2,
+// LINE, CH_ROCK0, 4,2, 3, RIGHT,
+// LINE, CH_ROCK0, 17,2, 10, RIGHT,
+// LINE, CH_ROCK0, 5,3, 5, RIGHT,
+// LINE, CH_ROCK0, 15,3, 11, RIGHT,
+// LINE, CH_ROCK0, 5,4, 4, RIGHT,
+// 0, CH_ROCK0, 18, 4,
+// 0, CH_ROCK0, 20, 4,
+// LINE, CH_ROCK0, 23,4, 4, RIGHT,
+// 0, CH_ROCK0, 6, 5,
+// LINE, CH_ROCK0, 21,5, 4, RIGHT,
+// LINE, CH_ROCK0, 14,6, 5, RIGHT,
+// 0, CH_ROCK0, 21, 6,
+// LINE, CH_ROCK0, 8,7, 3, RIGHT,
+// LINE, CH_ROCK0, 16,7, 3, RIGHT,
+
+
+LINE, CH_STEEL, 0,0+SHIFT_EARTH,30, RIGHT,
+
+0, CH_STEEL, 8, 0+SHIFT_EARTH,
+LINE, CH_STEEL, 10,0+SHIFT_EARTH, 3, RIGHT,
+LINE, CH_ROCK0, 22,0+SHIFT_EARTH, 4, RIGHT,
+
+LINE, CH_ROCK0, 1,1+SHIFT_EARTH, 2, RIGHT,
+0, CH_ROCK0, 5, 1+SHIFT_EARTH,
+LINE, CH_STEEL, 11,1+SHIFT_EARTH, 2, RIGHT,
+0, CH_ROCK0, 17, 1+SHIFT_EARTH,
+LINE, CH_ROCK0, 21,1+SHIFT_EARTH, 9, RIGHT,
+//todo vert strip 3 yellow
+
+LINE, CH_ROCK0, 0,2+SHIFT_EARTH, 8, RIGHT,
+0, CH_DIRT, 3, 2+SHIFT_EARTH,
+0, CH_STEEL, 8, 2+SHIFT_EARTH,
+LINE, CH_ROCK0, 16,2+SHIFT_EARTH, 14, RIGHT,
+0,CH_DIRT, 28,2+SHIFT_EARTH,
+
+0, CH_STEEL, 3, 3+SHIFT_EARTH,
+LINE, CH_DIRT, 4,3+SHIFT_EARTH, 2, DOWN,
+LINE, CH_ROCK0, 5,3+SHIFT_EARTH, 2, RIGHT,
+LINE, CH_ROCK0, 17,3+SHIFT_EARTH, 9, RIGHT,
+LINE, CH_DIRT, 26, 1+SHIFT_EARTH, 3, DOWN,
+0, CH_ROCK0, 28, 3+SHIFT_EARTH,
+
+LINE, CH_DIRT, 4,4+SHIFT_EARTH, 2, RIGHT,
+LINE, CH_ROCK0, 6,4+SHIFT_EARTH, 4, RIGHT,
+LINE, CH_ROCK0, 15,4+SHIFT_EARTH, 12, RIGHT,
+0, CH_DIRT, 22, 4+SHIFT_EARTH,
+0, CH_DIRT, 24, 4+SHIFT_EARTH,
+LINE, CH_DIRT, 5,5+SHIFT_EARTH, 2, RIGHT,
+LINE, CH_ROCK0, 7,5+SHIFT_EARTH, 2, RIGHT,
+0, CH_DIRT, 15, 5+SHIFT_EARTH,
+0, CH_DIRT, 17, 5+SHIFT_EARTH,
+LINE, CH_ROCK0, 18,5+SHIFT_EARTH, 3, RIGHT,
+LINE, CH_DIRT, 21,5+SHIFT_EARTH, 4, RIGHT,
+0, CH_ROCK0, 25,5+SHIFT_EARTH,
+LINE, CH_DIRT, 5,6+SHIFT_EARTH, 2, RIGHT,
+LINE, CH_ROCK0, 7,6+SHIFT_EARTH, 2, RIGHT,
+0, CH_DIRT, 15, 6+SHIFT_EARTH,
+0, CH_ROCK0, 18, 6+SHIFT_EARTH,
+LINE, CH_DIRT, 19,6+SHIFT_EARTH, 2, RIGHT,
+LINE, CH_STEEL, 21,6+SHIFT_EARTH, 2, RIGHT,
+0, CH_DIRT, 23, 6+SHIFT_EARTH,
+0, CH_ROCK0, 24, 6+SHIFT_EARTH,
+0, CH_DIRT, 26, 6+SHIFT_EARTH,
+
+0, CH_DIRT, 6, 7+SHIFT_EARTH,
+LINE, CH_ROCK0, 14,7+SHIFT_EARTH, 11, RIGHT,
+0, CH_DIRT, 15, 7+SHIFT_EARTH,
+0, CH_DIRT, 18, 7+SHIFT_EARTH,
+0, CH_FLAT_2, 19, 7+SHIFT_EARTH,
+0, CH_DIRT, 23, 7+SHIFT_EARTH,
+
+0, CH_DIRT, 7, 8+SHIFT_EARTH,
+LINE, CH_ROCK0, 14,8+SHIFT_EARTH, 4, RIGHT,
+0, CH_ROCK0, 21, 8+SHIFT_EARTH,
+0, CH_ROCK0, 23, 8+SHIFT_EARTH,
+
+0, CH_DIRT, 9, 9+SHIFT_EARTH,
+0, CH_ROCK0, 10, 9+SHIFT_EARTH,
+LINE, CH_ROCK0, 16,9+SHIFT_EARTH, 3, RIGHT,
+0, CH_DIRT, 17, 9+SHIFT_EARTH,
+LINE, CH_ROCK0, 23,9+SHIFT_EARTH, 2, RIGHT,
+
+
+LINE, CH_ROCK0, 8,10+SHIFT_EARTH, 4, RIGHT,
+LINE, CH_DIRT, 16,10+SHIFT_EARTH, 2, RIGHT,
+
+LINE, CH_ROCK0, 9,11+SHIFT_EARTH, 2, RIGHT,
+0, CH_DIRT, 11, 11+SHIFT_EARTH, 
+LINE, CH_DIRT, 16,11+SHIFT_EARTH, 2, RIGHT,
+LINE, CH_ROCK0, 25, 11+SHIFT_EARTH, 2, RIGHT,
+
+
+LINE, CH_ROCK0, 9,12+SHIFT_EARTH, 2, RIGHT,
+0, CH_ROCK0, 16, 12+SHIFT_EARTH,
+LINE, CH_ROCK0, 25,12+SHIFT_EARTH, 3, RIGHT,
+
+0, CH_ROCK0, 25, 13+SHIFT_EARTH,
+
+
+LINE, CH_STEEL, 0,0,30, RIGHT,
+
+LINE, CH_STEEL, 0,18,30, RIGHT,
+LINE, CH_STEEL, 0,17,3, RIGHT,
+
+
+//LINE, CH_STEEL, 0, 0, 19, DOWN,
+
+
+//0,CH_DOORCLOSED,0x03,0x04,     // entry
+
+0xFF,
+
+};
+
+static const unsigned char planet1[]= {
+#define PLANET1_DEPTH 20
+
+0x01,       // cave
+
+40,PLANET1_DEPTH,0,      // size, gravity
+
+0x14,       // milling
+0x0A,0x0F,  // diamond $
+
+0x0A,0x0B,0x0C,0x0D,0x0E,       // randomiser[level]
+0x0C,0x0C,0x0C,0x0C,0x0C,
+0x96,0x6E,0x46,0x28,0x1E,
+
+0,0,DEF_PLANET, //15,0x09,
+
+0,CH_FLAT_2,
+
+
+CH_DIRT,CH_ROCK0,0,0,
+180, 80, 0, 0,
+
+// 0,0,0,0,
+// 0,0,0,0,
+
+// LINE, CH_FLAT_2, 0,0, 30, RIGHT,
+// LINE, CH_FLAT_1, 0,1, 30, RIGHT,
+// LINE, CH_FLAT_2, 0,2, 30, RIGHT,
+// LINE, CH_FLAT_1, 0,3, 30, RIGHT,
+// LINE, CH_FLAT_2, 0,4, 30, RIGHT,
+// LINE, CH_FLAT_1, 0,5, 30, RIGHT,
+
+0, CH_CRATER_BIG, 0, 4,
+0, CH_CRATER_BIG1, 1, 4,
+0, CH_CRATER_BIG2, 0, 5,
+0, CH_CRATER_BIG3, 1, 5,
+
+LINE, CH_STEEL, 0, 0, 30, RIGHT,
+LINE, CH_STEEL, 0, 15, 30, RIGHT,
+//LINE, CH_STEEL, 0, 0, 16, DOWN,
+
+
+LINE, CH_STEEL, 10,0,16, DOWNRIGHT,
+LINE, CH_STEEL, 26,0,16, DOWNLEFT,
+
+0,CH_DOORCLOSED,0x03,0x04,     // entry
+
+0xFF,
+
+};
+
+
+
+static const unsigned char moon0[]= {
+#define MOON0_DEPTH 20
+
+0x01,       // cave
+
+40,MOON0_DEPTH,0,      // size, gravity
+
+0x14,       // milling
+0x0A,0x0F,  // diamond $
+
+0x0A,0x0B,0x0C,0x0D,0x0E,       // randomiser[level]
+0x0C,0x0C,0x0C,0x0C,0x0C,
+0x96,0x6E,0x46,0x28,0x1E,
+
+0,0,DEF_PLANET, //15,0x09,
 
 0,CH_FLAT_1,
 
@@ -241,41 +454,62 @@ CH_CRATER_SMALL,CH_CRATER_TINY,CH_CRATER_BIG,CH_CRATER_MID,
 
 };
 
+static const unsigned char mars[]= {
+#define MARS_DEPTH 20
+
+0x01,       // cave
+
+40,MARS_DEPTH,0,      // size, gravity
+
+0x14,       // milling
+0x0A,0x0F,  // diamond $
+
+0x0A,0x0B,0x0C,0x0D,0x0E,       // randomiser[level]
+0x0C,0x0C,0x0C,0x0C,0x0C,
+0x96,0x6E,0x46,0x28,0x1E,
+
+0,0,DEF_PLANET, //15,0x09,
+
+0,CH_FLAT_1,
+
+
+CH_CRATER_SMALL,CH_CRATER_TINY,CH_CRATER_MID,0,
+30, 20, 10, 0,
+
+0,CH_DOORCLOSED,0x03,0x04,     // entry
+
+0xFF,
+
+};
+
 
 const unsigned char moon0BGColours[MOON0_DEPTH] = {
 
-    0x02,   // 00
-    0x02,   // 01
-    0x02,   // 02
-    0x02,   // 03
-    0x02,   // 04
-    0x02,   // 05
-    0x02,   // 06
-    0x02,   // 07
-    0x02,   // 08
-    0x02,   // 09
-    0x02,   // 10
-    0x02,   // 11
-    0x02,   // 12
-    0x02,   // 13
-    0x02,   // 14
-    0x02,   // 15
-    0x02,   // 16
-    0x02,   // 17
-    0x02,   // 18
-    0x02,   // 19
-    0x02,   // 20
-    0x02,   // 21
-    0x02,   // 22
-    0x02,   // 23
-    0x02,   // 24
-    0x02,   // 25
-    0x02,   // 26
-    0x02,   // 27
-    0x02,   // 28
-    0x02,   // 29
+    0x04,   // 00
+    0x04,   // 01
+    0x04,   // 02
+    0x04,   // 03
+    0x04,   // 04
+    0x04,   // 05
+    0x04,   // 06
+    0x04,   // 07
+    0x04,   // 08
+    0x04,   // 09
 };
 
+const unsigned char marsBGColours[MARS_DEPTH] = {
+
+    0x36,   // 00
+    0x36,   // 01
+    0x36,   // 02
+    0x36,   // 03
+    0x36,   // 04
+    0x36,   // 05
+    0x36,   // 06
+    0x36,   // 07
+    0x36,   // 08
+    0x36,   // 09
+};
 const unsigned char planet0BGColours[PLANET0_DEPTH] = {
     0x24,   // 00
     0x24,   // 01
@@ -285,9 +519,31 @@ const unsigned char planet0BGColours[PLANET0_DEPTH] = {
     0x24,   // 05
     0x24,   // 06
     0x24,   // 07
-    0x24,   // 08
-    0x24,   // 09
 };
+
+const unsigned char planetEarthBGColours[PLANET0_DEPTH] = {
+    0x24,   // 00
+    0x24,   // 01
+    0x24,   // 02
+    0x24,   // 03
+    0x24,   // 04
+    0x24,   // 05
+    0x24,   // 06
+    0x24,   // 07
+};
+
+const unsigned char planet1BGColours[PLANET1_DEPTH] = {
+    0x68,   // 00
+    0x88,   // 02
+    0xA8,   // 04
+    0xC8,   // 06
+    0xE8,   // 07
+    0xC8,   // 00
+    0xA8,   // 02
+    0x88,   // 04
+    0x68,   // 06
+};
+
 
 const unsigned char cave12bBGColours[CAVE12b_DEPTH] = {
 
@@ -316,9 +572,12 @@ const unsigned char cave12bBGColours[CAVE12b_DEPTH] = {
 };
 
 const struct caveInfo caveList[] = {
-    { moon0,            { 0x02, 0x04, 0x06, },  moon0BGColours, },
+    { planetEarth,          { 0x86, 0xD6, 0x94, },  planetEarthBGColours, },
+    { planet1,            { 0x02, 0x26, 0x74, },  planet1BGColours, },
+    { mars,            { 0x3A, 0x24, 0x42, },  marsBGColours, },
+    { moon0,            { 0x04, 0x06, 0x08, },  moon0BGColours, },
     { planet0,          { 0x86, 0xD6, 0x86, },  planet0BGColours, },
-    { cave12b,          { 0x86, 0x24, 0xC8, },  cave12bBGColours, },
+//    { cave12b,          { 0x86, 0x24, 0xC8, },  cave12bBGColours, },
 };
 
 const int caveCount = sizeof(caveList) / sizeof(caveList[0]);

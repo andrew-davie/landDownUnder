@@ -181,6 +181,10 @@ enum ChName {
     CH_CRATER_MID,                  // 117
 
     CH_FLAT_1,                      // 118
+    CH_SHADOW,                      // 119
+    CH_FLAT_2,                      // 120
+    CH_LATITUDE,                    // 121
+    
 
     CH_MAX,
 };
@@ -308,6 +312,9 @@ static const unsigned char CharToType[CH_MAX]= {
     TYPE_CRATER,                    // 116 CH_CRATER_BIG3
     TYPE_CRATER,                    // 117 CH_CRATER_MID
     TYPE_FLAT,                      // 118 CH_FLAT_1
+    TYPE_SHADOW,                    // 119 CH_SHADOW
+    TYPE_FLAT,                      // 120 CH_FLAT_2
+    TYPE_FLAT,                      // 121 CH_LATITUDE
 };
 
 #endif

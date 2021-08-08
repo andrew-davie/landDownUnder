@@ -14,14 +14,14 @@ _BALL_X                  0008
 _BLACK                   0000                  
 _BLUE                    0080                  
 _BLUE2                   0090                  
-_BOARD                   01a4                  
+_BOARD                   01a2                  
 _BROWN                   0030                  
 _BUF_AUDC                019e                  
 _BUF_AUDF                01a0                  
 _BUF_AUDV                019c                  
 _BUF_JUMP1               0010                  
 _BUF_JUMP1_EXIT          019a                  
-_BUFFERS                 01a4                  
+_BUFFERS                 01a2                  
 _CYAN                    00b0                  
 _DS_AUDC0                000f              (R )
 _DS_AUDF0                0010              (R )
@@ -44,8 +44,8 @@ _DS_SPLASH_P0R           0002
 _DS_SPLASH_P1L           0001                  
 _DS_SPLASH_P1R           0003                  
 _DS_TO_ARM               0000              (R )
-_EVERY_FRAME_ZERO_COUNT  0000                  
-_EVERY_FRAME_ZERO_START  01a4              (R )
+_EVERY_FRAME_ZERO_COUNT  0002                  
+_EVERY_FRAME_ZERO_START  01a2              (R )
 _EXIT_KERNEL             f17f                  
 _FN_GAME_IDLE            0007              (R )
 _FN_GAME_OS              0001              (R )
@@ -184,7 +184,7 @@ NO_ILLEGAL_OPCODES       0000 ????         (R )
 NUSIZ0                   0004                  
 NUSIZ1                   0005                  
 OS_TIM64T                0015              (R )
-OverlapDisplayDataRam    01a4              (R )
+OverlapDisplayDataRam    01a2              (R )
 OverScan                 f0b1              (R )
 PF0                      000d              (R )
 PF1                      000e              (R )

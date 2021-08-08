@@ -69,6 +69,7 @@ enum ObjectType {
     TYPE_BELT2,              // 56
     TYPE_CRATER,             // 57
     TYPE_FLAT,               // 58
+    TYPE_SHADOW,             // 59
 
     // +--> modify Attribute[] @ attribute.c
     // +--> modify Animate[] @characterset.c

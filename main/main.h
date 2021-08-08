@@ -8,7 +8,7 @@
 #define ENABLE_SOUND 1
 #define ENABLE_DRIP 0
 #define ENABLE_PARALLAX 1
-#define ENABLE_TOGGLE_DISPLAY_ON_DEATH 0
+#define ENABLE_TOGGLE_DISP0LAY_ON_DEATH 0
 #define ENABLE_SHAKE 0
 #define ENABLE_SHIMMER 0 /* shimmer CH_BLANK on extra life - depecated */
 
@@ -16,7 +16,7 @@
 #define DEF_PARALLAX 0x40
 #define DEF_DRIP 0x20
 #define DEF_PEBBLE 0x10
-
+#define DEF_PLANET 0x08
 
 #define DEBUG_SLOWDOWN 1
 #define GAMESPEED 11
@@ -73,8 +73,10 @@ extern int doge;
 extern unsigned int sparkleTimer;
 
 enum DisplayMode {
-    NORMAL,
-    OVERVIEW,
+    DISPLAY_NONE,
+    DISPLAY_NORMAL,
+    DISPLAY_OVERVIEW,
+    DISPLAY_PLANET,
 };
 
 extern enum DisplayMode displayMode;
@@ -118,20 +120,22 @@ extern int boardHeight;
 extern int planetGravity;
 
 
-#define VIDBUF_COLUPF    0
-#define VIDBUF_COLUBK    1
-#define VIDBUF_PF0_LEFT  2
-#define VIDBUF_PF1_LEFT  3
-#define VIDBUF_PF2_LEFT  4
-#define VIDBUF_PF0_RIGHT 5
-#define VIDBUF_PF1_RIGHT 6
-#define VIDBUF_PF2_RIGHT 7
-#define VIDBUF_GRP0A     8
-#define VIDBUF_GRP1A     9
-#define VIDBUF_COLUP0    10
-#define VIDBUF_COLUP1    11
+enum VIDBUF {
+    VIDBUF_COLUPF,
+    VIDBUF_COLUBK,
+    VIDBUF_PF0_LEFT,
+    VIDBUF_PF1_LEFT,
+    VIDBUF_PF2_LEFT,
+    VIDBUF_PF0_RIGHT,
+    VIDBUF_PF1_RIGHT,
+    VIDBUF_PF2_RIGHT,
+    VIDBUF_GRP0A,
+    VIDBUF_GRP1A,
+    VIDBUF_COLUP0,
+    VIDBUF_COLUP1,
+    VIDBUF_MAX,
+};
 
-
-extern unsigned int buf[3][12];
+extern unsigned int buf[VIDBUF_MAX];
 
 #endif

@@ -69,3 +69,17 @@ main/bin/armcode.bin
 downUnder.bin
 .DS_Store
 .DS_Store
+circle/.idea/.gitignore
+circle/.idea/*
+circle/venv/*
+main/bin/armcode.bin
+PLANET20210808.bin
+WENHOP20210727MARCO.bin
+WENHOP20210805.bin
+WENHOP20210805b.bin
+.DS_Store
+.DS_Store
+downUnder.bin
+downUnder.lst
+downUnder.sym
+main/bin/armcode.bin

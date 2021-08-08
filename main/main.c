@@ -37,7 +37,8 @@
 #include "sound.h"
 #include "movePlayer.h"
 #include "drawBitmap.h"
-
+#include "charRuntime.h"
+#include "drawplanet.h"
 
 #define DIGIT_SIZE 18           /* displayed lines */
 #define DIGIT_SIZE_ROLLER 24        /* stored lines - rolling with spaces! */
@@ -57,9 +58,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 // CONFIGURABLE UX
 
-#define IDLE_TIME          500     /* cycle time in game-over state between Overview/Normal display */
+//#define IDLE_TIME          500     /* cycle time in game-over state between Overview/Normal display */
 #define SPARKLE            100     /* # frames to sparkle BG on extra life */
-#define EXPAND_SPEED         6     /* Amoeba expansion rate larger = faster, expansion speed for amoeba (/128)) */
+//#define EXPAND_SPEED         6     /* Amoeba expansion rate larger = faster, expansion speed for amoeba (/128)) */
 #define ROLL_SPEED           3     /* score digit rolling. Factor of DIGIT_SIZE_ROLLER only (1/2/3/4/6/8/12) */
 #define SCOREVISIBLETIME   130     /* # frames to show changed scoreline item before reverting to defaults */
 #define DEAD_RESTART        20     /* # frames to hold trigger after loss of life, to start next life */
@@ -84,7 +85,7 @@ int scoreLineNew[10];
 int water, lava;
 unsigned char *lastWater;
 
-unsigned char *bgPalette;
+const unsigned char *bgPalette;
 
 #define SPACESHIPS 0
 int spaceshipY[SPACESHIPS];
@@ -228,10 +229,6 @@ int actualScore;
 int partialScore;
 int forceScoreDraw;
 
-
-
-
-
 bool exitMode;
 
 unsigned char ScorePtr[6];
@@ -241,11 +238,6 @@ unsigned int frameToggler;
 unsigned int gameSpeed;
 unsigned int toggler;
 
-
-#define DISPLAY_NORMAL 0
-#define DISPLAY_OVERVIEW 1
-#define DISPLAY_NONE 2
-
 unsigned char displayMode, lastDisplayMode;
 
 //unsigned char joy0FireBuffer = 0xFF;
@@ -253,7 +245,7 @@ unsigned int triggerPressCounter = 0;
 unsigned int dogeCollected;
 
 //#define PUSH_DELAY 10
-#define DELAY_AFTER_PUSH 3
+//#define DELAY_AFTER_PUSH 3
 unsigned int pushCounter;
 unsigned int halt;
 
@@ -446,17 +438,20 @@ extern void NextRandom(int *RandSeed1, int *RandSeed2);
 
 
 
-unsigned int buf[3][12];
+unsigned int buf[12];
+const unsigned int bufferBase[2] = {
+        VIDBUF_PF0_LEFT, VIDBUF_PF0_RIGHT
+};
 
 
 void clearBuffer(int buff) {
     for (int i = 0; i < _ARENA_SCANLINES; i++)
-        *(RAM + buf[0][buff] + i) = 0;
+        *(RAM + buf[buff] + i) = 0;
 }
 
 
 #define defBuf(n) \
-    buf[0][n] = mem; \
+    buf[n] = mem; \
     mem += _ARENA_SCANLINES;
 
 
@@ -464,15 +459,12 @@ void setVideoBufferPointers() {
 
     unsigned int mem = _BOARD + boardWidth * boardHeight;
 
-
     defBuf(VIDBUF_COLUPF);
     defBuf(VIDBUF_COLUBK);
     defBuf(VIDBUF_GRP0A);
     defBuf(VIDBUF_GRP1A);
-    defBuf(VIDBUF_GRP0A);
     defBuf(VIDBUF_COLUP0);
     defBuf(VIDBUF_COLUP1);
-
 
     defBuf(VIDBUF_PF0_LEFT);
     defBuf(VIDBUF_PF1_LEFT);
@@ -485,7 +477,6 @@ void setVideoBufferPointers() {
     clearBuffer(VIDBUF_GRP1A);
     clearBuffer(VIDBUF_COLUPF);
     clearBuffer(VIDBUF_COLUBK);
-
 }
 
 
@@ -493,7 +484,6 @@ void setFlash(int colour, int time) {
     ARENA_COLOR = colour;
     flashTime = time;
 }
-
 
 
 unsigned char ColourConvert(unsigned char color) {
@@ -606,8 +596,8 @@ void setColours() {
     i = 0;
     if (displayMode == DISPLAY_NORMAL)
         while (i < SCORE_SCANLINES) {
-            RAM[buf[0][VIDBUF_COLUPF] + i] = ColourConvert(scorecol);
-            RAM[buf[0][VIDBUF_COLUBK] + i] = bgCol;
+            RAM[buf[VIDBUF_COLUPF] + i] = ColourConvert(scorecol);
+            RAM[buf[VIDBUF_COLUBK] + i] = bgCol;
             
             scorecol -= (i + (i>>1))>>4;
             i++;
@@ -615,8 +605,8 @@ void setColours() {
 
     unsigned char cno = 0;
     while (i < _ARENA_SCANLINES) {
-        RAM[buf[0][VIDBUF_COLUPF] + i] = ColourConvert(colour[cno]);
-        RAM[buf[0][VIDBUF_COLUBK] + i] = bgCol;
+        RAM[buf[VIDBUF_COLUPF] + i] = ColourConvert(colour[cno]);
+        RAM[buf[VIDBUF_COLUBK] + i] = bgCol;
         cno = cnoNext[cno];
         i++;
     }
@@ -648,7 +638,7 @@ void InitGameX() {
     }
 
     drillHeight = 1;
-
+//    displayMode = DISPLAY_PLANET;
 
 
 #if ENABLE_PARALLAX
@@ -742,8 +732,8 @@ extern int rinc;
 
 
 
-    scrollX = 38 << 14; //((((getRandom32() & 0xFF) * 38) >> 8) + 1) << 16;
-    scrollY = 20 << 16; //((((getRandom32() & 0xFF) * 20) >> 8) + 1) << 16;
+    scrollX = 2 << 14; //((((getRandom32() & 0xFF) * 38) >> 8) + 1) << 16;
+    scrollY = 2 << 16; //((((getRandom32() & 0xFF) * 20) >> 8) + 1) << 16;
 
 
     InitAudio();
@@ -769,12 +759,13 @@ extern int rinc;
     bgPalette = caveList[cave].caveBGColour;
 
     DecodeCave(caveList[cave].cavePtr);
+
+    displayMode = caveFlags & DEF_PLANET ? DISPLAY_PLANET : DISPLAY_NORMAL;
     setVideoBufferPointers();
 
+
+
     gameSchedule = SCHEDULE_UNPACK_CAVE;
-
-
-
 
 
     forceScoreDraw = SCOREVISIBLETIME;
@@ -791,9 +782,6 @@ extern int rinc;
     playerAnimationID = -1;
     setAnimation(ID_BLANK);
 
-//    attractCounter = 0;
-//    setColours();
-
     caveCompleted = false;
 
     selectResetDelay = 0;
@@ -801,12 +789,6 @@ extern int rinc;
 
     for (int i = 0; i < 10; i++)
         scoreLineCurrent[i] = -1;
-
-
-    // uncoverCount = 1; // or 100
-    //AddAudio(SFX_UNCOVER);
-//    AddAudio(SFX_DEADBEAT2);
-
 }
 
 
@@ -824,9 +806,6 @@ void Initialize() {
 
     for (int i = 0; i < 4096/4; i++)
         RAM_INT[i] = 0;
-
-
-
 
     //myMemsetInt(RAM_INT, 0, 4096/4);
     
@@ -903,6 +882,9 @@ void Scheduler() {
         if (DecodeExplicitData()) {
             // add pebbles
 
+
+
+
             if (caveFlags & DEF_PEBBLE)
                 for (int pebble = 0; pebble < MAX_PEBBLES; pebble++) {
                     int rnd = getRandom32();
@@ -914,6 +896,37 @@ void Scheduler() {
             if (lava) {
                 AddAudio(SFX_LAVA);
             }
+
+
+    if (caveFlags & DEF_PLANET) {
+
+//         for (int y = 0; y < boardHeight; y++) {
+//   //          for (int x = 0; x < 30; x+= 30) {
+//                 //*(RAM + _BOARD + y * boardWidth + x + 20) = CH_SHADOW; //*(RAM + _BOARD + y * boardWidth + x);
+//                 *(RAM + _BOARD + y * boardWidth) = CH_STEEL;
+//     //        }
+//         }
+
+            // for (int x = -3; x < 3; x++) {
+            //     //*(RAM + _BOARD + y * boardWidth + x + 20) = CH_SHADOW; //*(RAM + _BOARD + y * boardWidth + x);
+            //     *(RAM + _BOARD + boardHeight * boardWidth / 2 + x + 10) = CH_STEEL;
+            // }
+
+
+        // for (int y = 0; y < boardHeight; y++) {
+        //     for (int x = 0; x < 10; x++) {
+        //         *(RAM + _BOARD + y * boardWidth + x + 10) = CH_SHADOW; //*(RAM + _BOARD + y * boardWidth + x);
+        //     }
+        // }
+
+
+
+        for (int y = 0; y < boardHeight; y++) {
+            for (int x = 0; x < 10; x++) {
+                *(RAM + _BOARD + y * boardWidth + x + 30) = *(RAM + _BOARD + y * boardWidth + x);
+            }
+        }
+    }
 
 
             formLandscape();
@@ -937,29 +950,28 @@ void Scheduler() {
 }
 
 
-
-
 void InitGameDatastreams() {
 
+
     // initialize the Data Streams for the Arena
-    setPointer(_DS_PF0_LEFT, buf[0][VIDBUF_PF0_LEFT]); //_BUF_PF0_LEFT);
-    setPointer(_DS_PF1_LEFT, buf[0][VIDBUF_PF1_LEFT]); //_BUF_PF1_LEFT);
-    setPointer(_DS_PF2_LEFT, buf[0][VIDBUF_PF2_LEFT]); //_BUF_PF2_LEFT);
-    setPointer(_DS_PF0_RIGHT, buf[0][VIDBUF_PF0_RIGHT]); //_BUF_PF0_RIGHT);
-    setPointer(_DS_PF1_RIGHT, buf[0][VIDBUF_PF1_RIGHT]); //_BUF_PF1_RIGHT);
-    setPointer(_DS_PF2_RIGHT, buf[0][VIDBUF_PF2_RIGHT]); //_BUF_PF2_RIGHT);
+    setPointer(_DS_PF0_LEFT, buf[VIDBUF_PF0_LEFT]);
+    setPointer(_DS_PF1_LEFT, buf[VIDBUF_PF1_LEFT]);
+    setPointer(_DS_PF2_LEFT, buf[VIDBUF_PF2_LEFT]);
+    setPointer(_DS_PF0_RIGHT, buf[VIDBUF_PF0_RIGHT]);
+    setPointer(_DS_PF1_RIGHT, buf[VIDBUF_PF1_RIGHT]);
+    setPointer(_DS_PF2_RIGHT, buf[VIDBUF_PF2_RIGHT]);
 
     setPointer(_DS_AUDV0, _BUF_AUDV);
     setPointer(_DS_AUDC0, _BUF_AUDC);
     setPointer(_DS_AUDF0, _BUF_AUDF);
 
-    setPointer(_DS_COLUPF, buf[0][VIDBUF_COLUPF]);
-    setPointer(_DS_COLUBK, buf[0][VIDBUF_COLUBK]);
-    setPointer(_DS_COLUP0, buf[0][VIDBUF_COLUP0]);
-    setPointer(_DS_COLUP1, buf[0][VIDBUF_COLUP1]);
+    setPointer(_DS_COLUPF, buf[VIDBUF_COLUPF]);
+    setPointer(_DS_COLUBK, buf[VIDBUF_COLUBK]);
+    setPointer(_DS_COLUP0, buf[VIDBUF_COLUP0]);
+    setPointer(_DS_COLUP1, buf[VIDBUF_COLUP1]);
 
-    setPointer(_DS_GRP0a, buf[0][VIDBUF_GRP0A]);
-    setPointer(_DS_GRP1a, buf[0][VIDBUF_GRP1A]);
+    setPointer(_DS_GRP0a, buf[VIDBUF_GRP0A]);
+    setPointer(_DS_GRP1a, buf[VIDBUF_GRP1A]);
 
     // initialize the Jump Data Stream
     setPointer(0x21, _BUF_JUMP1);
@@ -1556,23 +1568,16 @@ const bool mirror[] = {
     1,1,0,0,1,
 };
 
-const unsigned int *base[] = {
-    &buf[0][VIDBUF_PF2_RIGHT], //_BUF_PF2_RIGHT,
-    &buf[0][VIDBUF_PF2_RIGHT], //_BUF_PF2_RIGHT,
-    &buf[0][VIDBUF_PF1_RIGHT], //_BUF_PF1_RIGHT,
-    &buf[0][VIDBUF_PF1_RIGHT], //_BUF_PF1_RIGHT,
-    &buf[0][VIDBUF_PF0_RIGHT], //    _BUF_PF0_RIGHT,
-    &buf[0][VIDBUF_PF2_LEFT], //_BUF_PF2_LEFT,
-    &buf[0][VIDBUF_PF2_LEFT], //_BUF_PF2_LEFT,
-    &buf[0][VIDBUF_PF1_LEFT], //_BUF_PF1_LEFT,
-    &buf[0][VIDBUF_PF1_LEFT], //_BUF_PF1_LEFT,
-    &buf[0][VIDBUF_PF0_LEFT], //_BUF_PF0_LEFT,
+const unsigned char pfOffset[] = {
+    VIDBUF_PF2_RIGHT,VIDBUF_PF2_RIGHT,VIDBUF_PF1_RIGHT,VIDBUF_PF1_RIGHT,VIDBUF_PF0_RIGHT,
+    VIDBUF_PF2_LEFT,VIDBUF_PF2_LEFT,VIDBUF_PF1_LEFT,VIDBUF_PF1_LEFT,VIDBUF_PF0_LEFT,
 };
 
-
 void drawBigDigit(int offset, int pos) {
+
     for (int line = 0; line < DIGIT_SIZE; line++, offset++) {
-        *(RAM + *base[pos] + line) = *(RAM + *base[pos] + line) & ~mask[pos]
+        int base = buf[pfOffset[pos]] + line;
+        *(RAM + base) = (*(RAM + base) & ~mask[pos])
             | ((mirror[pos]? BitRev[digitShape[offset]] : digitShape[offset]) & mask[pos]);
     }
 }
@@ -1670,10 +1675,6 @@ void drawScore() {
         }
     }
 
-
-//    if (rockfordDead)
-//        setColours();
-
     for (int i = 0; i < 10; i++)
         scoreLineNew[i] = DIGIT_SPACE;
 
@@ -1691,7 +1692,7 @@ void drawScore() {
 
     // draw all changed digits
     for (int i = 0; i < 10; i++) {
-        //if (scoreLineNew[i] != scoreLineCurrent[i]) {
+        //if (scoreLineNew[i] != scoreLineCurrent[i]) { //TMP??
             scoreLineCurrent[i] = scoreLineNew[i];
             drawBigDigit(scoreLineCurrent[i], i);
         //}
@@ -1793,14 +1794,14 @@ void setPalette(int start, int size, int step, int tweak) {
             }
 
             //if (!flashTime) {
-                RAM[buf[0][VIDBUF_COLUBK] + i ] = 
-                RAM[buf[0][VIDBUF_COLUBK] + i + 1 ] =
-                RAM[buf[0][VIDBUF_COLUBK] + i + 2] = ColourConvert(lavaCol);
+                RAM[buf[VIDBUF_COLUBK] + i ] = 
+                RAM[buf[VIDBUF_COLUBK] + i + 1 ] =
+                RAM[buf[VIDBUF_COLUBK] + i + 2] = ColourConvert(lavaCol);
             //}
 
-            RAM[buf[0][VIDBUF_COLUPF] + i] = ColourConvert(0x48);
-            RAM[buf[0][VIDBUF_COLUPF] + i + 1 ] = ColourConvert(0x28);
-            RAM[buf[0][VIDBUF_COLUPF] + i + 2 ] = ColourConvert(0x3c);
+            RAM[buf[VIDBUF_COLUPF] + i] = ColourConvert(0x48);
+            RAM[buf[VIDBUF_COLUPF] + i + 1 ] = ColourConvert(0x28);
+            RAM[buf[VIDBUF_COLUPF] + i + 2 ] = ColourConvert(0x3c);
 
         }
         
@@ -1815,20 +1816,20 @@ void setPalette(int start, int size, int step, int tweak) {
 
             //if (!flashTime) {
 
-                RAM[buf[0][VIDBUF_COLUBK] + i ] = ColourConvert(waterCol);
-                RAM[buf[0][VIDBUF_COLUBK] + i + 1 ] = ColourConvert(waterCol);
-                RAM[buf[0][VIDBUF_COLUBK] + i + 2 ] = ColourConvert(waterCol);
+                RAM[buf[VIDBUF_COLUBK] + i ] = ColourConvert(waterCol);
+                RAM[buf[VIDBUF_COLUBK] + i + 1 ] = ColourConvert(waterCol);
+                RAM[buf[VIDBUF_COLUBK] + i + 2 ] = ColourConvert(waterCol);
 
             //}
 
-            RAM[buf[0][VIDBUF_COLUPF] + i ] = ColourConvert(0xA4);
-            RAM[buf[0][VIDBUF_COLUPF] + i + 1] = ColourConvert(0x84);     // boulder body
-            RAM[buf[0][VIDBUF_COLUPF] + i + 2] = ColourConvert(0x94);     // flow + inside stream colour
+            RAM[buf[VIDBUF_COLUPF] + i ] = ColourConvert(0xA4);
+            RAM[buf[VIDBUF_COLUPF] + i + 1] = ColourConvert(0x84);     // boulder body
+            RAM[buf[VIDBUF_COLUPF] + i + 2] = ColourConvert(0x94);     // flow + inside stream colour
 
         }
 
         else
-            RAM[buf[0][VIDBUF_COLUPF] + i] = ColourConvert(bgPalette[pfCharLine]);
+            RAM[buf[VIDBUF_COLUPF] + i] = ColourConvert(bgPalette[pfCharLine]);
         
             
         bgCharLine += 3;            
@@ -1964,7 +1965,11 @@ void drawSoftwareSprites() {
 
 }
 
-
+void clearVideoBuffer() {
+    unsigned char *p = RAM + buf[VIDBUF_PF0_LEFT];
+    for (int i = 0; i < 6 * _ARENA_SCANLINES; i++)
+        *p++ = 0;         
+}
 
 
 void GameScheduleDrawSprites() {
@@ -1978,19 +1983,25 @@ void GameScheduleDrawSprites() {
     if (exitMode)
         displayMode = DISPLAY_NORMAL;
 
-    if (displayMode == DISPLAY_OVERVIEW) {
 
-        if (lastDisplayMode != displayMode)
+    switch (displayMode) {
+    case DISPLAY_OVERVIEW:
+
+        if (lastDisplayMode != displayMode) {
+         
+            clearVideoBuffer();
             removeSprite();
+
+
+        }
 
         setPalette(0, 9, PIECE_DEPTH/3, 6);
         drawOverviewScreen();
         drawPlayerSmallSprite();
         drawSoftwareSprites();
-    }
+        break;
 
-
-    else {
+    case DISPLAY_NORMAL:
 
         if (lastDisplayMode != displayMode) {
 
@@ -1998,10 +2009,9 @@ void GameScheduleDrawSprites() {
 
             for (int i = DIGIT_SIZE; i < SCORE_SCANLINES; i++)
                 for (int pf = VIDBUF_PF0_LEFT; pf <= VIDBUF_PF2_RIGHT; pf++)
-                    *(RAM + buf[0][pf] + i) = 0;
+                    *(RAM + buf[pf] + i) = 0;
 
             removeSmallSprite();
-//            setColours();
             resetTracking();
 
 
@@ -2018,7 +2028,22 @@ void GameScheduleDrawSprites() {
 
 
         drawPlayerSprite();
+
+        break;
+
+    case DISPLAY_PLANET: {
+
+            setPalette(0, PIECE_DEPTH, 3, 3);
+            drawPlanet();
+
+        }
+        break;
+
+    default:
+        break;
+
     }
+
 
     lastDisplayMode = displayMode;
 
@@ -2257,9 +2282,9 @@ void Explode(unsigned char *where, unsigned char explosionShape) {
 
 
 
+#if 0
 void moveRockford(unsigned char *this, unsigned char blanker) {
 
-#if 0
 
     static const unsigned char direct[] = {
         DIR_UP,
@@ -2489,9 +2514,9 @@ void moveRockford(unsigned char *this, unsigned char blanker) {
                 
         }
     }
-#endif
 
 }
+#endif
 
 
 void fixRock(unsigned char *rock) {
@@ -2521,7 +2546,7 @@ void doRoll(unsigned char *this, unsigned int creature) {
     unsigned char *LEFTWARDS = this - 1;
     unsigned char *RIGHTWARDS = this + 1;
 
-    unsigned char c = creature == CH_DOGE ? CH_DOGE : CH_ROCK0;
+    //unsigned char c = creature == CH_DOGE ? CH_DOGE : CH_ROCK0;
 
 
 #if ENABLE_SHAKE
@@ -2618,8 +2643,8 @@ void GameScheduleProcessBoardRow() {
 
                 bool oldDead = rockfordDead;
 
-                int what = RAM[_BOARD + rockfordY * boardWidth + rockfordX];
-                int type = CharToType[what];
+                //int what = RAM[_BOARD + rockfordY * boardWidth + rockfordX];
+                //int type = CharToType[what];
 //tmp                rockfordDead = (type != TYPE_ROCKFORD && type != TYPE_ROCKFORD_PRE);
 
                 if (oldDead != rockfordDead) {
@@ -2683,7 +2708,7 @@ void GameScheduleProcessBoardRow() {
 
 
         unsigned char creature = *this;
-        unsigned char *prev = this - boardWidth;
+        //unsigned char *prev = this - boardWidth;
 
 
         unsigned char blanker = CH_BLANK;
@@ -2940,8 +2965,8 @@ void GameScheduleProcessBoardRow() {
                     halt--;
                 }
 
-                else
-                    moveRockford(this, blanker);
+//                else
+//                    moveRockford(this, blanker);
 
                 bool die = false;
 
