@@ -3063,6 +3063,32 @@ __    ____
     ____
 };
 
+const unsigned char CHAR_FLAT_1BLANK[] = {
+XX    XXXX  
+__    ____  
+__    ____  
+XX    XXXX  
+__    ____  
+__    ____  
+XX    XXXX  
+__    ____  
+__    ____  
+    XXXX  
+    ____
+    ____  
+    XXXX  
+    ____
+    ____  
+    XXXX  
+    ____  
+    ____  
+    XXXX  
+    ____  
+    ____
+    XXXX  
+    ____
+    ____
+};
 
 const unsigned char CHAR_FLAT_2[] = {
     ____
@@ -3147,6 +3173,32 @@ const unsigned char CHAR_LATITUDE[] = {
     _XXX  
 };
 
+const unsigned char CHAR_LATITUDE2[] = {
+    _XXX  
+    ____  
+    ____  
+    _XXX  
+    ____  
+    ____  
+    _XXX  
+    ____  
+    ____  
+    _XXX  
+    ____
+    ____  
+    _XXX  
+    ____
+    ____  
+    _XXX  
+    ____  
+    ____  
+    _XXX  
+    ____  
+    ____
+    _XXX  
+    ____
+    ____
+};
 
 
 
@@ -3315,6 +3367,8 @@ const unsigned char (*charSet[])[] = {
     &CHAR_SHADOW,                                   // 119 CH_SHADOW
     &CHAR_FLAT_2,                                   // 120 CH_FLAT_2
     &CHAR_LATITUDE,                                 // 121 CH_LATITUDE
+    &CHAR_LATITUDE2,                                // 122 CH_LATITUDE
+    &CHAR_FLAT_1BLANK,                              // 123 CH_FLAT_1BLANK
 
     // +--> CharToType[]
 };

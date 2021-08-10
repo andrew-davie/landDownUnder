@@ -94,7 +94,7 @@ CUSTOMDEPENDS = sound.h main.h attribute.h movePlayer.h charRuntime.h characters
 CUSTOMTARGETS = $(CUSTOMELF) $(CUSTOMBIN)
 
 
-main.o : $(DASM_TO_C) #defines.h
+main.o : $(DASM_TO_C) #defines.h∫
 
 alphanumeric.o: bitpatterns.h
 

@@ -193,30 +193,6 @@ const short int line85[] = {
 562 , // 165
 588 , // 168
 -1,
--1,
--1,
--1,
--1,
--1,
--1,
--1,
--1,
--1,
--1,
--1,
--1,
--1,
--1,
--1,
--1,
--1,
--1,
--1,
--1,
--1,
--1,
--1,
--1,
 };
 
 
@@ -253,19 +229,23 @@ const short int *precalcLine[] = {
 
 int pscrollSpeed = 0x2800;
 int sizer = 0;
+int sizerDelay = 0;
+int sizerDirection = 1;
 
 unsigned int stepSize = 0x100;
 unsigned int stepSize2 = 0x100;
 
 
-unsigned int mult = (int) (1.25 * 0x100);
-unsigned int div =  (int) (0x100 /1.25);
+unsigned int mult = 0x101; //(int) 1.01 * 0x100;
+unsigned int div =  0x0FF; //(int) 1 * 0x100 /1.01;
 
-int scalex = 0xD0;
+
 
 void drawPlanet() {
 
+    sizerDelay++;
     scrollY = 0;
+
 
 
     if (SWCHA & 0x40)
@@ -274,17 +254,23 @@ void drawPlanet() {
         pscrollSpeed -= 100;
 
     if (!(SWCHA & 0x20)) {
-        if (scalex < 0x200)
-            scalex+=5;
-    }
+        SWCHA = 0;
+        sizerDelay = 0;
+
+        stepSize = (stepSize * div) >> 8;
+        stepSize2 = (stepSize2 * mult) >> 8;
+   }
 
     if (!(SWCHA & 0x10)) {
-        if (scalex > 0x5)
-            scalex-=5;
-    }
+        SWCHA = 0;
+        sizerDelay = 0;
 
-    stepSize = (0x100  * ((scalex * mult)>>8)) >> 8;
-    stepSize2 = (0x100 * ((scalex * div)>>8)) >> 8;
+        stepSize = (stepSize * mult) >> 8;
+        stepSize2 = (stepSize2 * div) >> 8;
+
+
+   }
+
 
     // if (sizerDelay > 1 && (SWCHA & 0x20)) {
     //     sizerDelay = 0;
@@ -324,10 +310,10 @@ void drawPlanet() {
         unsigned char *pf1 = RAM + buf[base + 1];
         unsigned char *pf2 = RAM + buf[base + 2];
 
+        int absScanline = 0;
         int equivalentLine = 0;
-        int absScanline;
 
-        for (absScanline = 0; absScanline < SCANLINES && precalcLine[sizer][equivalentLine>>8] >= 0;) {
+        for (int scanline = 0; scanline < SCANLINES && precalcLine[sizer][equivalentLine>>8] >= 0; scanline++) {
             
             int equiv = equivalentLine >> 8;
 
@@ -373,10 +359,10 @@ void drawPlanet() {
                     }
 
                     int p3 = 0;
-                    for (int i = 0; i < 20; i++) {
+                    for (int i = 19; i >= 0; i--) {
                         int equivalentBit = bitOffset >> 8;
                         if (p2 & (1 << equivalentBit))
-                            p3 |= 1 << i;
+                            p3 = (p3 << 1) | 1;
                         bitOffset += stepSize;
                     }
                     p2 = p3;
@@ -389,20 +375,11 @@ void drawPlanet() {
 
                     int bitOffset = 0;
                     for (int i = 0; i < 20; i++) {
-                        if (mask & (1 << i))
-                            p2 = (p2 >> 1) | (((p >> i) & 1) << 19);
-                    }
-
-                    int p3 = 0;
-                    for (int i = 19; i >= 0; i--) {
                         int equivalentBit = bitOffset >> 8;
-                        if (p2 & (1 << (19-equivalentBit)))
-                            p3 |= 1 << i;
+                        if (mask & (1 << equivalentBit))
+                            p2 = (p2 >> 1) | (((p >> equivalentBit) & 1) << 19);
                         bitOffset += stepSize;
                     }
-                    p2 = p3;
-
-
                 }
 
                 *pf0++ = BitRev[p2 >> 16];
@@ -415,10 +392,11 @@ void drawPlanet() {
 
         }
 
-        while (absScanline++ < SCANLINES) {
+        while (absScanline < SCANLINES) {
             *pf0++ = 0;
             *pf1++ = 0;
             *pf2++ = 0;
+            absScanline++;
         }
     }
 

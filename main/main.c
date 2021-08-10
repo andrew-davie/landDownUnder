@@ -617,6 +617,16 @@ void setColours() {
 
 void InitGameX() {
 
+
+    extern unsigned int stepSize;
+    extern unsigned int stepSize2;
+    extern int scalex;
+
+
+    stepSize = 0x100;
+    stepSize2 = 0x100;
+    scalex = 0xD0;
+
     for (int i = 0; i < 2; i++)
         thisFrame[0][i] = thisFrame[1][i] = false;
 
@@ -1021,7 +1031,7 @@ void GameOverscan() {
     GameScheduleAnimate();
         
     if ((SWCHA != 0xFF) && frameCounter >= 4)
-        bufferedSWCHA = SWCHA;
+        //tmp bufferedSWCHA = SWCHA;
 
 
     // int rnd = getRandom32();
