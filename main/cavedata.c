@@ -256,6 +256,47 @@ BLOT(-4,8)
 
 };
 
+
+static const unsigned char usa[]= {
+#define USA_DEPTH 20
+
+0x01,       // cave
+
+40,USA_DEPTH,0,      // size, gravity
+
+0x14,       // milling
+0x0A,0x0F,  // diamond $
+
+0x0A,0x0B,0x0C,0x0D,0x0E,       // randomiser[level]
+0x0C,0x0C,0x0C,0x0C,0x0C,
+0x96,0x6E,0x46,0x28,0x1E,
+
+0,0,DEF_PLANET, //15,0x09,
+
+0,CH_DIRT,
+
+
+0,0,0,0,
+0,0,0,0,
+
+
+0, CH_MYSTERY0, 0, 8,
+0, CH_MYSTERY1, 1, 8,
+
+0, CH_MYSTERY1_0, 0, 9,
+0, CH_MYSTERY1_1, 1, 9,
+
+0, CH_MYSTERY2_0, 0, 10,
+0, CH_MYSTERY2_1, 1, 10,
+
+0, CH_MYSTERY3_0, 0, 11,
+0, CH_MYSTERY3_1, 1, 11,
+
+0xFF,
+
+};
+
+
 static const unsigned char zph[]= {
 #define ZPH_DEPTH 20
 
@@ -886,6 +927,34 @@ const unsigned char zphBGColours[PLANET1_DEPTH] = {
     0x24,   // 07
 };
 
+const unsigned char usaBGColours[PLANET1_DEPTH] = {
+    0x80,   // 00
+    0x82,   // 02
+    0x84,   // 04
+    0x88,   // 06
+    0x88,   // 07
+    0x84,   // 00
+    0x82,   // 02
+    0x80,   // 04
+    0x80,   // 06
+    0x84,   // 00
+    0x84,   // 01
+    0x84,   // 02
+    0x84,   // 03
+    0x84,   // 04
+    0x84,   // 05
+    0x84,   // 06
+    0x84,   // 07
+    0x84,   // 00
+    0x84,   // 01
+    0x84,   // 02
+    0x84,   // 03
+    0x84,   // 04
+    0x84,   // 05
+    0x84,   // 06
+    0x84,   // 07
+};
+
 
 const unsigned char cave12bBGColours[CAVE12b_DEPTH] = {
 
@@ -914,6 +983,7 @@ const unsigned char cave12bBGColours[CAVE12b_DEPTH] = {
 };
 
 const struct caveInfo caveList[] = {
+    { usa,          { 0x86, 0xD6, 0x46, },  usaBGColours, },
     { zph,          { 0x86, 0xD6, 0x86, },  zphBGColours, },
     { uranus,          { 0x86, 0x12, 0x16, },  uranusColours, },
     { planetEarth,          { 0x86, 0xC8, 0x28, },  planetEarthBGColours, },

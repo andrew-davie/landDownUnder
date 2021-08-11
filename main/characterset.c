@@ -34,6 +34,237 @@ __  ____     // 08
 };
 
 
+static const unsigned char MYSTERY0[] = {
+
+__  XX__     // 00
+__  XX__     // 01
+__  XX__     // 02
+__  XXX_     // 03
+__  XXX_     // 04
+__  XXX_     // 05
+__  XXXX     // 06
+__  XXXX     // 07
+__  XXXX     // 08
+    XXXX     // 09
+    XXXX     // 10
+    XXXX     // 11
+    XX_X     // 12
+    XX_X     // 13
+    XX_X     // 14
+    XX_X     // 15
+    XX_X     // 16
+    XX_X     // 17
+    XX_X     // 18
+    XX_X     // 19
+    XX_X     // 20
+    XX_X     // 21
+    XX_X     // 22
+    XX_X     // 23
+};
+
+static const unsigned char MYSTERY1[] = {
+
+__  __XX     // 00
+__  __XX     // 01
+__  __XX     // 02
+__  _XXX     // 03
+__  _XXX     // 04
+__  _XXX     // 05
+__  XXXX     // 06
+__  XXXX     // 07
+__  XXXX     // 08
+    XXXX     // 09
+    XXXX     // 10
+    XXXX     // 11
+    X_XX     // 12
+    X_XX     // 13
+    X_XX     // 14
+    X_XX     // 15
+    X_XX     // 16
+    X_XX     // 17
+    X_XX     // 18
+    X_XX     // 19
+    X_XX     // 20
+    X_XX     // 21
+    X_XX     // 22
+    X_XX     // 23
+};
+
+
+
+
+static const unsigned char MYSTERY1_0[] = {
+
+__  XX__     // 00
+__  XX__     // 01
+__  XX__     // 02
+__  XX__     // 03
+__  XX__     // 04
+__  XX__     // 05
+__  XX__     // 06
+__  XX__     // 07
+__  XX__     // 08
+    XX__     // 09
+    XX__     // 10
+    XX__     // 11
+    XX__     // 12
+    XX__     // 13
+    XX__     // 14
+    XX__     // 15
+    XX__     // 16
+    XX__     // 17
+    ____     // 18
+    ____     // 19
+    ____     // 20
+    ____     // 21
+    ____     // 22
+    ____     // 23
+};
+
+
+static const unsigned char MYSTERY1_1[] = {
+
+__  __XX     // 00
+__  __XX     // 01
+__  __XX     // 02
+__  __XX     // 03
+__  __XX     // 04
+__  __XX     // 05
+__  __XX     // 06
+__  __XX     // 07
+__  __XX     // 08
+    __XX     // 09
+    __XX     // 10
+    __XX     // 11
+    __XX     // 12
+    __XX     // 13
+    __XX     // 14
+    __XX     // 15
+    __XX     // 16
+    __XX     // 17
+    ____     // 18
+    ____     // 19
+    ____     // 20
+    ____     // 21
+    ____     // 22
+    ____     // 23
+};
+
+
+
+static const unsigned char MYSTERY2_0[] = {
+
+__  XXXX     // 00
+__  XXXX     // 01
+__  XXXX     // 02
+__  XX__     // 03
+__  XX__     // 04
+__  XX__     // 05
+__  XX__     // 06
+__  XX__     // 07
+__  XX__     // 08
+    XX__     // 09
+    XX__     // 10
+    XX__     // 11
+    XX__     // 12
+    XX__     // 13
+    XX__     // 14
+    XXXX     // 15
+    XXXX     // 16
+    XXXX     // 17
+    ____     // 18
+    ____     // 19
+    ____     // 20
+    ____     // 21
+    ____     // 22
+    ____     // 23
+};
+
+static const unsigned char MYSTERY2_1[] = {
+
+__  XXXX     // 00
+__  XXXX     // 01
+__  XXXX     // 02
+__  ____     // 03
+__  ____     // 04
+__  ____     // 05
+__  ____     // 06
+__  ____     // 07
+__  ____     // 08
+    ____     // 09
+    ____     // 10
+    ____     // 11
+    ____     // 12
+    ____     // 13
+    ____     // 14
+    XXXX     // 15
+    XXXX     // 16
+    XXXX     // 17
+    __XX     // 18
+    __XX     // 19
+    __XX     // 20
+    __XX     // 21
+    __XX     // 22
+    __XX     // 23
+};
+
+
+static const unsigned char MYSTERY3_0[] = {
+
+__  ____     // 00
+__  ____     // 01
+__  ____     // 02
+__  ____     // 03
+__  ____     // 04
+__  ____     // 05
+__  ____     // 06
+__  ____     // 07
+__  ____     // 08
+    ____     // 09
+    ____     // 10
+    ____     // 11
+    ____     // 12
+    ____     // 13
+    ____     // 14
+    XXXX     // 15
+    XXXX     // 16
+    XXXX     // 17
+    ____     // 18
+    ____     // 19
+    ____     // 20
+    ____     // 21
+    ____     // 22
+    ____     // 23
+};
+
+static const unsigned char MYSTERY3_1[] = {
+
+__  __XX     // 00
+__  __XX     // 01
+__  __XX     // 02
+__  __XX     // 03
+__  __XX     // 04
+__  __XX     // 05
+__  __XX     // 06
+__  __XX     // 07
+__  __XX     // 08
+    __XX     // 09
+    __XX     // 10
+    __XX     // 11
+    __XX     // 12
+    __XX     // 13
+    __XX     // 14
+    XXXX     // 15
+    XXXX     // 16
+    XXXX     // 17
+    ____     // 18
+    ____     // 19
+    ____     // 20
+    ____     // 21
+    ____     // 22
+    ____     // 23
+};
+
 static const unsigned char CHAR_BLANK_SKY[] = {
 
 __  ____     // 00
@@ -3369,6 +3600,15 @@ const unsigned char (*charSet[])[] = {
     &CHAR_LATITUDE,                                 // 121 CH_LATITUDE
     &CHAR_LATITUDE2,                                // 122 CH_LATITUDE
     &CHAR_FLAT_1BLANK,                              // 123 CH_FLAT_1BLANK
+
+    &MYSTERY0, //124
+    &MYSTERY1, //125
+    &MYSTERY1_0, //124
+    &MYSTERY1_1, //125
+    &MYSTERY2_0, //124
+    &MYSTERY2_1, //125
+    &MYSTERY3_0, //124
+    &MYSTERY3_1, //125
 
     // +--> CharToType[]
 };

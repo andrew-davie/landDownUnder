@@ -187,6 +187,15 @@ enum ChName {
     CH_LATITUDE2,                   // 122
     CH_FLAT_1BLANK,                 // 123
 
+    CH_MYSTERY0,
+    CH_MYSTERY1,
+    CH_MYSTERY1_0,
+    CH_MYSTERY1_1,
+    CH_MYSTERY2_0,
+    CH_MYSTERY2_1,
+    CH_MYSTERY3_0,
+    CH_MYSTERY3_1,
+
     CH_MAX,
 };
 
@@ -317,7 +326,12 @@ static const unsigned char CharToType[CH_MAX]= {
     TYPE_FLAT,                      // 120 CH_FLAT_2
     TYPE_FLAT,                      // 121 CH_LATITUDE
     TYPE_FLAT,                      // 122 CH_LATITUDE2
-    TYPE_FLAT,                      // 122 CH_FLAT1BLANK
+    TYPE_FLAT,                      // 123 CH_FLAT1BLANK
+
+    TYPE_FLAT,                      // 124
+    TYPE_FLAT,                      // 125
+    TYPE_FLAT,                      // 124
+    TYPE_FLAT,                      // 125
 };
 
 #endif
