@@ -26,13 +26,13 @@ _CYAN                    00b0
 _DS_AUDC0                000f              (R )
 _DS_AUDF0                0010              (R )
 _DS_AUDV0                000e              (R )
-_DS_COLUBK               000d              (R )
-_DS_COLUP0               0000              (R )
-_DS_COLUP1               0001              (R )
+_DS_COLUBK               000d                  
+_DS_COLUP0               0000                  
+_DS_COLUP1               0001                  
 _DS_COLUPF               000a              (R )
 _DS_FROM_ARM             0007                  
-_DS_GRP0a                000b              (R )
-_DS_GRP1a                000c              (R )
+_DS_GRP0a                000b                  
+_DS_GRP1a                000c                  
 _DS_PF0_LEFT             0004              (R )
 _DS_PF0_RIGHT            0007              (R )
 _DS_PF1_LEFT             0005              (R )

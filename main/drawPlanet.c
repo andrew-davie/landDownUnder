@@ -209,16 +209,7 @@ const short int line85[] = {
 -1,
 -1,
 -1,
--1,
--1,
--1,
--1,
--1,
--1,
--1,
--1,
 };
-
 
 
 const unsigned int *precalcPix[] = {
@@ -260,6 +251,8 @@ unsigned int stepSize2 = 0x100;
 
 unsigned int mult = (int) (1.25 * 0x100);
 unsigned int div =  (int) (0x100 /1.25);
+int equivalentLine = 0;
+int absScanline = 0;
 
 int scalex = 0xD0;
 
@@ -267,38 +260,6 @@ void drawPlanet() {
 
     scrollY = 0;
 
-
-    if (SWCHA & 0x40)
-        pscrollSpeed += 100;
-    if (SWCHA & 0x80)
-        pscrollSpeed -= 100;
-
-    if (!(SWCHA & 0x20)) {
-        if (scalex < 0x200)
-            scalex+=5;
-    }
-
-    if (!(SWCHA & 0x10)) {
-        if (scalex > 0x5)
-            scalex-=5;
-    }
-
-    stepSize = (0x100  * ((scalex * mult)>>8)) >> 8;
-    stepSize2 = (0x100 * ((scalex * div)>>8)) >> 8;
-
-    // if (sizerDelay > 1 && (SWCHA & 0x20)) {
-    //     sizerDelay = 0;
-    //     if (stepSize > 0x1000)
-    //         stepSize -= 10;
-    // }
-
-    scrollX += pscrollSpeed;
-    if (scrollX >= (30 << 16)) {
-        scrollX -= (30 << 16);
-    }
-    if (scrollX < 0) {
-        scrollX += 30 << 16; //+= (20 << 16);
-    }
 
 
     // if (sizerDelay++ > 2) {
@@ -316,22 +277,46 @@ void drawPlanet() {
     unsigned char *xchar;
     const unsigned char *image[6];
 
-    for (int half = 0; half < 10; half += 5) { 
 
-        int base = half ? VIDBUF_PF0_RIGHT : VIDBUF_PF0_LEFT;
+    int bufvid[2][2] = {
+        { VIDBUF_PF0_LEFT, VIDBUF_PF0_RIGHT },
+        { VIDBUF_PF0b_LEFT, VIDBUF_PF0b_RIGHT },
+    };
 
-        unsigned char *pf0 = RAM + buf[base];
-        unsigned char *pf1 = RAM + buf[base + 1];
-        unsigned char *pf2 = RAM + buf[base + 2];
+    static int half = 0;
 
-        int equivalentLine = 0;
-        int absScanline;
+    
 
-        for (absScanline = 0; absScanline < SCANLINES && precalcLine[sizer][equivalentLine>>8] >= 0;) {
-            
+    //for (int half = 0; half < 2; half++) { 
+
+        extern int toggle2;
+
+        int buffer = (INPT4 & 0x80) ? toggle2 ^ 1 : toggle2;
+
+        int base = bufvid[buffer][half];
+
+
+//        int base = half ? VIDBUF_PF0_RIGHT : VIDBUF_PF0_LEFT;
+
+        unsigned char *pf0 = RAM + buf[base] + absScanline;
+        unsigned char *pf1 = RAM + buf[base + 1] + absScanline;
+        unsigned char *pf2 = RAM + buf[base + 2] + absScanline;
+
+
+
+
+        bool stopped = false;
+
+        for (int line = 0; line < 50; line++) {
+
+            if (absScanline >= SCANLINES || precalcLine[sizer][equivalentLine>>8] < 0) {
+                stopped = true;
+                break;
+            }
+                
             int equiv = equivalentLine >> 8;
 
-            xchar = RAM + _BOARD + (half + frac) + boardWidth * (precalcLine[sizer][equiv] >> 5);
+            xchar = RAM + _BOARD + (half * 5 + frac) + boardWidth * (precalcLine[sizer][equiv] >> 5);
             int charow = precalcLine[sizer][equiv] & 31;
 
             for (int i = 0; i < 6; i++) {
@@ -415,12 +400,60 @@ void drawPlanet() {
 
         }
 
-        while (absScanline++ < SCANLINES) {
-            *pf0++ = 0;
-            *pf1++ = 0;
-            *pf2++ = 0;
+        if (stopped) {
+
+            while (absScanline++ < SCANLINES) {
+                *pf0++ = 0;
+                *pf1++ = 0;
+                *pf2++ = 0;
+            }
+
+
+            drawSoftwareSprites();
+    //    }
+
+            absScanline = 0;
+            equivalentLine = 0;
+
+            half ^= 1;
+            if (!half) {
+                toggle2 ^= 1;
+            }
+
+
+
+            if (SWCHA & 0x40)
+                pscrollSpeed += 100;
+            if (SWCHA & 0x80)
+                pscrollSpeed -= 100;
+
+            if (!(SWCHA & 0x20)) {
+                if (scalex < 0x200)
+                    scalex+=5;
+            }
+
+            if (!(SWCHA & 0x10)) {
+                if (scalex > 0x5)
+                    scalex-=5;
+            }
+
+            stepSize = (0x100  * ((scalex * mult)>>8)) >> 8;
+            stepSize2 = (0x100 * ((scalex * div)>>8)) >> 8;
+
+            // if (sizerDelay > 1 && (SWCHA & 0x20)) {
+            //     sizerDelay = 0;
+            //     if (stepSize > 0x1000)
+            //         stepSize -= 10;
+            // }
+
+            scrollX += pscrollSpeed;
+            if (scrollX >= (30 << 16)) {
+                scrollX -= (30 << 16);
+            }
+            if (scrollX < 0) {
+                scrollX += 30 << 16; //+= (20 << 16);
+            }
+
+
         }
-    }
-
-
 }

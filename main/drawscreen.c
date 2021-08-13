@@ -49,7 +49,7 @@ extern int getRandom32();
 
 
 void Scroll() {
-    return; //tmp
+//    return; //tmp
 
     int rocky = rockfordX * PIXELS_PER_CHAR + (PIXELS_PER_CHAR >> 1);
     int halfway = (scrollX >> 14) + HALFWAYX;

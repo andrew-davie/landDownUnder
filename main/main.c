@@ -87,7 +87,7 @@ unsigned char *lastWater;
 
 const unsigned char *bgPalette;
 
-#define SPACESHIPS 0
+#define SPACESHIPS 6
 int spaceshipY[SPACESHIPS];
 int spaceshipAccel[SPACESHIPS];
 int spaceshipWait[SPACESHIPS];
@@ -438,7 +438,7 @@ extern void NextRandom(int *RandSeed1, int *RandSeed2);
 
 
 
-unsigned int buf[12];
+unsigned int buf[VIDBUF_MAX];
 const unsigned int bufferBase[2] = {
         VIDBUF_PF0_LEFT, VIDBUF_PF0_RIGHT
 };
@@ -461,10 +461,10 @@ void setVideoBufferPointers() {
 
     defBuf(VIDBUF_COLUPF);
     defBuf(VIDBUF_COLUBK);
-    defBuf(VIDBUF_GRP0A);
-    defBuf(VIDBUF_GRP1A);
-    defBuf(VIDBUF_COLUP0);
-    defBuf(VIDBUF_COLUP1);
+//    defBuf(VIDBUF_GRP0A);
+//    defBuf(VIDBUF_GRP1A);
+//    defBuf(VIDBUF_COLUP0);
+//    defBuf(VIDBUF_COLUP1);
 
     defBuf(VIDBUF_PF0_LEFT);
     defBuf(VIDBUF_PF1_LEFT);
@@ -473,10 +473,17 @@ void setVideoBufferPointers() {
     defBuf(VIDBUF_PF1_RIGHT);
     defBuf(VIDBUF_PF2_RIGHT);
 
-    clearBuffer(VIDBUF_GRP0A);
-    clearBuffer(VIDBUF_GRP1A);
+    defBuf(VIDBUF_PF0b_LEFT);
+    defBuf(VIDBUF_PF1b_LEFT);
+    defBuf(VIDBUF_PF2b_LEFT);
+    defBuf(VIDBUF_PF0b_RIGHT);
+    defBuf(VIDBUF_PF1b_RIGHT);
+    defBuf(VIDBUF_PF2b_RIGHT);
+
+//    clearBuffer(VIDBUF_GRP0A);
+//    clearBuffer(VIDBUF_GRP1A);
     clearBuffer(VIDBUF_COLUPF);
-    clearBuffer(VIDBUF_COLUBK);
+//    clearBuffer(VIDBUF_COLUBK);
 }
 
 
@@ -738,7 +745,7 @@ extern int rinc;
     gameSpeed = GAMESPEED * DEBUG_SLOWDOWN; //12;
     frameCounter = gameSpeed;               // force initial 
 
-    setFlash(0,0);
+    setFlash(0xb2,10);
 
 
 
@@ -960,31 +967,68 @@ void Scheduler() {
 }
 
 
+int toggle2 = 0;
+
 void InitGameDatastreams() {
 
 
-    // initialize the Data Streams for the Arena
-    setPointer(_DS_PF0_LEFT, buf[VIDBUF_PF0_LEFT]);
-    setPointer(_DS_PF1_LEFT, buf[VIDBUF_PF1_LEFT]);
-    setPointer(_DS_PF2_LEFT, buf[VIDBUF_PF2_LEFT]);
-    setPointer(_DS_PF0_RIGHT, buf[VIDBUF_PF0_RIGHT]);
-    setPointer(_DS_PF1_RIGHT, buf[VIDBUF_PF1_RIGHT]);
-    setPointer(_DS_PF2_RIGHT, buf[VIDBUF_PF2_RIGHT]);
+    if (!toggle2) {
+        // initialize the Data Streams for the Arena
+        setPointer(_DS_PF0_LEFT, buf[VIDBUF_PF0_LEFT]);
+        setPointer(_DS_PF1_LEFT, buf[VIDBUF_PF1_LEFT]);
+        setPointer(_DS_PF2_LEFT, buf[VIDBUF_PF2_LEFT]);
+        setPointer(_DS_PF0_RIGHT, buf[VIDBUF_PF0_RIGHT]);
+        setPointer(_DS_PF1_RIGHT, buf[VIDBUF_PF1_RIGHT]);
+        setPointer(_DS_PF2_RIGHT, buf[VIDBUF_PF2_RIGHT]);
+    } else {
+        
+        setPointer(_DS_PF0_LEFT, buf[VIDBUF_PF0b_LEFT]);
+        setPointer(_DS_PF1_LEFT, buf[VIDBUF_PF1b_LEFT]);
+        setPointer(_DS_PF2_LEFT, buf[VIDBUF_PF2b_LEFT]);
+        setPointer(_DS_PF0_RIGHT, buf[VIDBUF_PF0b_RIGHT]);
+        setPointer(_DS_PF1_RIGHT, buf[VIDBUF_PF1b_RIGHT]);
+        setPointer(_DS_PF2_RIGHT, buf[VIDBUF_PF2b_RIGHT]);
+    }
 
     setPointer(_DS_AUDV0, _BUF_AUDV);
     setPointer(_DS_AUDC0, _BUF_AUDC);
     setPointer(_DS_AUDF0, _BUF_AUDF);
 
     setPointer(_DS_COLUPF, buf[VIDBUF_COLUPF]);
-    setPointer(_DS_COLUBK, buf[VIDBUF_COLUBK]);
-    setPointer(_DS_COLUP0, buf[VIDBUF_COLUP0]);
-    setPointer(_DS_COLUP1, buf[VIDBUF_COLUP1]);
+//    setPointer(_DS_COLUBK, buf[VIDBUF_COLUBK]);
+//    setPointer(_DS_COLUP0, buf[VIDBUF_COLUP0]);
+//    setPointer(_DS_COLUP1, buf[VIDBUF_COLUP1]);
 
-    setPointer(_DS_GRP0a, buf[VIDBUF_GRP0A]);
-    setPointer(_DS_GRP1a, buf[VIDBUF_GRP1A]);
+//    setPointer(_DS_GRP0a, buf[VIDBUF_GRP0A]);
+//    setPointer(_DS_GRP1a, buf[VIDBUF_GRP1A]);
 
     // initialize the Jump Data Stream
     setPointer(0x21, _BUF_JUMP1);
+
+
+
+    // // initialize the Data Streams for the Arena
+    // setPointer(_DS_PF0_LEFT, buf[VIDBUF_PF0_LEFT]);
+    // setPointer(_DS_PF1_LEFT, buf[VIDBUF_PF1_LEFT]);
+    // setPointer(_DS_PF2_LEFT, buf[VIDBUF_PF2_LEFT]);
+    // setPointer(_DS_PF0_RIGHT, buf[VIDBUF_PF0_RIGHT]);
+    // setPointer(_DS_PF1_RIGHT, buf[VIDBUF_PF1_RIGHT]);
+    // setPointer(_DS_PF2_RIGHT, buf[VIDBUF_PF2_RIGHT]);
+
+    // setPointer(_DS_AUDV0, _BUF_AUDV);
+    // setPointer(_DS_AUDC0, _BUF_AUDC);
+    // setPointer(_DS_AUDF0, _BUF_AUDF);
+
+    // setPointer(_DS_COLUPF, buf[VIDBUF_COLUPF]);
+    // setPointer(_DS_COLUBK, buf[VIDBUF_COLUBK]);
+    // setPointer(_DS_COLUP0, buf[VIDBUF_COLUP0]);
+    // setPointer(_DS_COLUP1, buf[VIDBUF_COLUP1]);
+
+    // setPointer(_DS_GRP0a, buf[VIDBUF_GRP0A]);
+    // setPointer(_DS_GRP1a, buf[VIDBUF_GRP1A]);
+
+    // // initialize the Jump Data Stream
+    // setPointer(0x21, _BUF_JUMP1);
 }
 
 
@@ -1031,7 +1075,7 @@ void GameOverscan() {
     GameScheduleAnimate();
         
     if ((SWCHA != 0xFF) && frameCounter >= 4)
-        //tmp bufferedSWCHA = SWCHA;
+        bufferedSWCHA = SWCHA;
 
 
     // int rnd = getRandom32();
@@ -1140,7 +1184,7 @@ void GameOverscan() {
         triggerPressCounter = 0;
     }
 
-    GameScheduleDrawSprites();
+//    GameScheduleDrawSprites();
 
     if (flashTime > 0)
         flashTime--;
@@ -1728,6 +1772,8 @@ void GameVerticalBlank() {
     frameCounter++;
     frameToggler++;
 
+    GameScheduleDrawSprites();
+
     if (time && /*!uncoverCount &&*/ !rockfordDead) {
 
         time--;
@@ -2008,7 +2054,7 @@ void GameScheduleDrawSprites() {
         setPalette(0, 9, PIECE_DEPTH/3, 6);
         drawOverviewScreen();
         drawPlayerSmallSprite();
-        drawSoftwareSprites();
+        //drawSoftwareSprites();
         break;
 
     case DISPLAY_NORMAL:
@@ -2032,7 +2078,7 @@ void GameScheduleDrawSprites() {
         setPalette(SCORE_SCANLINES, PIECE_DEPTH, 3, 3);
         drawScore();
         drawScreen();
-        drawSoftwareSprites();
+        //drawSoftwareSprites();
 
         doPlayer();
 
@@ -2041,13 +2087,13 @@ void GameScheduleDrawSprites() {
 
         break;
 
-    case DISPLAY_PLANET: {
+    // case DISPLAY_PLANET: {
 
-            setPalette(0, PIECE_DEPTH, 3, 3);
-            drawPlanet();
+    //         setPalette(0, PIECE_DEPTH, 3, 3);
+    //         drawPlanet();
 
-        }
-        break;
+    //     }
+    //     break;
 
     default:
         break;
@@ -2631,7 +2677,8 @@ const int dirY[] = {  0,  0, -1,  1, -1, 1, -1,  1 };
 
 
 void GameScheduleProcessBoardRow() {
-
+// return; //tmp
+ 
 //    if (!uncoverCount)
     for (int block = 0; block < 80; block++) {
 

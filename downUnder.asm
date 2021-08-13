@@ -601,8 +601,8 @@ VerticalSync:
         sta HMOVE
 
 
-        lda #DSCOMM         ; ARENA COLOR
-        sta COLUBK
+        ldx #0; //DSCOMM         ; ARENA COLOR
+        stx COLUBK
 
         lda #_DS_AUDV0
         sta AUDV0
@@ -668,9 +668,9 @@ _NORMAL_KERNEL
 ;@3
 
 
-                    lda #_DS_COLUBK
+                    ldx #0 ;_DS_COLUBK
                     sta WSYNC
-                    sta COLUBK
+                    stx COLUBK
 
                     lda #_DS_COLUPF
                     sta COLUPF
@@ -678,14 +678,17 @@ _NORMAL_KERNEL
                     lda #_DS_PF0_LEFT
                     sta PF0                         ; 5
 
-                    lda #_DS_GRP0a
-                    sta GRP0                        ; 5
+                    ;ldx #_DS_GRP0a
+                    ldx #0
+                    stx GRP0                        ; 5
 
                     lda #_DS_PF1_LEFT
                     sta PF1                         ; 5
 
-                    lda #_DS_GRP1a
-                    sta GRP1                        ; 5
+                    ldx #0
+                    ;lda #_DS_GRP1a
+                    stx GRP1
+                    ;sta GRP1                        ; 5
 
 
 
@@ -704,10 +707,10 @@ _NORMAL_KERNEL
 
 
         SLEEP 5
-                    lda #_DS_COLUP0
-                    sta COLUP0                      ; 3 @8
-                    lda #_DS_COLUP1
-                    sta COLUP1
+                    ldx #0 ;lda #_DS_COLUP0
+                    stx COLUP0                      ; 3 @8
+                    ldx #0 ;lda #_DS_COLUP1
+                    stx COLUP1
 
 
                     jmp FASTJMP1                    ; 3

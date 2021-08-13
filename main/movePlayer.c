@@ -74,7 +74,7 @@ int playerSpeedY;
 
 void doPlayer() {
 
- return; //tmp
+// return; //tmp
     unsigned char dir = ((~SWCHA) >> 4) & 0xF;
     OFFSET joy = movementOffset[dir];
 
